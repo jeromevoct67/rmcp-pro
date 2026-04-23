@@ -534,13 +534,7 @@ export default function RMCPManager() {
           {flags.length > 0 && (
             <div style={{ background: "#fff", borderRadius: "12px", padding: "18px", border: "1px solid #e2e8f0", marginBottom: "16px" }}>
               <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#1a2a3a", marginBottom: "14px", display: "flex", alignItems: "center", gap: "6px" }}>
-                📋 Action Plans Required ({flags.filter(f => ACTION_PLANS[`${Object.entries(formData).find(([k, v]) => {
-                  const section = RMCP_SECTIONS.find(s => s.fields.find(f => f.id === k));
-                  return section && v === "Not yet established" || v === "Not yet addressed" || v === "No backup process in place" || v === "Paper-based filing only" || v === "Not yet specified" || !f.data.board_approval_date;
-                })?.[0] || ""}:${Object.entries(formData).find(([k, v]) => {
-                  const section = RMCP_SECTIONS.find(s => s.fields.find(f => f.id === k));
-                  return section && v === "Not yet established" || v === "Not yet addressed" || v === "No backup process in place" || v === "Paper-based filing only" || v === "Not yet specified" || !f.data.board_approval_date;
-                })?.[1] || ""}`] }).length} gaps)
+                📋 Action Plans Required ({flags.filter(f => f.fieldKey && ACTION_PLANS[f.fieldKey]).length} gaps)
               </h3>
               <p style={{ fontSize: "12px", color: "#64748b", marginBottom: "14px" }}>Below are action plans to address each compliance gap. Review, plan, or request our help to implement.</p>
 
@@ -1045,7 +1039,7 @@ export default function RMCPManager() {
           <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
             <button onClick={() => { const html = generateDoc(); const blob = new Blob([html], { type: "text/html" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `RMCP_${client.company.replace(/[^a-zA-Z0-9]/g, "_")}_${new Date().toISOString().split("T")[0]}.html`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }}
               style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#1a9c54", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📄 Download RMCP Document</button>
-            <button onClick={async () => { const btn = event.target; btn.textContent = "⏳ Sending..."; btn.disabled = true; try { const html = generateDoc(); const r = await fetch("https://rmcp-pro.vercel.app/api/send-rmcp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clientEmail: client.email, clientName: client.company, rmcpHtml: html, coverLetter: `Dear ${client.contact},\n\nPlease find attached your RMCP document.\n\nBest regards,\nBig Bay Administrators` }) }); const res = await r.json(); if (r.ok) { alert("✅ Email sent to " + client.email); } else { alert("Error: " + (res.error || "Failed")); } } catch (e) { alert("Error: " + e.message); } finally { btn.textContent = "📧 Email to Client"; btn.disabled = false; } }}
+            <button onClick={async (e) => { const btn = e.currentTarget; btn.textContent = "⏳ Sending..."; btn.disabled = true; try { const html = generateDoc(); const r = await fetch("/api/send-rmcp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clientEmail: client.email, clientName: client.company, rmcpHtml: html, coverLetter: `Dear ${client.contact},\n\nPlease find attached your RMCP document.\n\nBest regards,\nBig Bay Administrators` }) }); const res = await r.json(); if (r.ok) { alert("✅ Email sent to " + client.email); } else { alert("Error: " + (res.error || "Failed")); } } catch (err) { alert("Error: " + err.message); } finally { btn.textContent = "📧 Email to Client"; btn.disabled = false; } }}
               style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#3b82f6", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📧 Email to Client</button>
           </div>
         </div>
