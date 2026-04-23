@@ -952,24 +952,33 @@ jerome@bigbayadmin.co.za`);
   const handleSend = async () => {
     setSending(true);
     try {
-      // Email via Formspree with attachment details
-      const emailData = {
-        email: client.email,
-        name: `RMCP Document: ${client.company}`,
-        message: `${coverLetter}\n\n---\nDocument prepared by Big Bay Administrators\nConfidential`,
-        _subject: `Your RMCP Document - ${client.company}`,
-      };
+      // Generate RMCP HTML
+      const rmcpHtml = generateRMCPDocument(client, client.data || {});
 
-      await fetch("https://formspree.io/f/myklbzjq", {
+      // Call Vercel serverless function
+      const apiUrl = 'https://rmcp-pro.vercel.app';
+      
+      const response = await fetch(`${apiUrl}/api/send-rmcp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(emailData),
+        body: JSON.stringify({
+          clientEmail: client.email,
+          clientName: client.company,
+          rmcpHtml: rmcpHtml,
+          coverLetter: coverLetter,
+        }),
       });
 
-      alert("✓ Email sent to " + client.email);
-      onClose();
+      const result = await response.json();
+
+      if (response.ok) {
+        alert(`✓ Email sent successfully to ${client.email}\n\nRMCP document attached as PDF`);
+        onClose();
+      } else {
+        alert(`Error: ${result.error || 'Failed to send email'}`);
+      }
     } catch (err) {
-      alert("Error sending email: " + err.message);
+      alert(`Error sending email: ${err.message}\n\nMake sure backend is deployed to Vercel`);
     } finally {
       setSending(false);
     }
