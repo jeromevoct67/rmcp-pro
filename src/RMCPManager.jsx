@@ -1311,27 +1311,15 @@ Login to the admin dashboard to review and generate their RMCP document.`;
 
   // ── ADMIN LOGIN ──────────────────────────────────────────────────
   if (view === "adminLogin") {
-    const doAdminLogin = async () => {
-      const pwd = adminPwd;
-      if (!pwd) { setAdminLoginError("Please enter a password"); return; }
-      setAdminLoginError("checking…");
-      try {
-        const r = await fetch("/api/admin-auth", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password: pwd })
-        });
-        const data = await r.json().catch(() => ({}));
-        if (r.ok) {
-          setAdminLoginError("");
-          setAdminPwd("");
-          setIsAdmin(true);
-          setView("admin");
-        } else {
-          setAdminLoginError(data.error || `Error ${r.status} — check Vercel env vars`);
-        }
-      } catch (e) {
-        setAdminLoginError("Network error — " + e.message);
+    const doAdminLogin = () => {
+      if (!adminPwd) { setAdminLoginError("Please enter a password"); return; }
+      if (adminPwd === "Bigbay26") {
+        setAdminLoginError("");
+        setAdminPwd("");
+        setIsAdmin(true);
+        setView("admin");
+      } else {
+        setAdminLoginError("Incorrect password");
       }
     };
 
@@ -1362,9 +1350,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
               ⚠ {adminLoginError}
             </p>
           )}
-          {adminLoginError === "checking…" && (
-            <p style={{ color: "#2463AE", fontSize: "13px", margin: "10px 0 0", textAlign: "center" }}>Verifying…</p>
-          )}
+
           <button onClick={() => { setAdminLoginError(""); setView("landing"); }}
             style={{ width: "100%", marginTop: "12px", padding: "14px", minHeight: "52px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#666", fontSize: "15px", fontWeight: 600, cursor: "pointer" }}>
             Cancel
