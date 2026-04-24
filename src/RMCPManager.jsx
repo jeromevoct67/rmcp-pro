@@ -752,7 +752,22 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             </div>
           </div>
         )}
-        <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", marginTop: "16px" }}>Big Bay Administrators reviews and finalises your RMCP document once complete.</p>
+        <div style={{ maxWidth: 520, margin: "20px auto 0", display: "flex", flexDirection: "column", gap: "10px", position: "relative", zIndex: 2 }}>
+          {[
+            { icon: "📝", title: "Simple questions", desc: "Plain language — no legal jargon. Just describe how your agency operates." },
+            { icon: "📊", title: "Action plans included", desc: "See exactly how to fix each compliance gap — with timelines and costs." },
+            { icon: "📄", title: "Professional document", desc: "Big Bay Administrators reviews your answers and produces your formal RMCP document." },
+          ].map((f, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: "14px", padding: "13px 18px", borderRadius: "12px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div style={{ fontSize: "22px", flexShrink: 0 }}>{f.icon}</div>
+              <div>
+                <h3 style={{ fontSize: "13px", fontWeight: 700, margin: "0 0 2px", color: "#fff" }}>{f.title}</h3>
+                <p style={{ fontSize: "12px", lineHeight: 1.5, color: "rgba(255,255,255,0.5)", margin: 0 }}>{f.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", marginTop: "20px" }}>Big Bay Administrators reviews and finalises your RMCP document once complete.</p>
       </div>
       {/* Footer */}
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", padding: "24px 32px", textAlign: "center", position: "relative", zIndex: 2 }}>
@@ -772,19 +787,6 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             jerome@bigbayadmin.co.za
           </a>
         </div>
-      </div>
-      <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 32px 60px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "14px", position: "relative", zIndex: 2 }}>
-        {[
-          { icon: "📝", title: "Simple questions", desc: "Plain language — no legal jargon. Just describe how your agency operates." },
-          { icon: "📊", title: "Action plans included", desc: "See exactly how to fix each compliance gap — with timelines and costs." },
-          { icon: "📄", title: "Professional document", desc: "Big Bay Administrators reviews your answers and produces your formal RMCP document." },
-        ].map((f, i) => (
-          <div key={i} style={{ padding: "20px", borderRadius: "12px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-            <div style={{ fontSize: "24px", marginBottom: "8px" }}>{f.icon}</div>
-            <h3 style={{ fontSize: "13px", fontWeight: 700, marginBottom: "6px" }}>{f.title}</h3>
-            <p style={{ fontSize: "12px", lineHeight: 1.55, color: "rgba(255,255,255,0.5)", margin: 0 }}>{f.desc}</p>
-          </div>
-        ))}
       </div>
       {showPrivacyPolicy && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: "20px" }}>
