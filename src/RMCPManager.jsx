@@ -395,11 +395,11 @@ function ActionPlanModal({ plan, onClose, onRequestHelp }) {
         <div style={{ background: "#f0faf4", borderRadius: "8px", padding: "12px 14px", marginBottom: "16px", border: "1px solid #d1fae5" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
             <div>
-              <div style={{ fontSize: "10px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "2px" }}>Timeline</div>
+              <div style={{ fontSize: "12px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "2px" }}>Timeline</div>
               <div style={{ fontSize: "14px", fontWeight: 700, color: "#1A4A8A" }}>{plan.estimatedTimeline}</div>
             </div>
             <div>
-              <div style={{ fontSize: "10px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "2px" }}>Estimated Cost</div>
+              <div style={{ fontSize: "12px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "2px" }}>Estimated Cost</div>
               <div style={{ fontSize: "14px", fontWeight: 700, color: "#1A4A8A" }}>{plan.estimatedCost}</div>
             </div>
           </div>
@@ -416,7 +416,7 @@ function ActionPlanModal({ plan, onClose, onRequestHelp }) {
           </div>
         ))}
 
-        <div style={{ fontSize: "10px", color: "#94a3b8", padding: "10px 12px", background: "#f8fafc", borderRadius: "6px", marginBottom: "16px", borderLeft: "3px solid #cbd5e0" }}>
+        <div style={{ fontSize: "12px", color: "#94a3b8", padding: "10px 12px", background: "#f8fafc", borderRadius: "6px", marginBottom: "16px", borderLeft: "3px solid #cbd5e0" }}>
           <span style={{ fontWeight: 700 }}>Legal Requirement:</span> {plan.law}
         </div>
 
@@ -588,7 +588,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
               <div key={i} style={{ background: "#fff", borderRadius: "12px", padding: "16px", textAlign: "center", border: "1px solid #e2e8f0" }}>
                 <ProgressRing percent={s.pct} size={64} stroke={5} color={s.pct < 50 ? "#e74c3c" : s.pct < 75 ? "#f39c12" : "#6BA3E8"} />
                 <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a2a3a", marginTop: "7px" }}>{s.label}</div>
-                <div style={{ fontSize: "10px", color: "#94a3b8" }}>{s.sub}</div>
+                <div style={{ fontSize: "12px", color: "#94a3b8" }}>{s.sub}</div>
               </div>
             ))}
           </div>
@@ -616,7 +616,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                         </div>
                         <div style={{ fontSize: "11px", color: "#64748b", marginTop: "2px" }}>{plan.description}</div>
                       </div>
-                      <span style={{ padding: "3px 8px", borderRadius: "6px", background: plan.priority === "CRITICAL" ? "#fee2e2" : plan.priority === "HIGH" ? "#fffbeb" : "#f0fdf4", color: plan.priority === "CRITICAL" ? "#dc2626" : plan.priority === "HIGH" ? "#d97706" : "#16a34a", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.3px", whiteSpace: "nowrap" }}>
+                      <span style={{ padding: "3px 8px", borderRadius: "6px", background: plan.priority === "CRITICAL" ? "#fee2e2" : plan.priority === "HIGH" ? "#fffbeb" : "#f0fdf4", color: plan.priority === "CRITICAL" ? "#dc2626" : plan.priority === "HIGH" ? "#d97706" : "#16a34a", fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.3px", whiteSpace: "nowrap" }}>
                         {plan.priority}
                       </span>
                     </div>
@@ -631,10 +631,10 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                     </div>
 
                     <div style={{ display: "flex", gap: "8px" }}>
-                      <button onClick={() => setSelectedPlan(plan)} style={{ flex: 1, padding: "7px 12px", borderRadius: "6px", border: "1.5px solid #cbd5e0", background: "#fff", color: "#4a5568", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                      <button onClick={() => setSelectedPlan(plan)} style={{ flex: 1, padding: "11px 12px", minHeight: "44px", borderRadius: "6px", border: "1.5px solid #cbd5e0", background: "#fff", color: "#4a5568", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
                         View Full Plan
                       </button>
-                      <button onClick={() => requestHelp(planKey)} disabled={isRequested} style={{ flex: 1, padding: "7px 12px", borderRadius: "6px", border: "none", background: isRequested ? "#d1fae5" : "#2463AE", color: isRequested ? "#1A4A8A" : "#fff", fontSize: "11px", fontWeight: 600, cursor: isRequested ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                      <button onClick={() => requestHelp(planKey)} disabled={isRequested} style={{ flex: 1, padding: "11px 12px", minHeight: "44px", borderRadius: "6px", border: "none", background: isRequested ? "#d1fae5" : "#2463AE", color: isRequested ? "#1A4A8A" : "#fff", fontSize: "11px", fontWeight: 600, cursor: isRequested ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
                         {isRequested ? "✓ Help Requested" : "Request Help"}
                       </button>
                     </div>
@@ -689,16 +689,16 @@ Login to the admin dashboard to review and generate their RMCP document.`;
     <div style={{ minHeight: "100vh", background: "linear-gradient(165deg, #050F24 0%, #0D2147 40%, #071A3B 100%)", fontFamily: "'DM Sans', sans-serif", color: "#fff", position: "relative", overflow: "hidden" }}>
       <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
       <div style={{ position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(107,163,232,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
-      <div style={{ padding: "24px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 2 }}>
+      <div style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 2 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <div style={{ width: 36, height: 36, borderRadius: "10px", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>⚖</div>
           <span style={{ fontSize: "17px", fontWeight: 700 }}>RMCP<span style={{ color: "#6BA3E8" }}>Pro</span></span>
         </div>
-        <button onClick={() => setView("adminLogin")} style={{ padding: "9px 20px", borderRadius: "8px", border: "1.5px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.5)", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+        <button onClick={() => setView("adminLogin")} style={{ padding: "12px 20px", minHeight: "44px", borderRadius: "8px", border: "1.5px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.5)", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
           Admin Login
         </button>
       </div>
-      <div style={{ maxWidth: 620, margin: "0 auto", padding: "60px 32px 40px", textAlign: "center", position: "relative", zIndex: 2 }}>
+      <div style={{ maxWidth: 620, margin: "0 auto", padding: "32px 20px 32px", textAlign: "center", position: "relative", zIndex: 2 }}>
         <div style={{ display: "inline-block", padding: "5px 14px", borderRadius: "20px", background: "rgba(107,163,232,0.15)", border: "1px solid rgba(107,163,232,0.25)", fontSize: "11px", fontWeight: 600, color: "#6BA3E8", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: "24px" }}>
           FICA Section 43 Compliance Tool
         </div>
@@ -776,45 +776,41 @@ Login to the admin dashboard to review and generate their RMCP document.`;
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", padding: "24px 32px", textAlign: "center", position: "relative", zIndex: 2 }}>
         {/* ECTA s43 Supplier Disclosure */}
         <div style={{ maxWidth: 560, margin: "0 auto 14px", padding: "12px 16px", borderRadius: "8px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", textAlign: "left" }}>
-          <p style={{ fontSize: "10px", fontWeight: 700, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.6px", margin: "0 0 6px" }}>Supplier Information (ECTA s43)</p>
-          <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", margin: 0, lineHeight: 1.7 }}>
-            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Legal name:</strong> Big Bay Administrators (Pty) Ltd &nbsp;·&nbsp;
-            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Reg no:</strong> [Insert reg no] &nbsp;·&nbsp;
-            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Address:</strong> Big Bay, Blouberg, Cape Town, Western Cape &nbsp;·&nbsp;
-            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Email:</strong> jerome@bigbayadmin.co.za &nbsp;·&nbsp;
-            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Website:</strong> rmcp-pro.vercel.app
-          </p>
+          <p style={{ fontSize: "12px", fontWeight: 700, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.6px", margin: "0 0 6px" }}>Supplier Information (ECTA s43)</p>
+          <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.25)", lineHeight: 1.8, display: "flex", flexWrap: "wrap", gap: "4px 12px" }}>
+            <span><strong style={{ color: "rgba(255,255,255,0.35)" }}>Legal name:</strong> Big Bay Administrators (Pty) Ltd</span>
+            <span><strong style={{ color: "rgba(255,255,255,0.35)" }}>Reg no:</strong> [Insert reg no]</span>
+            <span><strong style={{ color: "rgba(255,255,255,0.35)" }}>Address:</strong> Big Bay, Blouberg, Cape Town</span>
+            <span><strong style={{ color: "rgba(255,255,255,0.35)" }}>Email:</strong> jerome@bigbayadmin.co.za</span>
+          </div>
         </div>
         <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", margin: "0 0 8px" }}>
           © {new Date().getFullYear()} Big Bay Administrators (Pty) Ltd · Cape Town, South Africa
         </p>
-        <div style={{ display: "flex", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
-          <button onClick={() => setShowTerms(true)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontSize: "11px", cursor: "pointer", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: 0 }}>
-            Terms of Use
-          </button>
-          <span style={{ color: "rgba(255,255,255,0.15)", fontSize: "11px" }}>·</span>
-          <button onClick={() => setShowPrivacyPolicy(true)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontSize: "11px", cursor: "pointer", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: 0 }}>
-            Privacy Policy (POPIA)
-          </button>
-          <span style={{ color: "rgba(255,255,255,0.15)", fontSize: "11px" }}>·</span>
-          <button onClick={() => setShowPrivacyPolicy(true)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontSize: "11px", cursor: "pointer", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: 0 }}>
-            PAIA Manual
-          </button>
-          <span style={{ color: "rgba(255,255,255,0.15)", fontSize: "11px" }}>·</span>
-          <a href="mailto:jerome@bigbayadmin.co.za" style={{ color: "rgba(255,255,255,0.35)", fontSize: "11px", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+        <div style={{ display: "flex", justifyContent: "center", gap: "4px 12px", flexWrap: "wrap" }}>
+          {[
+            { label: "Terms of Use", action: () => setShowTerms(true) },
+            { label: "Privacy Policy (POPIA)", action: () => setShowPrivacyPolicy(true) },
+            { label: "PAIA Manual", action: () => setShowPrivacyPolicy(true) },
+          ].map((item, i) => (
+            <button key={i} onClick={item.action} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: "12px", cursor: "pointer", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: "8px 4px", minHeight: "44px" }}>
+              {item.label}
+            </button>
+          ))}
+          <a href="mailto:jerome@bigbayadmin.co.za" style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: "8px 4px", display: "inline-flex", alignItems: "center", minHeight: "44px" }}>
             jerome@bigbayadmin.co.za
           </a>
         </div>
       </div>
       {showTerms && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: "20px" }}>
-          <div style={{ background: "#fff", borderRadius: "16px", maxWidth: 560, width: "100%", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
+          <div style={{ background: "#fff", borderRadius: "16px", width: "min(560px, 92vw)", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
             <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
                 <h2 style={{ fontSize: "16px", fontWeight: 700, color: "#1a2a3a", margin: 0 }}>Terms of Use</h2>
                 <p style={{ fontSize: "11px", color: "#94a3b8", margin: "2px 0 0" }}>Big Bay Administrators (Pty) Ltd — effective {new Date().getFullYear()}</p>
               </div>
-              <button onClick={() => setShowTerms(false)} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#94a3b8", lineHeight: 1 }}>×</button>
+              <button onClick={() => setShowTerms(false)} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#94a3b8", lineHeight: 1, width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px" }}>×</button>
             </div>
             <div style={{ overflowY: "auto", padding: "20px 24px", fontSize: "12px", color: "#374151", lineHeight: 1.75 }}>
 
@@ -892,13 +888,13 @@ Login to the admin dashboard to review and generate their RMCP document.`;
       )}
       {showPrivacyPolicy && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: "20px" }}>
-          <div style={{ background: "#fff", borderRadius: "16px", maxWidth: 560, width: "100%", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
+          <div style={{ background: "#fff", borderRadius: "16px", width: "min(560px, 92vw)", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
             <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
                 <h2 style={{ fontSize: "16px", fontWeight: 700, color: "#1a2a3a", margin: 0 }}>Privacy Policy & PAIA Manual</h2>
                 <p style={{ fontSize: "11px", color: "#94a3b8", margin: "2px 0 0" }}>Big Bay Administrators (Pty) Ltd — effective {new Date().getFullYear()}</p>
               </div>
-              <button onClick={() => setShowPrivacyPolicy(false)} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#94a3b8", lineHeight: 1 }}>×</button>
+              <button onClick={() => setShowPrivacyPolicy(false)} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#94a3b8", lineHeight: 1, width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px" }}>×</button>
             </div>
             <div style={{ overflowY: "auto", padding: "20px 24px", fontSize: "12px", color: "#374151", lineHeight: 1.75 }}>
 
@@ -985,7 +981,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
       )}
       {showLeadForm && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: "20px" }}>
-          <div style={{ background: "#fff", borderRadius: "16px", padding: "28px", maxWidth: 420, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+          <div style={{ background: "#fff", borderRadius: "16px", padding: "20px", width: "min(420px, 92vw)", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
             <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", marginBottom: "4px" }}>Start Your RMCP Assessment</h2>
             <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "18px" }}>Enter your agency details to begin</p>
             {[
@@ -1055,14 +1051,14 @@ Login to the admin dashboard to review and generate their RMCP document.`;
         </div>
         <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
           {saving && <span style={{ fontSize: "11px", color: "#6BA3E8" }}>✓ Saved</span>}
-          <button onClick={() => setShowLeadForm(true)} style={{ padding: "8px 16px", borderRadius: "7px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>+ Add Client</button>
+          <button onClick={() => setShowLeadForm(true)} style={{ padding: "12px 16px", minHeight: "44px", borderRadius: "7px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>+ Add Client</button>
         </div>
       </div>
 
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "24px 20px" }}>
         {showLeadForm && (
           <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: "20px" }}>
-            <div style={{ background: "#fff", borderRadius: "16px", padding: "28px", maxWidth: 420, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.2)" }}>
+            <div style={{ background: "#fff", borderRadius: "16px", padding: "20px", width: "min(420px, 92vw)", boxShadow: "0 20px 60px rgba(0,0,0,0.2)" }}>
               <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", marginBottom: "4px" }}>Add New Client</h2>
               <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "18px" }}>Enter the property agency details</p>
               {[
@@ -1117,8 +1113,8 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "3px", flexWrap: "wrap" }}>
                       <span style={{ fontSize: "14px", fontWeight: 700, color: "#1a2a3a" }}>{client.company}</span>
-                      {client.submitted && <span style={{ padding: "2px 7px", borderRadius: "6px", background: "#d1fae5", color: "#1A4A8A", fontSize: "10px", fontWeight: 700 }}>✓ SUBMITTED</span>}
-                      {critical > 0 && !client.submitted && <span style={{ padding: "2px 7px", borderRadius: "6px", background: "#fee2e2", color: "#dc2626", fontSize: "10px", fontWeight: 700 }}>{critical} CRITICAL</span>}
+                      {client.submitted && <span style={{ padding: "2px 7px", borderRadius: "6px", background: "#d1fae5", color: "#1A4A8A", fontSize: "12px", fontWeight: 700 }}>✓ SUBMITTED</span>}
+                      {critical > 0 && !client.submitted && <span style={{ padding: "2px 7px", borderRadius: "6px", background: "#fee2e2", color: "#dc2626", fontSize: "12px", fontWeight: 700 }}>{critical} CRITICAL</span>}
                     </div>
                     <p style={{ fontSize: "11px", color: "#94a3b8", margin: 0 }}>
                       {client.contact && `${client.contact} · `}{client.email && `${client.email} · `}Updated {new Date(client.lastModified).toLocaleDateString("en-ZA")}
@@ -1152,12 +1148,12 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             <button onClick={() => setView("clients")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "18px", color: "#64748b" }}>←</button>
             <div>
               <div style={{ fontSize: "13px", fontWeight: 700, color: "#1a2a3a" }}>{client.company}</div>
-              <div style={{ fontSize: "10px", color: "#94a3b8" }}>RMCP Assessment — Section {activeSection + 1} of {RMCP_SECTIONS.length}</div>
+              <div style={{ fontSize: "12px", color: "#94a3b8" }}>RMCP Assessment — Section {activeSection + 1} of {RMCP_SECTIONS.length}</div>
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             {saving && <span style={{ fontSize: "11px", color: "#6BA3E8" }}>✓ Saved</span>}
-            <button onClick={() => setView("dashboard")} style={{ padding: "6px 12px", borderRadius: "6px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+            <button onClick={() => setView("dashboard")} style={{ padding: "10px 12px", minHeight: "44px", borderRadius: "6px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
               Review Summary →
             </button>
           </div>
@@ -1165,7 +1161,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
 
         <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "8px 18px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
-            <span style={{ fontSize: "10px", fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.4px" }}>Overall progress</span>
+            <span style={{ fontSize: "12px", fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.4px" }}>Overall progress</span>
             <span style={{ fontSize: "11px", fontWeight: 700, color: completeness < 50 ? "#e74c3c" : completeness < 80 ? "#f39c12" : "#6BA3E8" }}>{completeness}%</span>
           </div>
           <div style={{ height: "4px", borderRadius: "2px", background: "#f1f5f9" }}>
@@ -1186,7 +1182,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                   cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
                   display: "flex", alignItems: "center", gap: "4px", whiteSpace: "nowrap"
                 }}>
-                  {s.icon} {s.title.split(" ")[0]}{sc === 100 && <span style={{ color: "#6BA3E8", fontSize: "10px" }}>✓</span>}
+                  {s.icon} {s.title.split(" ")[0]}{sc === 100 && <span style={{ color: "#6BA3E8", fontSize: "12px" }}>✓</span>}
                 </button>
               );
             })}
@@ -1198,7 +1194,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", margin: "0 0 4px" }}>{section.icon} {section.title}</h2>
             <p style={{ fontSize: "13px", color: "#64748b", margin: "0 0 12px" }}>{section.description}</p>
             <div style={{ padding: "11px 13px", borderRadius: "8px", background: "#f0faf4", border: "1px solid #d1fae5" }}>
-              <div style={{ fontSize: "10px", fontWeight: 700, color: "#059669", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "3px" }}>Why this matters</div>
+              <div style={{ fontSize: "12px", fontWeight: 700, color: "#059669", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "3px" }}>Why this matters</div>
               <div style={{ fontSize: "12px", color: "#1A4A8A", lineHeight: 1.55 }}>This section covers critical FICA compliance requirements specific to property practitioners.</div>
             </div>
           </div>
@@ -1232,15 +1228,15 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             ))}
           </div>
 
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "30px", paddingBottom: "40px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "30px", paddingBottom: "40px", gap: "12px" }}>
             <button onClick={() => setActiveSection(Math.max(0, activeSection - 1))} disabled={activeSection === 0}
-              style={{ padding: "10px 20px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: activeSection === 0 ? "#d1d9e0" : "#4a5568", fontSize: "13px", fontWeight: 600, cursor: activeSection === 0 ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+              style={{ padding: "13px 20px", minHeight: "44px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: activeSection === 0 ? "#d1d9e0" : "#4a5568", fontSize: "13px", fontWeight: 600, cursor: activeSection === 0 ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
               ← Previous
             </button>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
               {sectionError && (
-                <span style={{ fontSize: "12px", color: "#dc2626", fontWeight: 600 }}>
-                  ⚠ Please answer all questions before continuing
+                <span style={{ fontSize: "12px", color: "#dc2626", fontWeight: 600, textAlign: "right" }}>
+                  ⚠ Please answer all questions
                 </span>
               )}
               <button onClick={() => {
@@ -1249,8 +1245,8 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                 setSectionError(false);
                 activeSection < RMCP_SECTIONS.length - 1 ? setActiveSection(activeSection + 1) : setView("dashboard");
               }}
-                style={{ padding: "10px 22px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
-                {activeSection < RMCP_SECTIONS.length - 1 ? "Next Section →" : "Review & Submit →"}
+                style={{ padding: "13px 22px", minHeight: "44px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                {activeSection < RMCP_SECTIONS.length - 1 ? "Next →" : "Review & Submit →"}
               </button>
             </div>
           </div>
@@ -1315,7 +1311,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
     return (
       <div style={{ minHeight: "100vh", background: "#f0f2f5", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', sans-serif" }}>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        <div style={{ background: "#fff", padding: "40px", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", maxWidth: 400, width: "100%" }}>
+        <div style={{ background: "#fff", padding: "24px 20px", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", width: "min(400px, 92vw)" }}>
           <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", marginBottom: "24px" }}>Admin Login</h2>
           <input type="password" placeholder="Enter admin password" id="adminPwd"
             onKeyPress={async (e) => {
@@ -1337,9 +1333,9 @@ Login to the admin dashboard to review and generate their RMCP document.`;
               if (r.ok) { setIsAdmin(true); setView("admin"); } else { setAdminLoginError("Incorrect password"); }
             } catch { setAdminLoginError("Login failed — please try again"); }
           }}
-            style={{ width: "100%", padding: "12px", borderRadius: "6px", border: "none", background: "#2463AE", color: "#fff", fontWeight: 600, cursor: "pointer", marginBottom: "12px" }}>Login</button>
+            style={{ width: "100%", padding: "13px", minHeight: "44px", borderRadius: "6px", border: "none", background: "#2463AE", color: "#fff", fontWeight: 600, cursor: "pointer", marginBottom: "12px" }}>Login</button>
           <button onClick={() => { setAdminLoginError(""); setView("landing"); }}
-            style={{ width: "100%", padding: "12px", borderRadius: "6px", border: "1px solid #ddd", background: "#fff", color: "#666", fontWeight: 600, cursor: "pointer" }}>Cancel</button>
+            style={{ width: "100%", padding: "13px", minHeight: "44px", borderRadius: "6px", border: "1px solid #ddd", background: "#fff", color: "#666", fontWeight: 600, cursor: "pointer" }}>Cancel</button>
         </div>
       </div>
     );
@@ -1357,9 +1353,9 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             <h1 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", margin: "0 0 2px" }}>Big Bay Administrators</h1>
             <p style={{ fontSize: "12px", color: "#94a3b8", margin: 0 }}>Admin Dashboard — RMCP Submissions</p>
           </div>
-          <button onClick={() => setView("landing")} style={{ padding: "8px 16px", borderRadius: "6px", border: "1px solid #ccc", background: "#fff", cursor: "pointer", fontSize: "13px" }}>Logout</button>
+          <button onClick={() => setView("landing")} style={{ padding: "12px 16px", minHeight: "44px", borderRadius: "6px", border: "1px solid #ccc", background: "#fff", cursor: "pointer", fontSize: "13px" }}>Logout</button>
         </div>
-        <div style={{ maxWidth: 900, margin: "0 auto", padding: "24px 20px" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto", padding: "16px" }}>
           <h2 style={{ fontSize: "16px", fontWeight: 700, color: "#1a2a3a", marginBottom: "16px" }}>Submissions ({submittedClients.length})</h2>
           {submittedClients.length === 0 ? (
             <div style={{ textAlign: "center", padding: "40px", background: "#fff", borderRadius: "8px" }}><p style={{ color: "#999" }}>No submissions yet</p></div>
@@ -1416,7 +1412,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
       <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif", padding: "20px" }}>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <div style={{ maxWidth: 600, margin: "0 auto", background: "#fff", borderRadius: "12px", padding: "24px" }}>
-          <button onClick={() => setView("admin")} style={{ marginBottom: "20px", padding: "8px 16px", borderRadius: "6px", border: "1px solid #ccc", background: "#fff", cursor: "pointer" }}>← Back to List</button>
+          <button onClick={() => setView("admin")} style={{ marginBottom: "20px", padding: "12px 16px", minHeight: "44px", borderRadius: "6px", border: "1px solid #ccc", background: "#fff", cursor: "pointer" }}>← Back to List</button>
           <h2 style={{ marginBottom: "16px", color: "#1a2a3a" }}>{client.company}</h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
             <div style={{ textAlign: "center", padding: "16px", background: "#f5f5f5", borderRadius: "8px" }}>
