@@ -301,14 +301,14 @@ function SelectField({ value, onChange, options }) {
     <div style={{ position: "relative" }}>
       <div onClick={() => setOpen(!open)} style={{
         width: "100%", padding: "12px 40px 12px 14px", borderRadius: "8px",
-        border: selected ? "2px solid #1a9c54" : "1.5px solid #d1d9e0",
+        border: selected ? "2px solid #2463AE" : "1.5px solid #d1d9e0",
         fontSize: "14px", fontFamily: "'DM Sans', sans-serif",
         boxSizing: "border-box", background: selected ? "#f0faf4" : "#fafbfc",
         color: "#1a2a3a", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between",
         userSelect: "none", transition: "all 0.15s"
       }}>
         <span>{selected || "— Please select an answer —"}</span>
-        <span style={{ color: selected ? "#1a9c54" : "#9ca3af", fontSize: "11px", position: "absolute", right: "14px" }}>
+        <span style={{ color: selected ? "#2463AE" : "#9ca3af", fontSize: "11px", position: "absolute", right: "14px" }}>
           {selected ? "✓" : open ? "▲" : "▼"}
         </span>
       </div>
@@ -322,7 +322,7 @@ function SelectField({ value, onChange, options }) {
             <div key={opt} onClick={() => { onChange(opt); setOpen(false); }}
               style={{
                 padding: "12px 16px", fontSize: "13px", fontFamily: "'DM Sans', sans-serif",
-                cursor: "pointer", color: selected === opt ? "#1a5c3a" : "#1a2a3a",
+                cursor: "pointer", color: selected === opt ? "#1C5BA3" : "#1a2a3a",
                 background: selected === opt ? "#e8f5ee" : "#fff",
                 fontWeight: selected === opt ? 600 : 400,
                 borderBottom: "1px solid #f1f5f9",
@@ -331,7 +331,7 @@ function SelectField({ value, onChange, options }) {
               }}
               onMouseEnter={e => { if (selected !== opt) e.currentTarget.style.background = "#f8fafc"; }}
               onMouseLeave={e => { if (selected !== opt) e.currentTarget.style.background = "#fff"; }}>
-              {selected === opt && <span style={{ color: "#1a9c54", fontSize: "12px" }}>✓</span>}
+              {selected === opt && <span style={{ color: "#2463AE", fontSize: "12px" }}>✓</span>}
               {opt}
             </div>
           ))}
@@ -351,14 +351,14 @@ function MultiSelect({ options, selected = [], onChange }) {
             onClick={() => onChange(on ? selected.filter(s => s !== opt) : [...selected, opt])}
             style={{
               padding: "9px 14px", borderRadius: "8px",
-              border: on ? "2px solid #1a9c54" : "1.5px solid #d1d9e0",
+              border: on ? "2px solid #2463AE" : "1.5px solid #d1d9e0",
               background: on ? "#e8f5ee" : "#fafbfc",
-              color: on ? "#1a5c3a" : "#4a5568",
+              color: on ? "#1C5BA3" : "#4a5568",
               fontSize: "13px", fontFamily: "'DM Sans', sans-serif",
               cursor: "pointer", fontWeight: on ? 600 : 400,
               display: "flex", alignItems: "center", gap: "6px", transition: "all 0.15s"
             }}>
-            {on && <span style={{ color: "#1a9c54", fontSize: "11px" }}>✓</span>}
+            {on && <span style={{ color: "#2463AE", fontSize: "11px" }}>✓</span>}
             {opt}
           </button>
         );
@@ -367,7 +367,7 @@ function MultiSelect({ options, selected = [], onChange }) {
   );
 }
 
-function ProgressRing({ percent, size = 64, stroke = 5, color = "#1a5c3a" }) {
+function ProgressRing({ percent, size = 64, stroke = 5, color = "#1C5BA3" }) {
   const r = (size - stroke) / 2;
   const circ = 2 * Math.PI * r;
   return (
@@ -396,11 +396,11 @@ function ActionPlanModal({ plan, onClose, onRequestHelp }) {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
             <div>
               <div style={{ fontSize: "10px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "2px" }}>Timeline</div>
-              <div style={{ fontSize: "14px", fontWeight: 700, color: "#065f46" }}>{plan.estimatedTimeline}</div>
+              <div style={{ fontSize: "14px", fontWeight: 700, color: "#1A4A8A" }}>{plan.estimatedTimeline}</div>
             </div>
             <div>
               <div style={{ fontSize: "10px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "2px" }}>Estimated Cost</div>
-              <div style={{ fontSize: "14px", fontWeight: 700, color: "#065f46" }}>{plan.estimatedCost}</div>
+              <div style={{ fontSize: "14px", fontWeight: 700, color: "#1A4A8A" }}>{plan.estimatedCost}</div>
             </div>
           </div>
         </div>
@@ -408,7 +408,7 @@ function ActionPlanModal({ plan, onClose, onRequestHelp }) {
         <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#1a2a3a", marginBottom: "12px" }}>Implementation Steps</h3>
         {plan.steps.map((s, i) => (
           <div key={i} style={{ marginBottom: "14px", paddingLeft: "20px", borderLeft: "2px solid #d1fae5" }}>
-            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a5c3a" }}>Step {s.step}: {s.action}</div>
+            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1C5BA3" }}>Step {s.step}: {s.action}</div>
             <div style={{ fontSize: "11px", color: "#64748b", marginTop: "3px" }}>
               <span style={{ fontWeight: 600 }}>Owner:</span> {s.owner} · <span style={{ fontWeight: 600 }}>Timeline:</span> {s.timeline} · <span style={{ fontWeight: 600 }}>Cost:</span> {s.cost}
             </div>
@@ -424,7 +424,7 @@ function ActionPlanModal({ plan, onClose, onRequestHelp }) {
           <button onClick={onClose} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
             Close
           </button>
-          <button onClick={onRequestHelp} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "none", background: "#1a9c54", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+          <button onClick={onRequestHelp} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
             Request Help from Big Bay Tax
           </button>
         </div>
@@ -569,7 +569,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "16px" }}>
             {[{ label: "Completion", sub: "Questions answered", pct: completeness }, { label: "Compliance Quality", sub: "Strength of your answers", pct: compliance }].map((s, i) => (
               <div key={i} style={{ background: "#fff", borderRadius: "12px", padding: "16px", textAlign: "center", border: "1px solid #e2e8f0" }}>
-                <ProgressRing percent={s.pct} size={64} stroke={5} color={s.pct < 50 ? "#e74c3c" : s.pct < 75 ? "#f39c12" : "#2ecc71"} />
+                <ProgressRing percent={s.pct} size={64} stroke={5} color={s.pct < 50 ? "#e74c3c" : s.pct < 75 ? "#f39c12" : "#6BA3E8"} />
                 <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a2a3a", marginTop: "7px" }}>{s.label}</div>
                 <div style={{ fontSize: "10px", color: "#94a3b8" }}>{s.sub}</div>
               </div>
@@ -590,11 +590,11 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                 const isRequested = helpRequests[planKey];
 
                 return plan ? (
-                  <div key={i} style={{ padding: "14px", borderRadius: "10px", marginBottom: "10px", background: "#f8fafc", border: `1.5px solid ${isRequested ? "#2ecc71" : "#cbd5e0"}`, borderLeft: `4px solid ${isRequested ? "#2ecc71" : "#cbd5e0"}` }}>
+                  <div key={i} style={{ padding: "14px", borderRadius: "10px", marginBottom: "10px", background: "#f8fafc", border: `1.5px solid ${isRequested ? "#6BA3E8" : "#cbd5e0"}`, borderLeft: `4px solid ${isRequested ? "#6BA3E8" : "#cbd5e0"}` }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "10px", marginBottom: "8px" }}>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: "13px", fontWeight: 700, color: "#1a2a3a", display: "flex", alignItems: "center", gap: "6px" }}>
-                          {isRequested && <span style={{ color: "#2ecc71" }}>✓</span>}
+                          {isRequested && <span style={{ color: "#6BA3E8" }}>✓</span>}
                           {plan.title}
                         </div>
                         <div style={{ fontSize: "11px", color: "#64748b", marginTop: "2px" }}>{plan.description}</div>
@@ -617,7 +617,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                       <button onClick={() => setSelectedPlan(plan)} style={{ flex: 1, padding: "7px 12px", borderRadius: "6px", border: "1.5px solid #cbd5e0", background: "#fff", color: "#4a5568", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
                         View Full Plan
                       </button>
-                      <button onClick={() => requestHelp(planKey)} disabled={isRequested} style={{ flex: 1, padding: "7px 12px", borderRadius: "6px", border: "none", background: isRequested ? "#d1fae5" : "#1a9c54", color: isRequested ? "#065f46" : "#fff", fontSize: "11px", fontWeight: 600, cursor: isRequested ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                      <button onClick={() => requestHelp(planKey)} disabled={isRequested} style={{ flex: 1, padding: "7px 12px", borderRadius: "6px", border: "none", background: isRequested ? "#d1fae5" : "#2463AE", color: isRequested ? "#1A4A8A" : "#fff", fontSize: "11px", fontWeight: 600, cursor: isRequested ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
                         {isRequested ? "✓ Help Requested" : "Request Help"}
                       </button>
                     </div>
@@ -654,7 +654,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           </div>
 
           {/* Submit */}
-          <button onClick={submitRMCP} style={{ width: "100%", padding: "13px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #2ecc71, #1a9c54)", color: "#fff", fontSize: "14px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 16px rgba(26,156,84,0.25)", marginBottom: "10px" }}>
+          <button onClick={submitRMCP} style={{ width: "100%", padding: "13px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "14px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 16px rgba(36,99,174,0.25)", marginBottom: "10px" }}>
             ✓ Submit to Big Bay Tax for Review
           </button>
           <button onClick={() => { setActiveSection(0); setView("editor"); }} style={{ width: "100%", padding: "10px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
@@ -669,30 +669,30 @@ Login to the admin dashboard to review and generate their RMCP document.`;
 
   // ── LANDING ──────────────────────────────────────────────────────────
   if (view === "landing") return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(165deg, #0d1f17 0%, #1a3a2a 40%, #0f2a1e 100%)", fontFamily: "'DM Sans', sans-serif", color: "#fff", position: "relative", overflow: "hidden" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(165deg, #050F24 0%, #0D2147 40%, #071A3B 100%)", fontFamily: "'DM Sans', sans-serif", color: "#fff", position: "relative", overflow: "hidden" }}>
       <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-      <div style={{ position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(46,204,113,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(107,163,232,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div style={{ padding: "24px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 2 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <div style={{ width: 36, height: 36, borderRadius: "10px", background: "linear-gradient(135deg, #2ecc71, #1a9c54)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>⚖</div>
-          <span style={{ fontSize: "17px", fontWeight: 700 }}>RMCP<span style={{ color: "#2ecc71" }}>Pro</span></span>
+          <div style={{ width: 36, height: 36, borderRadius: "10px", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>⚖</div>
+          <span style={{ fontSize: "17px", fontWeight: 700 }}>RMCP<span style={{ color: "#6BA3E8" }}>Pro</span></span>
         </div>
         <button onClick={() => setView("adminLogin")} style={{ padding: "9px 20px", borderRadius: "8px", border: "1.5px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.5)", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
           Admin Login
         </button>
       </div>
       <div style={{ maxWidth: 620, margin: "0 auto", padding: "60px 32px 40px", textAlign: "center", position: "relative", zIndex: 2 }}>
-        <div style={{ display: "inline-block", padding: "5px 14px", borderRadius: "20px", background: "rgba(46,204,113,0.15)", border: "1px solid rgba(46,204,113,0.25)", fontSize: "11px", fontWeight: 600, color: "#2ecc71", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: "24px" }}>
+        <div style={{ display: "inline-block", padding: "5px 14px", borderRadius: "20px", background: "rgba(107,163,232,0.15)", border: "1px solid rgba(107,163,232,0.25)", fontSize: "11px", fontWeight: 600, color: "#6BA3E8", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: "24px" }}>
           FICA Section 43 Compliance Tool
         </div>
         <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(30px, 5vw, 46px)", fontWeight: 700, lineHeight: 1.15, marginBottom: "20px" }}>
-          Your RMCP,<br /><span style={{ color: "#2ecc71" }}>done properly.</span>
+          Your RMCP,<br /><span style={{ color: "#6BA3E8" }}>done properly.</span>
         </h1>
         <p style={{ fontSize: "16px", lineHeight: 1.7, color: "rgba(255,255,255,0.65)", maxWidth: 500, margin: "0 auto 14px" }}>
           Answer a few simple questions about your property agency. We use your answers to build your Risk Management and Compliance Programme and show you action plans to close any gaps.
         </p>
         <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", marginBottom: "36px" }}>Takes about 10–15 minutes. No compliance knowledge needed.</p>
-        <button onClick={() => setShowLeadForm(true)} style={{ padding: "14px 36px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #2ecc71, #1a9c54)", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 24px rgba(46,204,113,0.3)" }}>
+        <button onClick={() => setShowLeadForm(true)} style={{ padding: "14px 36px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 24px rgba(107,163,232,0.3)" }}>
           Start My Free RMCP Assessment →
         </button>
         <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", marginTop: "12px" }}>Big Bay Tax reviews and finalises your RMCP document once complete.</p>
@@ -727,7 +727,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                 <input value={leadData[f.key]} onChange={e => setLeadData({ ...leadData, [f.key]: e.target.value })}
                   placeholder={f.placeholder}
                   style={{ width: "100%", padding: "10px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "13px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a" }}
-                  onFocus={e => e.target.style.borderColor = "#1a9c54"}
+                  onFocus={e => e.target.style.borderColor = "#2463AE"}
                   onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
               </div>
             ))}
@@ -735,7 +735,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
               <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); }}
                 style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Cancel</button>
               <button onClick={addClient} disabled={!leadData.company.trim()}
-                style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() ? "#1a9c54" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
+                style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
                 Start Assessment →
               </button>
             </div>
@@ -755,12 +755,12 @@ Login to the admin dashboard to review and generate their RMCP document.`;
       <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <button onClick={() => setView("landing")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "18px", color: "#64748b" }}>←</button>
-          <div style={{ width: 28, height: 28, borderRadius: "7px", background: "linear-gradient(135deg, #2ecc71, #1a9c54)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px" }}>⚖</div>
+          <div style={{ width: 28, height: 28, borderRadius: "7px", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "14px" }}>⚖</div>
           <span style={{ fontSize: "14px", fontWeight: 700, color: "#1a2a3a" }}>RMCPPro <span style={{ fontWeight: 400, color: "#94a3b8" }}>Client Manager</span></span>
         </div>
         <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-          {saving && <span style={{ fontSize: "11px", color: "#2ecc71" }}>✓ Saved</span>}
-          <button onClick={() => setShowLeadForm(true)} style={{ padding: "8px 16px", borderRadius: "7px", border: "none", background: "#1a9c54", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>+ Add Client</button>
+          {saving && <span style={{ fontSize: "11px", color: "#6BA3E8" }}>✓ Saved</span>}
+          <button onClick={() => setShowLeadForm(true)} style={{ padding: "8px 16px", borderRadius: "7px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>+ Add Client</button>
         </div>
       </div>
 
@@ -782,7 +782,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                   <input value={leadData[f.key]} onChange={e => setLeadData({ ...leadData, [f.key]: e.target.value })}
                     placeholder={f.placeholder}
                     style={{ width: "100%", padding: "10px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "13px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a" }}
-                    onFocus={e => e.target.style.borderColor = "#1a9c54"}
+                    onFocus={e => e.target.style.borderColor = "#2463AE"}
                     onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
                 </div>
               ))}
@@ -790,7 +790,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                 <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); }}
                   style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Cancel</button>
                 <button onClick={addClient} disabled={!leadData.company.trim()}
-                  style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() ? "#1a9c54" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
+                  style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
                   Create & Open
                 </button>
               </div>
@@ -808,7 +808,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             <div style={{ fontSize: "36px", marginBottom: "10px" }}>📋</div>
             <h3 style={{ fontSize: "15px", fontWeight: 700, color: "#1a2a3a", marginBottom: "6px" }}>No clients yet</h3>
             <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "16px" }}>Add a property practitioner to start their RMCP</p>
-            <button onClick={() => setShowLeadForm(true)} style={{ padding: "10px 22px", borderRadius: "8px", border: "none", background: "#1a9c54", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>+ Add First Client</button>
+            <button onClick={() => setShowLeadForm(true)} style={{ padding: "10px 22px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>+ Add First Client</button>
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -822,7 +822,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "7px", marginBottom: "3px", flexWrap: "wrap" }}>
                       <span style={{ fontSize: "14px", fontWeight: 700, color: "#1a2a3a" }}>{client.company}</span>
-                      {client.submitted && <span style={{ padding: "2px 7px", borderRadius: "6px", background: "#d1fae5", color: "#065f46", fontSize: "10px", fontWeight: 700 }}>✓ SUBMITTED</span>}
+                      {client.submitted && <span style={{ padding: "2px 7px", borderRadius: "6px", background: "#d1fae5", color: "#1A4A8A", fontSize: "10px", fontWeight: 700 }}>✓ SUBMITTED</span>}
                       {critical > 0 && !client.submitted && <span style={{ padding: "2px 7px", borderRadius: "6px", background: "#fee2e2", color: "#dc2626", fontSize: "10px", fontWeight: 700 }}>{critical} CRITICAL</span>}
                     </div>
                     <p style={{ fontSize: "11px", color: "#94a3b8", margin: 0 }}>
@@ -830,7 +830,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                     </p>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
-                    <ProgressRing percent={pct} size={46} stroke={4} color={pct < 50 ? "#e74c3c" : pct < 80 ? "#f39c12" : "#2ecc71"} />
+                    <ProgressRing percent={pct} size={46} stroke={4} color={pct < 50 ? "#e74c3c" : pct < 80 ? "#f39c12" : "#6BA3E8"} />
                     <button onClick={e => { e.stopPropagation(); deleteClient(idx); }} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "18px", color: "#d1d9e0", padding: "2px", lineHeight: 1 }}>×</button>
                   </div>
                 </div>
@@ -861,7 +861,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            {saving && <span style={{ fontSize: "11px", color: "#2ecc71" }}>✓ Saved</span>}
+            {saving && <span style={{ fontSize: "11px", color: "#6BA3E8" }}>✓ Saved</span>}
             <button onClick={() => setView("dashboard")} style={{ padding: "6px 12px", borderRadius: "6px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
               Review Summary →
             </button>
@@ -871,10 +871,10 @@ Login to the admin dashboard to review and generate their RMCP document.`;
         <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "8px 18px" }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "5px" }}>
             <span style={{ fontSize: "10px", fontWeight: 600, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.4px" }}>Overall progress</span>
-            <span style={{ fontSize: "11px", fontWeight: 700, color: completeness < 50 ? "#e74c3c" : completeness < 80 ? "#f39c12" : "#2ecc71" }}>{completeness}%</span>
+            <span style={{ fontSize: "11px", fontWeight: 700, color: completeness < 50 ? "#e74c3c" : completeness < 80 ? "#f39c12" : "#6BA3E8" }}>{completeness}%</span>
           </div>
           <div style={{ height: "4px", borderRadius: "2px", background: "#f1f5f9" }}>
-            <div style={{ height: "100%", borderRadius: "2px", width: `${completeness}%`, background: completeness < 50 ? "#e74c3c" : completeness < 80 ? "#f39c12" : "#2ecc71", transition: "width 0.4s" }} />
+            <div style={{ height: "100%", borderRadius: "2px", width: `${completeness}%`, background: completeness < 50 ? "#e74c3c" : completeness < 80 ? "#f39c12" : "#6BA3E8", transition: "width 0.4s" }} />
           </div>
         </div>
 
@@ -886,12 +886,12 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                 <button key={s.id} onClick={() => setActiveSection(i)} style={{
                   padding: "6px 11px", borderRadius: "6px", border: "none",
                   background: activeSection === i ? "#e8f5ee" : "transparent",
-                  color: activeSection === i ? "#1a5c3a" : "#64748b",
+                  color: activeSection === i ? "#1C5BA3" : "#64748b",
                   fontSize: "12px", fontWeight: activeSection === i ? 700 : 400,
                   cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
                   display: "flex", alignItems: "center", gap: "4px", whiteSpace: "nowrap"
                 }}>
-                  {s.icon} {s.title.split(" ")[0]}{sc === 100 && <span style={{ color: "#2ecc71", fontSize: "10px" }}>✓</span>}
+                  {s.icon} {s.title.split(" ")[0]}{sc === 100 && <span style={{ color: "#6BA3E8", fontSize: "10px" }}>✓</span>}
                 </button>
               );
             })}
@@ -904,7 +904,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             <p style={{ fontSize: "13px", color: "#64748b", margin: "0 0 12px" }}>{section.description}</p>
             <div style={{ padding: "11px 13px", borderRadius: "8px", background: "#f0faf4", border: "1px solid #d1fae5" }}>
               <div style={{ fontSize: "10px", fontWeight: 700, color: "#059669", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "3px" }}>Why this matters</div>
-              <div style={{ fontSize: "12px", color: "#065f46", lineHeight: 1.55 }}>This section covers critical FICA compliance requirements specific to property practitioners.</div>
+              <div style={{ fontSize: "12px", color: "#1A4A8A", lineHeight: 1.55 }}>This section covers critical FICA compliance requirements specific to property practitioners.</div>
             </div>
           </div>
 
@@ -917,14 +917,14 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                 {field.type === "text" && (
                   <input value={formData[field.id] || ""} onChange={e => updateField(field.id, e.target.value)}
                     placeholder={field.placeholder}
-                    style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #1a9c54" : "1.5px solid #d1d9e0", fontSize: "14px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", background: formData[field.id] ? "#f0faf4" : "#fafbfc", color: "#1a2a3a" }}
-                    onFocus={e => e.target.style.borderColor = "#1a9c54"}
+                    style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #2463AE" : "1.5px solid #d1d9e0", fontSize: "14px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", background: formData[field.id] ? "#f0faf4" : "#fafbfc", color: "#1a2a3a" }}
+                    onFocus={e => e.target.style.borderColor = "#2463AE"}
                     onBlur={e => { if (!formData[field.id]) e.target.style.borderColor = "#d1d9e0"; }} />
                 )}
                 {field.type === "date" && (
                   <input type="date" value={formData[field.id] || ""} onChange={e => updateField(field.id, e.target.value)}
-                    style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #1a9c54" : "1.5px solid #d1d9e0", fontSize: "14px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", background: "#fff", color: "#1a2a3a", colorScheme: "light" }}
-                    onFocus={e => e.target.style.borderColor = "#1a9c54"}
+                    style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #2463AE" : "1.5px solid #d1d9e0", fontSize: "14px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", background: "#fff", color: "#1a2a3a", colorScheme: "light" }}
+                    onFocus={e => e.target.style.borderColor = "#2463AE"}
                     onBlur={e => { if (!formData[field.id]) e.target.style.borderColor = "#d1d9e0"; }} />
                 )}
                 {field.type === "select" && (
@@ -943,7 +943,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
               ← Previous
             </button>
             <button onClick={() => activeSection < RMCP_SECTIONS.length - 1 ? setActiveSection(activeSection + 1) : setView("dashboard")}
-              style={{ padding: "10px 22px", borderRadius: "8px", border: "none", background: "#1a9c54", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+              style={{ padding: "10px 22px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
               {activeSection < RMCP_SECTIONS.length - 1 ? "Next Section →" : "Review & Submit →"}
             </button>
           </div>
@@ -959,10 +959,10 @@ Login to the admin dashboard to review and generate their RMCP document.`;
     const requestedHelps = Object.entries(helpRequests).filter(([_, v]) => v).map(([k]) => k);
 
     return (
-      <div style={{ minHeight: "100vh", background: "linear-gradient(165deg, #0d1f17 0%, #1a3a2a 40%, #0f2a1e 100%)", fontFamily: "'DM Sans', sans-serif", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+      <div style={{ minHeight: "100vh", background: "linear-gradient(165deg, #050F24 0%, #0D2147 40%, #071A3B 100%)", fontFamily: "'DM Sans', sans-serif", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
         <div style={{ maxWidth: 500, textAlign: "center" }}>
-          <div style={{ width: 68, height: 68, borderRadius: "50%", background: "linear-gradient(135deg, #2ecc71, #1a9c54)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "30px", margin: "0 auto 22px", boxShadow: "0 8px 32px rgba(46,204,113,0.3)" }}>✓</div>
+          <div style={{ width: 68, height: 68, borderRadius: "50%", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "30px", margin: "0 auto 22px", boxShadow: "0 8px 32px rgba(107,163,232,0.3)" }}>✓</div>
           <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "26px", fontWeight: 700, marginBottom: "10px", lineHeight: 1.2 }}>
             Assessment Submitted
           </h1>
@@ -974,17 +974,17 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           </p>
 
           {requestedHelps.length > 0 && (
-            <div style={{ background: "rgba(46,204,113,0.1)", borderRadius: "10px", padding: "14px", border: "1px solid rgba(46,204,113,0.2)", marginBottom: "20px", textAlign: "left" }}>
-              <div style={{ fontSize: "12px", fontWeight: 700, color: "#2ecc71", marginBottom: "8px" }}>✓ Help Requests Noted</div>
+            <div style={{ background: "rgba(107,163,232,0.1)", borderRadius: "10px", padding: "14px", border: "1px solid rgba(107,163,232,0.2)", marginBottom: "20px", textAlign: "left" }}>
+              <div style={{ fontSize: "12px", fontWeight: 700, color: "#6BA3E8", marginBottom: "8px" }}>✓ Help Requests Noted</div>
               <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", margin: "0 0 8px" }}>You've requested help with {requestedHelps.length} action plan{requestedHelps.length !== 1 ? "s" : ""}. Our team will include implementation support recommendations in their reply.</p>
             </div>
           )}
 
           <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: "10px", padding: "16px", border: "1px solid rgba(255,255,255,0.1)", marginBottom: "20px", textAlign: "left" }}>
-            <div style={{ fontSize: "11px", fontWeight: 600, color: "#2ecc71", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "10px" }}>What happens next</div>
+            <div style={{ fontSize: "11px", fontWeight: 600, color: "#6BA3E8", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "10px" }}>What happens next</div>
             {["We review your assessment and identify compliance gaps", "We create action plans for each gap with timelines and costs", "We send you the RMCP document + implementation options", "You choose which gaps you'd like us to help implement"].map((item, i) => (
               <div key={i} style={{ display: "flex", gap: "9px", marginBottom: i === 3 ? 0 : "8px", alignItems: "flex-start" }}>
-                <span style={{ color: "#2ecc71", fontSize: "12px", marginTop: "2px" }}>→</span>
+                <span style={{ color: "#6BA3E8", fontSize: "12px", marginTop: "2px" }}>→</span>
                 <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.5 }}>{item}</span>
               </div>
             ))}
@@ -992,7 +992,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
 
           <div style={{ background: "rgba(255,255,255,0.05)", borderRadius: "8px", padding: "12px 16px", border: "1px solid rgba(255,255,255,0.08)", marginBottom: "20px" }}>
             <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)", marginBottom: "2px" }}>Questions? Contact us</div>
-            <div style={{ fontSize: "14px", fontWeight: 600, color: "#2ecc71" }}>info@bigbaytax.co.za</div>
+            <div style={{ fontSize: "14px", fontWeight: 600, color: "#6BA3E8" }}>info@bigbaytax.co.za</div>
           </div>
 
           <button onClick={() => setView("landing")} style={{ padding: "10px 24px", borderRadius: "8px", border: "1.5px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.6)", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
@@ -1014,7 +1014,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             onKeyPress={(e) => { if (e.key === "Enter" && e.target.value === "BigBay2024") { setIsAdmin(true); setView("admin"); } }}
             style={{ width: "100%", padding: "12px", marginBottom: "16px", borderRadius: "6px", border: "1px solid #ddd", fontSize: "14px", boxSizing: "border-box" }} autoFocus />
           <button onClick={() => { const pwd = document.getElementById("adminPwd").value; if (pwd === "BigBay2024") { setIsAdmin(true); setView("admin"); } else { alert("Incorrect password"); } }}
-            style={{ width: "100%", padding: "12px", borderRadius: "6px", border: "none", background: "#1a9c54", color: "#fff", fontWeight: 600, cursor: "pointer", marginBottom: "12px" }}>Login</button>
+            style={{ width: "100%", padding: "12px", borderRadius: "6px", border: "none", background: "#2463AE", color: "#fff", fontWeight: 600, cursor: "pointer", marginBottom: "12px" }}>Login</button>
           <button onClick={() => setView("landing")}
             style={{ width: "100%", padding: "12px", borderRadius: "6px", border: "1px solid #ddd", background: "#fff", color: "#666", fontWeight: 600, cursor: "pointer" }}>Cancel</button>
         </div>
@@ -1053,8 +1053,8 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                       <div style={{ fontSize: "12px", color: "#666" }}>{client.contact} • {client.email}</div>
                     </div>
                     <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-                      <div style={{ textAlign: "center" }}><div style={{ fontSize: "12px", color: "#666" }}>Complete</div><div style={{ fontSize: "16px", fontWeight: "bold", color: comp < 75 ? "#f39c12" : "#2ecc71" }}>{comp}%</div></div>
-                      <div style={{ textAlign: "center" }}><div style={{ fontSize: "12px", color: "#666" }}>Quality</div><div style={{ fontSize: "16px", fontWeight: "bold", color: qual < 75 ? "#f39c12" : "#2ecc71" }}>{qual}%</div></div>
+                      <div style={{ textAlign: "center" }}><div style={{ fontSize: "12px", color: "#666" }}>Complete</div><div style={{ fontSize: "16px", fontWeight: "bold", color: comp < 75 ? "#f39c12" : "#6BA3E8" }}>{comp}%</div></div>
+                      <div style={{ textAlign: "center" }}><div style={{ fontSize: "12px", color: "#666" }}>Quality</div><div style={{ fontSize: "16px", fontWeight: "bold", color: qual < 75 ? "#f39c12" : "#6BA3E8" }}>{qual}%</div></div>
                       <div style={{ textAlign: "center" }}><div style={{ fontSize: "12px", color: "#666" }}>Gaps</div><div style={{ fontSize: "16px", fontWeight: "bold", color: flags.length === 0 ? "#10b981" : "#dc2626" }}>{flags.length}</div></div>
                     </div>
                   </div>
@@ -1081,8 +1081,8 @@ Login to the admin dashboard to review and generate their RMCP document.`;
     const generateDoc = () => {
       const d = client.data || {};
       const today = new Date().toLocaleDateString("en-ZA", { day: "numeric", month: "long", year: "numeric" });
-      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>RMCP - ${client.company}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:20px;color:#333}h1{color:#1a5c3a;border-bottom:3px solid #1a5c3a;padding-bottom:10px}h2{color:#1a5c3a;margin-top:20px}table{width:100%;border-collapse:collapse;margin:15px 0}th,td{border:1px solid #ddd;padding:10px;text-align:left}th{background:#f5f5f5}.warning{background:#fee2e2;border-left:4px solid #dc2626;padding:15px;margin:15px 0}.cover{text-align:center;padding:60px 20px;border:2px solid #1a5c3a;margin:40px 0}.page-break{page-break-after:always}</style></head><body>
-<div class="cover page-break"><div style="font-size:32px;font-weight:bold;color:#1a5c3a">Risk Management and Compliance Programme</div><div style="font-size:14px;color:#666;margin:20px 0">Financial Intelligence Centre Act 38 of 2001</div><table style="border:none;margin-top:40px"><tr style="border:none"><td style="border:none"><strong>Institution:</strong></td><td style="border:none">${client.company}</td></tr><tr style="border:none"><td style="border:none"><strong>FFC Number:</strong></td><td style="border:none">${client.ffc||"Not specified"}</td></tr><tr style="border:none"><td style="border:none"><strong>Date:</strong></td><td style="border:none">${today}</td></tr><tr style="border:none"><td style="border:none"><strong>Version:</strong></td><td style="border:none">1.0</td></tr></table></div>
+      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>RMCP - ${client.company}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:20px;color:#333}h1{color:#1C5BA3;border-bottom:3px solid #1C5BA3;padding-bottom:10px}h2{color:#1C5BA3;margin-top:20px}table{width:100%;border-collapse:collapse;margin:15px 0}th,td{border:1px solid #ddd;padding:10px;text-align:left}th{background:#f5f5f5}.warning{background:#fee2e2;border-left:4px solid #dc2626;padding:15px;margin:15px 0}.cover{text-align:center;padding:60px 20px;border:2px solid #1C5BA3;margin:40px 0}.page-break{page-break-after:always}</style></head><body>
+<div class="cover page-break"><div style="font-size:32px;font-weight:bold;color:#1C5BA3">Risk Management and Compliance Programme</div><div style="font-size:14px;color:#666;margin:20px 0">Financial Intelligence Centre Act 38 of 2001</div><table style="border:none;margin-top:40px"><tr style="border:none"><td style="border:none"><strong>Institution:</strong></td><td style="border:none">${client.company}</td></tr><tr style="border:none"><td style="border:none"><strong>FFC Number:</strong></td><td style="border:none">${client.ffc||"Not specified"}</td></tr><tr style="border:none"><td style="border:none"><strong>Date:</strong></td><td style="border:none">${today}</td></tr><tr style="border:none"><td style="border:none"><strong>Version:</strong></td><td style="border:none">1.0</td></tr></table></div>
 <div class="page-break"><h1>PART 1: RISK IDENTIFICATION & ASSESSMENT</h1><h2>1.1 Business Profile</h2><table><tr><th>Factor</th><th>Details</th></tr><tr><td>Client Types</td><td>${(d.client_types||[]).join(", ")}</td></tr><tr><td>Services</td><td>${(d.transaction_types||[]).join(", ")}</td></tr><tr><td>Geographic Exposure</td><td>${d.geographic_risk||""}</td></tr><tr><td>Transaction Value</td><td>${d.value_range||""}</td></tr></table><h2>1.2 Risk Assessment</h2><p>ML/TF/PF risk assessed using likelihood × impact matrix.</p><table><tr><th>Risk Type</th><th>Rating</th></tr><tr><td>Inherent Risk</td><td><strong>Medium</strong></td></tr><tr><td>Residual Risk</td><td><strong>Low</strong></td></tr></table></div>
 <div class="page-break"><h1>PART 2: RISK MITIGATION CONTROLS</h1><h2>2.1 Customer Due Diligence (CDD)</h2><table><tr><th>Risk Level</th><th>Identity</th><th>Address</th><th>Monitoring</th></tr><tr><td>Low</td><td>Certified ID</td><td>Utility bill ≤3 months</td><td>Annual</td></tr><tr><td>Medium</td><td>ID + source verification</td><td>Independent verification</td><td>Transaction-triggered</td></tr><tr><td>High (EDD)</td><td>Senior approval required</td><td>Independent + call</td><td>Monthly</td></tr></table><h2>2.2 Reporting Obligations</h2><table><tr><th>Report</th><th>Deadline</th><th>Method</th></tr><tr><td>STR</td><td>15 days</td><td>goAML</td></tr><tr><td>CTR</td><td><strong>3 business days</strong></td><td>goAML</td></tr><tr><td>TPR</td><td>Immediately</td><td>goAML + FIC email</td></tr></table><div class="warning"><strong>⚠️ TIPPING-OFF PROHIBITION (Section 29(2)):</strong> No employee may disclose STR/CTR/TPR filings. Criminal offence.</div><h2>2.3 Targeted Financial Sanctions</h2><p><strong>Match Protocol:</strong> Freeze → Do not proceed → Escalate within 1 hour → Report to FIC within 2 hours → Maintain confidentiality</p><h2>2.4 Record Keeping</h2><p>All records retained minimum 5 years. Formal certified destruction with audit trail.</p><h2>2.5 Training</h2><p><strong>Status:</strong> ${d.training_policy||"Not specified"}</p></div>
 <div><h1>PART 3: MONITORING, REVIEW & GOVERNANCE</h1><h2>3.1 Oversight</h2><table><tr><th>Role</th><th>Details</th></tr><tr><td>Compliance Officer</td><td>${d.compliance_officer||""}</td></tr><tr><td>Board Approval</td><td>${d.board_approval_date||""}</td></tr><tr><td>Review Frequency</td><td>Annually</td></tr></table><h2>3.2 Quality Assurance</h2><ul><li>Quarterly CDD audits (10% or 5 files)</li><li>Annual RMCP review</li><li>RCR submission per Directive 6 by 30 Sept</li><li>Employee screening per Directive 8</li></ul><div class="warning"><strong>CRITICAL:</strong> Documentation ≠ Compliance. All controls must be actively implemented.</div><h2>3.3 Signatures</h2><p><strong>Board/Senior Management:</strong> Signature: ____________ Date: ____________</p><p><strong>Compliance Officer:</strong> ${d.compliance_officer||""} Signature: ____________ Date: ____________</p><br><p>Prepared by Big Bay Administrators (Pty) Ltd | Cape Town | jerome@bigbayadmin.co.za</p></div></body></html>`;
@@ -1097,11 +1097,11 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           <h2 style={{ marginBottom: "16px", color: "#1a2a3a" }}>{client.company}</h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
             <div style={{ textAlign: "center", padding: "16px", background: "#f5f5f5", borderRadius: "8px" }}>
-              <ProgressRing percent={comp} size={64} stroke={5} color={comp < 50 ? "#e74c3c" : comp < 75 ? "#f39c12" : "#2ecc71"} />
+              <ProgressRing percent={comp} size={64} stroke={5} color={comp < 50 ? "#e74c3c" : comp < 75 ? "#f39c12" : "#6BA3E8"} />
               <div style={{ fontSize: "12px", color: "#666", marginTop: "8px" }}>Completion: {comp}%</div>
             </div>
             <div style={{ textAlign: "center", padding: "16px", background: "#f5f5f5", borderRadius: "8px" }}>
-              <ProgressRing percent={qual} size={64} stroke={5} color={qual < 50 ? "#e74c3c" : qual < 75 ? "#f39c12" : "#2ecc71"} />
+              <ProgressRing percent={qual} size={64} stroke={5} color={qual < 50 ? "#e74c3c" : qual < 75 ? "#f39c12" : "#6BA3E8"} />
               <div style={{ fontSize: "12px", color: "#666", marginTop: "8px" }}>Compliance: {qual}%</div>
             </div>
           </div>
@@ -1116,7 +1116,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           )}
           <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
             <button onClick={() => { const html = generateDoc(); const blob = new Blob([html], { type: "text/html" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `RMCP_${client.company.replace(/[^a-zA-Z0-9]/g, "_")}_${new Date().toISOString().split("T")[0]}.html`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }}
-              style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#1a9c54", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📄 Download RMCP Document</button>
+              style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📄 Download RMCP Document</button>
             <button onClick={async () => { const btn = event.target; btn.textContent = "⏳ Sending..."; btn.disabled = true; try { const html = generateDoc(); const r = await fetch("https://rmcp-pro.vercel.app/api/send-rmcp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clientEmail: client.email, clientName: client.company, rmcpHtml: html, coverLetter: `Dear ${client.contact},\n\nPlease find attached your RMCP document.\n\nBest regards,\nBig Bay Administrators` }) }); const res = await r.json(); if (r.ok) { alert("✅ Email sent to " + client.email); } else { alert("Error: " + (res.error || "Failed")); } } catch (e) { alert("Error: " + e.message); } finally { btn.textContent = "📧 Email to Client"; btn.disabled = false; } }}
               style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#3b82f6", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📧 Email to Client</button>
           </div>
