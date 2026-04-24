@@ -702,7 +702,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           <button onClick={() => setShowExplainer(v => !v)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: "12px", cursor: "pointer", fontFamily: "'DM Sans', sans-serif", textDecoration: "underline", padding: 0 }}>
             {showExplainer ? "Hide explanation ▲" : "What is an RMCP? ▼"}
           </button>
-          <a href="https://www.fic.gov.za/FAQ/Pages/default.aspx" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.5)", fontSize: "12px", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+          <a href="https://www.fic.gov.za/faq/" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.5)", fontSize: "12px", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
             FIC FAQs →
           </a>
         </div>
