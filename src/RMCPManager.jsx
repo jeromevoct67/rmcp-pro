@@ -425,7 +425,7 @@ function ActionPlanModal({ plan, onClose, onRequestHelp }) {
             Close
           </button>
           <button onClick={onRequestHelp} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
-            Request Help from Big Bay Tax
+            Request Help from Big Bay Administrators
           </button>
         </div>
       </div>
@@ -447,6 +447,8 @@ export default function RMCPManager() {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [helpRequests, setHelpRequests] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
+  const [sectionError, setSectionError] = useState(false);
+  const [showExplainer, setShowExplainer] = useState(false);
 
   useEffect(() => {
     try {
@@ -466,6 +468,7 @@ export default function RMCPManager() {
   const updateField = (fieldId, value) => {
     const updated = { ...formData, [fieldId]: value };
     setFormData(updated);
+    setSectionError(false);
     if (activeClient !== null) {
       saveClients(clients.map((c, i) => i === activeClient ? { ...c, data: updated, lastModified: new Date().toISOString() } : c));
     }
@@ -655,7 +658,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
 
           {/* Submit */}
           <button onClick={submitRMCP} style={{ width: "100%", padding: "13px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "14px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 16px rgba(36,99,174,0.25)", marginBottom: "10px" }}>
-            ✓ Submit to Big Bay Tax for Review
+            ✓ Submit to Big Bay Administrators for Review
           </button>
           <button onClick={() => { setActiveSection(0); setView("editor"); }} style={{ width: "100%", padding: "10px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
             ← Back to Edit
@@ -695,13 +698,35 @@ Login to the admin dashboard to review and generate their RMCP document.`;
         <button onClick={() => setShowLeadForm(true)} style={{ padding: "14px 36px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 24px rgba(107,163,232,0.3)" }}>
           Start My Free RMCP Assessment →
         </button>
-        <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", marginTop: "12px" }}>Big Bay Tax reviews and finalises your RMCP document once complete.</p>
+        <div style={{ marginTop: "16px", display: "flex", justifyContent: "center", gap: "18px", flexWrap: "wrap" }}>
+          <button onClick={() => setShowExplainer(v => !v)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: "12px", cursor: "pointer", fontFamily: "'DM Sans', sans-serif", textDecoration: "underline", padding: 0 }}>
+            {showExplainer ? "Hide explanation ▲" : "What is an RMCP? ▼"}
+          </button>
+          <a href="https://www.fic.gov.za/Resources/Pages/Legislation.aspx" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.5)", fontSize: "12px", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+            FIC Act (Section 43) →
+          </a>
+        </div>
+        {showExplainer && (
+          <div style={{ maxWidth: 520, margin: "16px auto 0", padding: "18px 22px", borderRadius: "12px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", textAlign: "left" }}>
+            <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#6BA3E8", marginBottom: "10px", marginTop: 0 }}>What is an RMCP?</h3>
+            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 10px" }}>
+              A <strong style={{ color: "#fff" }}>Risk Management and Compliance Programme (RMCP)</strong> is a document required by the Financial Intelligence Centre Act (FICA) Section 43 for all accountable institutions — including property practitioners registered with the PPRA.
+            </p>
+            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 10px" }}>
+              Your RMCP must document how your agency identifies, assesses, and manages money laundering and terrorist financing risks. Without one, you are non-compliant and face penalties from the FIC.
+            </p>
+            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: 0 }}>
+              This tool guides you through the required sections. Big Bay Administrators then reviews your answers and produces your formal, signed RMCP document.
+            </p>
+          </div>
+        )}
+        <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", marginTop: "16px" }}>Big Bay Administrators reviews and finalises your RMCP document once complete.</p>
       </div>
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 32px 60px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "14px", position: "relative", zIndex: 2 }}>
         {[
           { icon: "📝", title: "Simple questions", desc: "Plain language — no legal jargon. Just describe how your agency operates." },
           { icon: "📊", title: "Action plans included", desc: "See exactly how to fix each compliance gap — with timelines and costs." },
-          { icon: "📄", title: "Professional document", desc: "Big Bay Tax reviews your answers and produces your formal RMCP document." },
+          { icon: "📄", title: "Professional document", desc: "Big Bay Administrators reviews your answers and produces your formal RMCP document." },
         ].map((f, i) => (
           <div key={i} style={{ padding: "20px", borderRadius: "12px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
             <div style={{ fontSize: "24px", marginBottom: "8px" }}>{f.icon}</div>
@@ -942,10 +967,22 @@ Login to the admin dashboard to review and generate their RMCP document.`;
               style={{ padding: "10px 20px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: activeSection === 0 ? "#d1d9e0" : "#4a5568", fontSize: "13px", fontWeight: 600, cursor: activeSection === 0 ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
               ← Previous
             </button>
-            <button onClick={() => activeSection < RMCP_SECTIONS.length - 1 ? setActiveSection(activeSection + 1) : setView("dashboard")}
-              style={{ padding: "10px 22px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
-              {activeSection < RMCP_SECTIONS.length - 1 ? "Next Section →" : "Review & Submit →"}
-            </button>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
+              {sectionError && (
+                <span style={{ fontSize: "12px", color: "#dc2626", fontWeight: 600 }}>
+                  ⚠ Please answer all questions before continuing
+                </span>
+              )}
+              <button onClick={() => {
+                const sc = getSectionCompleteness(section, formData);
+                if (sc < 100) { setSectionError(true); return; }
+                setSectionError(false);
+                activeSection < RMCP_SECTIONS.length - 1 ? setActiveSection(activeSection + 1) : setView("dashboard");
+              }}
+                style={{ padding: "10px 22px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                {activeSection < RMCP_SECTIONS.length - 1 ? "Next Section →" : "Review & Submit →"}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -970,7 +1007,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             Thank you{client?.contact ? `, ${client.contact.split(" ")[0]}` : ""}. We've received the RMCP assessment for <strong>{client?.company}</strong>.
           </p>
           <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.45)", lineHeight: 1.6, marginBottom: "24px" }}>
-            Big Bay Tax will review your answers and be in touch within 2–3 business days with your completed RMCP document and implementation recommendations.
+            Big Bay Administrators will review your answers and be in touch within 2–3 business days with your completed RMCP document and implementation recommendations.
           </p>
 
           {requestedHelps.length > 0 && (
