@@ -462,6 +462,7 @@ export default function RMCPManager() {
   const [popiConsent, setPopiConsent] = useState(false);
   const [termsConsent, setTermsConsent] = useState(false);
   const [adminLoginError, setAdminLoginError] = useState("");
+  const [adminPwd, setAdminPwd] = useState("");
 
   useEffect(() => {
     try {
@@ -1310,47 +1311,28 @@ Login to the admin dashboard to review and generate their RMCP document.`;
 
   // ── ADMIN LOGIN ──────────────────────────────────────────────────
   if (view === "adminLogin") {
-    const AdminLogin = () => {
-      const [pwd, setPwd] = React.useState("");
-      const doLogin = async () => {
-        if (!pwd) { setAdminLoginError("Please enter a password"); return; }
-        setAdminLoginError("checking…");
-        try {
-          const r = await fetch("/api/admin-auth", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ password: pwd })
-          });
-          const data = await r.json().catch(() => ({}));
-          if (r.ok) {
-            setAdminLoginError("");
-            setIsAdmin(true);
-            setView("admin");
-          } else {
-            setAdminLoginError(data.error || `Error ${r.status} — check Vercel env vars`);
-          }
-        } catch (e) {
-          setAdminLoginError("Network error — " + e.message);
+    const doAdminLogin = async () => {
+      const pwd = adminPwd;
+      if (!pwd) { setAdminLoginError("Please enter a password"); return; }
+      setAdminLoginError("checking…");
+      try {
+        const r = await fetch("/api/admin-auth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: pwd })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (r.ok) {
+          setAdminLoginError("");
+          setAdminPwd("");
+          setIsAdmin(true);
+          setView("admin");
+        } else {
+          setAdminLoginError(data.error || `Error ${r.status} — check Vercel env vars`);
         }
-      };
-      return (
-        <>
-          <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#374151", marginBottom: "6px" }}>Password</label>
-          <input
-            type="password"
-            value={pwd}
-            onChange={e => setPwd(e.target.value)}
-            onKeyDown={e => e.key === "Enter" && doLogin()}
-            placeholder="Enter admin password"
-            style={{ width: "100%", padding: "12px 14px", fontSize: "16px", borderRadius: "8px", border: "1.5px solid #e2e8f0", outline: "none", boxSizing: "border-box", marginBottom: "12px" }}
-            autoFocus
-          />
-          <button onClick={doLogin}
-            style={{ width: "100%", padding: "14px", minHeight: "52px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "16px", fontWeight: 700, cursor: "pointer" }}>
-            Login
-          </button>
-        </>
-      );
+      } catch (e) {
+        setAdminLoginError("Network error — " + e.message);
+      }
     };
 
     return (
@@ -1361,7 +1343,20 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             <div style={{ width: 32, height: 32, borderRadius: "8px", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>⚖</div>
             <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", margin: 0 }}>Admin Login</h2>
           </div>
-          <AdminLogin />
+          <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#374151", marginBottom: "6px" }}>Password</label>
+          <input
+            type="password"
+            value={adminPwd}
+            onChange={e => setAdminPwd(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && doAdminLogin()}
+            placeholder="Enter admin password"
+            style={{ width: "100%", padding: "12px 14px", fontSize: "16px", borderRadius: "8px", border: "1.5px solid #e2e8f0", outline: "none", boxSizing: "border-box", marginBottom: "12px" }}
+            autoFocus
+          />
+          <button onClick={doAdminLogin}
+            style={{ width: "100%", padding: "14px", minHeight: "52px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "16px", fontWeight: 700, cursor: "pointer" }}>
+            Login
+          </button>
           {adminLoginError && adminLoginError !== "checking…" && (
             <p style={{ color: "#dc2626", fontSize: "13px", margin: "10px 0 0", fontWeight: 600, padding: "10px 12px", background: "#fef2f2", borderRadius: "6px", border: "1px solid #fecaca" }}>
               ⚠ {adminLoginError}
