@@ -1310,34 +1310,70 @@ Login to the admin dashboard to review and generate their RMCP document.`;
 
   // ── ADMIN LOGIN ──────────────────────────────────────────────────
   if (view === "adminLogin") {
-    return (
-      <div style={{ minHeight: "100vh", background: "#f0f2f5", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', sans-serif" }}>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        <div style={{ background: "#fff", padding: "24px 20px", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", width: "min(400px, 92vw)" }}>
-          <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", marginBottom: "24px" }}>Admin Login</h2>
-          <input type="password" placeholder="Enter admin password" id="adminPwd"
-            onKeyPress={async (e) => {
-              if (e.key !== "Enter") return;
-              setAdminLoginError("");
-              const pwd = e.target.value;
-              try {
-                const r = await fetch("/api/admin-auth", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: pwd }) });
-                if (r.ok) { setIsAdmin(true); setView("admin"); } else { setAdminLoginError("Incorrect password"); }
-              } catch { setAdminLoginError("Login failed — please try again"); }
-            }}
-            style={{ width: "100%", padding: "14px", marginBottom: "8px", borderRadius: "6px", border: adminLoginError ? "1.5px solid #dc2626" : "1px solid #ddd", fontSize: "16px", boxSizing: "border-box", minHeight: "52px" }} autoFocus />
-          {adminLoginError && <p style={{ color: "#dc2626", fontSize: "12px", margin: "0 0 12px", fontWeight: 600 }}>{adminLoginError}</p>}
-          <button onClick={async () => {
+    const AdminLogin = () => {
+      const [pwd, setPwd] = React.useState("");
+      const doLogin = async () => {
+        if (!pwd) { setAdminLoginError("Please enter a password"); return; }
+        setAdminLoginError("checking…");
+        try {
+          const r = await fetch("/api/admin-auth", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password: pwd })
+          });
+          const data = await r.json().catch(() => ({}));
+          if (r.ok) {
             setAdminLoginError("");
-            const pwd = document.getElementById("adminPwd").value;
-            try {
-              const r = await fetch("/api/admin-auth", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: pwd }) });
-              if (r.ok) { setIsAdmin(true); setView("admin"); } else { setAdminLoginError("Incorrect password"); }
-            } catch { setAdminLoginError("Login failed — please try again"); }
-          }}
-            style={{ width: "100%", padding: "13px", minHeight: "44px", borderRadius: "6px", border: "none", background: "#2463AE", color: "#fff", fontWeight: 600, cursor: "pointer", marginBottom: "12px" }}>Login</button>
+            setIsAdmin(true);
+            setView("admin");
+          } else {
+            setAdminLoginError(data.error || `Error ${r.status} — check Vercel env vars`);
+          }
+        } catch (e) {
+          setAdminLoginError("Network error — " + e.message);
+        }
+      };
+      return (
+        <>
+          <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#374151", marginBottom: "6px" }}>Password</label>
+          <input
+            type="password"
+            value={pwd}
+            onChange={e => setPwd(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && doLogin()}
+            placeholder="Enter admin password"
+            style={{ width: "100%", padding: "12px 14px", fontSize: "16px", borderRadius: "8px", border: "1.5px solid #e2e8f0", outline: "none", boxSizing: "border-box", marginBottom: "12px" }}
+            autoFocus
+          />
+          <button onClick={doLogin}
+            style={{ width: "100%", padding: "14px", minHeight: "52px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "16px", fontWeight: 700, cursor: "pointer" }}>
+            Login
+          </button>
+        </>
+      );
+    };
+
+    return (
+      <div style={{ minHeight: "100vh", background: "#f0f2f5", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', sans-serif", padding: "20px" }}>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+        <div style={{ background: "#fff", padding: "32px 24px", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", width: "min(400px, 100%)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
+            <div style={{ width: 32, height: 32, borderRadius: "8px", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>⚖</div>
+            <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", margin: 0 }}>Admin Login</h2>
+          </div>
+          <AdminLogin />
+          {adminLoginError && adminLoginError !== "checking…" && (
+            <p style={{ color: "#dc2626", fontSize: "13px", margin: "10px 0 0", fontWeight: 600, padding: "10px 12px", background: "#fef2f2", borderRadius: "6px", border: "1px solid #fecaca" }}>
+              ⚠ {adminLoginError}
+            </p>
+          )}
+          {adminLoginError === "checking…" && (
+            <p style={{ color: "#2463AE", fontSize: "13px", margin: "10px 0 0", textAlign: "center" }}>Verifying…</p>
+          )}
           <button onClick={() => { setAdminLoginError(""); setView("landing"); }}
-            style={{ width: "100%", padding: "13px", minHeight: "44px", borderRadius: "6px", border: "1px solid #ddd", background: "#fff", color: "#666", fontWeight: 600, cursor: "pointer" }}>Cancel</button>
+            style={{ width: "100%", marginTop: "12px", padding: "14px", minHeight: "52px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#666", fontSize: "15px", fontWeight: 600, cursor: "pointer" }}>
+            Cancel
+          </button>
         </div>
       </div>
     );
