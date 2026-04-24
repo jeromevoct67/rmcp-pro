@@ -446,6 +446,7 @@ export default function RMCPManager() {
   const [saving, setSaving] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [helpRequests, setHelpRequests] = useState({});
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     try {
@@ -676,9 +677,6 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           <div style={{ width: 36, height: 36, borderRadius: "10px", background: "linear-gradient(135deg, #2ecc71, #1a9c54)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>⚖</div>
           <span style={{ fontSize: "17px", fontWeight: 700 }}>RMCP<span style={{ color: "#2ecc71" }}>Pro</span></span>
         </div>
-        <button onClick={() => setView("clients")} style={{ padding: "9px 20px", borderRadius: "8px", border: "1.5px solid rgba(46,204,113,0.4)", background: "transparent", color: "#2ecc71", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", marginRight: "8px" }}>
-          Practitioner Login →
-        </button>
         <button onClick={() => setView("adminLogin")} style={{ padding: "9px 20px", borderRadius: "8px", border: "1.5px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.5)", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
           Admin Login
         </button>
@@ -694,7 +692,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           Answer a few simple questions about your property agency. We use your answers to build your Risk Management and Compliance Programme and show you action plans to close any gaps.
         </p>
         <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", marginBottom: "36px" }}>Takes about 10–15 minutes. No compliance knowledge needed.</p>
-        <button onClick={() => { setShowLeadForm(true); setView("clients"); }} style={{ padding: "14px 36px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #2ecc71, #1a9c54)", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 24px rgba(46,204,113,0.3)" }}>
+        <button onClick={() => setShowLeadForm(true)} style={{ padding: "14px 36px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #2ecc71, #1a9c54)", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 24px rgba(46,204,113,0.3)" }}>
           Start My Free RMCP Assessment →
         </button>
         <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", marginTop: "12px" }}>Big Bay Tax reviews and finalises your RMCP document once complete.</p>
@@ -712,10 +710,45 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           </div>
         ))}
       </div>
+      {showLeadForm && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: "20px" }}>
+          <div style={{ background: "#fff", borderRadius: "16px", padding: "28px", maxWidth: 420, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+            <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", marginBottom: "4px" }}>Start Your RMCP Assessment</h2>
+            <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "18px" }}>Enter your agency details to begin</p>
+            {[
+              { key: "company", label: "Company / Trading Name *", placeholder: "e.g. Atlantic Seaboard Properties (Pty) Ltd" },
+              { key: "contact", label: "Contact Person", placeholder: "Full name" },
+              { key: "email", label: "Email Address", placeholder: "name@company.co.za" },
+              { key: "phone", label: "Phone Number", placeholder: "082 123 4567" },
+              { key: "ffc", label: "FFC Number (PPRA)", placeholder: "Fidelity Fund Certificate number" },
+            ].map(f => (
+              <div key={f.key} style={{ marginBottom: "11px" }}>
+                <label style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.4px" }}>{f.label}</label>
+                <input value={leadData[f.key]} onChange={e => setLeadData({ ...leadData, [f.key]: e.target.value })}
+                  placeholder={f.placeholder}
+                  style={{ width: "100%", padding: "10px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "13px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a" }}
+                  onFocus={e => e.target.style.borderColor = "#1a9c54"}
+                  onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
+              </div>
+            ))}
+            <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
+              <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); }}
+                style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Cancel</button>
+              <button onClick={addClient} disabled={!leadData.company.trim()}
+                style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() ? "#1a9c54" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
+                Start Assessment →
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 
   // ── CLIENT LIST ───────────────────────────────────────────────────────
+  if (view === "clients") {
+    if (!isAdmin) { setView("adminLogin"); return null; }
+  }
   if (view === "clients") return (
     <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif" }}>
       <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -978,9 +1011,9 @@ Login to the admin dashboard to review and generate their RMCP document.`;
         <div style={{ background: "#fff", padding: "40px", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", maxWidth: 400, width: "100%" }}>
           <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", marginBottom: "24px" }}>Admin Login</h2>
           <input type="password" placeholder="Enter admin password" id="adminPwd"
-            onKeyPress={(e) => { if (e.key === "Enter" && e.target.value === "BigBay2024") { setView("admin"); } }}
+            onKeyPress={(e) => { if (e.key === "Enter" && e.target.value === "BigBay2024") { setIsAdmin(true); setView("admin"); } }}
             style={{ width: "100%", padding: "12px", marginBottom: "16px", borderRadius: "6px", border: "1px solid #ddd", fontSize: "14px", boxSizing: "border-box" }} autoFocus />
-          <button onClick={() => { const pwd = document.getElementById("adminPwd").value; if (pwd === "BigBay2024") { setView("admin"); } else { alert("Incorrect password"); } }}
+          <button onClick={() => { const pwd = document.getElementById("adminPwd").value; if (pwd === "BigBay2024") { setIsAdmin(true); setView("admin"); } else { alert("Incorrect password"); } }}
             style={{ width: "100%", padding: "12px", borderRadius: "6px", border: "none", background: "#1a9c54", color: "#fff", fontWeight: 600, cursor: "pointer", marginBottom: "12px" }}>Login</button>
           <button onClick={() => setView("landing")}
             style={{ width: "100%", padding: "12px", borderRadius: "6px", border: "1px solid #ddd", background: "#fff", color: "#666", fontWeight: 600, cursor: "pointer" }}>Cancel</button>
