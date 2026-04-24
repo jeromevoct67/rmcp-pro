@@ -300,15 +300,16 @@ function SelectField({ value, onChange, options }) {
   return (
     <div style={{ position: "relative" }}>
       <div onClick={() => setOpen(!open)} style={{
-        width: "100%", padding: "12px 40px 12px 14px", borderRadius: "8px",
+        width: "100%", padding: "14px 44px 14px 14px", borderRadius: "8px",
         border: selected ? "2px solid #2463AE" : "1.5px solid #d1d9e0",
-        fontSize: "14px", fontFamily: "'DM Sans', sans-serif",
-        boxSizing: "border-box", background: selected ? "#f0faf4" : "#fafbfc",
-        color: "#1a2a3a", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between",
-        userSelect: "none", transition: "all 0.15s"
+        fontSize: "16px", fontFamily: "'DM Sans', sans-serif",
+        boxSizing: "border-box", background: selected ? "#eff6ff" : "#fff",
+        color: selected ? "#1a2a3a" : "#6b7280", cursor: "pointer",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        userSelect: "none", minHeight: "52px", transition: "all 0.15s"
       }}>
-        <span>{selected || "— Please select an answer —"}</span>
-        <span style={{ color: selected ? "#2463AE" : "#9ca3af", fontSize: "11px", position: "absolute", right: "14px" }}>
+        <span style={{ lineHeight: 1.4 }}>{selected || "Select an answer…"}</span>
+        <span style={{ color: selected ? "#2463AE" : "#9ca3af", fontSize: "13px", position: "absolute", right: "14px" }}>
           {selected ? "✓" : open ? "▲" : "▼"}
         </span>
       </div>
@@ -321,17 +322,15 @@ function SelectField({ value, onChange, options }) {
           {options.map(opt => (
             <div key={opt} onClick={() => { onChange(opt); setOpen(false); }}
               style={{
-                padding: "12px 16px", fontSize: "13px", fontFamily: "'DM Sans', sans-serif",
+                padding: "14px 16px", fontSize: "15px", fontFamily: "'DM Sans', sans-serif",
                 cursor: "pointer", color: selected === opt ? "#1C5BA3" : "#1a2a3a",
-                background: selected === opt ? "#e8f5ee" : "#fff",
+                background: selected === opt ? "#eff6ff" : "#fff",
                 fontWeight: selected === opt ? 600 : 400,
                 borderBottom: "1px solid #f1f5f9",
                 display: "flex", alignItems: "center", gap: "8px",
-                transition: "background 0.1s"
-              }}
-              onMouseEnter={e => { if (selected !== opt) e.currentTarget.style.background = "#f8fafc"; }}
-              onMouseLeave={e => { if (selected !== opt) e.currentTarget.style.background = "#fff"; }}>
-              {selected === opt && <span style={{ color: "#2463AE", fontSize: "12px" }}>✓</span>}
+                minHeight: "48px"
+              }}>
+              {selected === opt && <span style={{ color: "#2463AE", fontSize: "13px" }}>✓</span>}
               {opt}
             </div>
           ))}
@@ -343,22 +342,22 @@ function SelectField({ value, onChange, options }) {
 
 function MultiSelect({ options, selected = [], onChange }) {
   return (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "6px" }}>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "6px" }}>
       {options.map(opt => {
         const on = selected.includes(opt);
         return (
           <button key={opt} type="button"
             onClick={() => onChange(on ? selected.filter(s => s !== opt) : [...selected, opt])}
             style={{
-              padding: "9px 14px", borderRadius: "8px",
+              padding: "12px 16px", minHeight: "48px", borderRadius: "10px",
               border: on ? "2px solid #2463AE" : "1.5px solid #d1d9e0",
-              background: on ? "#e8f5ee" : "#fafbfc",
+              background: on ? "#eff6ff" : "#fff",
               color: on ? "#1C5BA3" : "#4a5568",
-              fontSize: "13px", fontFamily: "'DM Sans', sans-serif",
+              fontSize: "15px", fontFamily: "'DM Sans', sans-serif",
               cursor: "pointer", fontWeight: on ? 600 : 400,
-              display: "flex", alignItems: "center", gap: "6px", transition: "all 0.15s"
+              display: "flex", alignItems: "center", gap: "8px", transition: "all 0.15s"
             }}>
-            {on && <span style={{ color: "#2463AE", fontSize: "11px" }}>✓</span>}
+            {on && <span style={{ color: "#2463AE", fontSize: "13px" }}>✓</span>}
             {opt}
           </button>
         );
@@ -995,7 +994,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                 <label style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.4px" }}>{f.label}</label>
                 <input value={leadData[f.key]} onChange={e => setLeadData({ ...leadData, [f.key]: e.target.value })}
                   placeholder={f.placeholder}
-                  style={{ width: "100%", padding: "10px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "13px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a" }}
+                  style={{ width: "100%", padding: "14px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px" }}
                   onFocus={e => e.target.style.borderColor = "#2463AE"}
                   onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
               </div>
@@ -1072,7 +1071,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                   <label style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.4px" }}>{f.label}</label>
                   <input value={leadData[f.key]} onChange={e => setLeadData({ ...leadData, [f.key]: e.target.value })}
                     placeholder={f.placeholder}
-                    style={{ width: "100%", padding: "10px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "13px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a" }}
+                    style={{ width: "100%", padding: "14px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px" }}
                     onFocus={e => e.target.style.borderColor = "#2463AE"}
                     onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
                 </div>
@@ -1208,13 +1207,13 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                 {field.type === "text" && (
                   <input value={formData[field.id] || ""} onChange={e => updateField(field.id, e.target.value)}
                     placeholder={field.placeholder}
-                    style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #2463AE" : "1.5px solid #d1d9e0", fontSize: "14px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", background: formData[field.id] ? "#f0faf4" : "#fafbfc", color: "#1a2a3a" }}
+                    style={{ width: "100%", padding: "14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #2463AE" : "1.5px solid #d1d9e0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", background: formData[field.id] ? "#eff6ff" : "#fff", color: "#1a2a3a", minHeight: "52px" }}
                     onFocus={e => e.target.style.borderColor = "#2463AE"}
                     onBlur={e => { if (!formData[field.id]) e.target.style.borderColor = "#d1d9e0"; }} />
                 )}
                 {field.type === "date" && (
                   <input type="date" value={formData[field.id] || ""} onChange={e => updateField(field.id, e.target.value)}
-                    style={{ width: "100%", padding: "11px 14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #2463AE" : "1.5px solid #d1d9e0", fontSize: "14px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", background: "#fff", color: "#1a2a3a", colorScheme: "light" }}
+                    style={{ width: "100%", padding: "14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #2463AE" : "1.5px solid #d1d9e0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", background: "#fff", color: "#1a2a3a", colorScheme: "light", minHeight: "52px" }}
                     onFocus={e => e.target.style.borderColor = "#2463AE"}
                     onBlur={e => { if (!formData[field.id]) e.target.style.borderColor = "#d1d9e0"; }} />
                 )}
@@ -1323,7 +1322,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                 if (r.ok) { setIsAdmin(true); setView("admin"); } else { setAdminLoginError("Incorrect password"); }
               } catch { setAdminLoginError("Login failed — please try again"); }
             }}
-            style={{ width: "100%", padding: "12px", marginBottom: "8px", borderRadius: "6px", border: adminLoginError ? "1.5px solid #dc2626" : "1px solid #ddd", fontSize: "14px", boxSizing: "border-box" }} autoFocus />
+            style={{ width: "100%", padding: "14px", marginBottom: "8px", borderRadius: "6px", border: adminLoginError ? "1.5px solid #dc2626" : "1px solid #ddd", fontSize: "16px", boxSizing: "border-box", minHeight: "52px" }} autoFocus />
           {adminLoginError && <p style={{ color: "#dc2626", fontSize: "12px", margin: "0 0 12px", fontWeight: 600 }}>{adminLoginError}</p>}
           <button onClick={async () => {
             setAdminLoginError("");
