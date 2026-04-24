@@ -433,6 +433,15 @@ function ActionPlanModal({ plan, onClose, onRequestHelp }) {
   );
 }
 
+function Section({ title, children }) {
+  return (
+    <div style={{ marginBottom: "18px" }}>
+      <h3 style={{ fontSize: "12px", fontWeight: 700, color: "#1a2a3a", textTransform: "uppercase", letterSpacing: "0.5px", margin: "0 0 6px", borderBottom: "1px solid #f1f5f9", paddingBottom: "4px" }}>{title}</h3>
+      <div style={{ fontSize: "12px", color: "#374151", lineHeight: 1.75 }}>{children}</div>
+    </div>
+  );
+}
+
 // ── MAIN APP ──────────────────────────────────────────────────────────
 
 export default function RMCPManager() {
@@ -449,6 +458,8 @@ export default function RMCPManager() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [sectionError, setSectionError] = useState(false);
   const [showExplainer, setShowExplainer] = useState(false);
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [popiConsent, setPopiConsent] = useState(false);
 
   useEffect(() => {
     try {
@@ -743,6 +754,25 @@ Login to the admin dashboard to review and generate their RMCP document.`;
         )}
         <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", marginTop: "16px" }}>Big Bay Administrators reviews and finalises your RMCP document once complete.</p>
       </div>
+      {/* Footer */}
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", padding: "24px 32px", textAlign: "center", position: "relative", zIndex: 2 }}>
+        <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", margin: "0 0 8px" }}>
+          © {new Date().getFullYear()} Big Bay Administrators (Pty) Ltd · Cape Town, South Africa
+        </p>
+        <div style={{ display: "flex", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
+          <button onClick={() => setShowPrivacyPolicy(true)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontSize: "11px", cursor: "pointer", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: 0 }}>
+            Privacy Policy (POPIA)
+          </button>
+          <span style={{ color: "rgba(255,255,255,0.15)", fontSize: "11px" }}>·</span>
+          <button onClick={() => setShowPrivacyPolicy(true)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontSize: "11px", cursor: "pointer", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: 0 }}>
+            PAIA Manual
+          </button>
+          <span style={{ color: "rgba(255,255,255,0.15)", fontSize: "11px" }}>·</span>
+          <a href="mailto:jerome@bigbayadmin.co.za" style={{ color: "rgba(255,255,255,0.35)", fontSize: "11px", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+            jerome@bigbayadmin.co.za
+          </a>
+        </div>
+      </div>
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 32px 60px", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "14px", position: "relative", zIndex: 2 }}>
         {[
           { icon: "📝", title: "Simple questions", desc: "Plain language — no legal jargon. Just describe how your agency operates." },
@@ -756,6 +786,99 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           </div>
         ))}
       </div>
+      {showPrivacyPolicy && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: "20px" }}>
+          <div style={{ background: "#fff", borderRadius: "16px", maxWidth: 560, width: "100%", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
+            <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <h2 style={{ fontSize: "16px", fontWeight: 700, color: "#1a2a3a", margin: 0 }}>Privacy Policy & PAIA Manual</h2>
+                <p style={{ fontSize: "11px", color: "#94a3b8", margin: "2px 0 0" }}>Big Bay Administrators (Pty) Ltd — effective {new Date().getFullYear()}</p>
+              </div>
+              <button onClick={() => setShowPrivacyPolicy(false)} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#94a3b8", lineHeight: 1 }}>×</button>
+            </div>
+            <div style={{ overflowY: "auto", padding: "20px 24px", fontSize: "12px", color: "#374151", lineHeight: 1.75 }}>
+
+              <Section title="1. Who We Are">
+                <p>Big Bay Administrators (Pty) Ltd ("Big Bay Administrators", "we", "us") is a compliance services company registered in South Africa. We are the <strong>responsible party</strong> for the personal information you provide through this platform, as defined in the Protection of Personal Information Act 4 of 2013 (<strong>POPIA</strong>).</p>
+                <p><strong>Information Officer:</strong> Jerome Adams<br /><strong>Email:</strong> jerome@bigbayadmin.co.za<br /><strong>Address:</strong> Big Bay, Cape Town, Western Cape</p>
+              </Section>
+
+              <Section title="2. What Information We Collect">
+                <p>When you use this RMCP assessment tool, we collect:</p>
+                <ul>
+                  <li>Company / trading name and FFC (PPRA) registration number</li>
+                  <li>Contact person name, email address, and phone number</li>
+                  <li>Compliance information you provide in the assessment (risk profile, policies, procedures)</li>
+                  <li>Date and timestamp of submission</li>
+                </ul>
+              </Section>
+
+              <Section title="3. Why We Collect It (Purpose)">
+                <p>Your information is collected and processed solely to:</p>
+                <ul>
+                  <li>Prepare your formal Risk Management and Compliance Programme (RMCP) document required under FICA Section 43</li>
+                  <li>Communicate with you regarding your RMCP and compliance obligations</li>
+                  <li>Provide compliance advisory services you have requested</li>
+                </ul>
+                <p>We will not use your information for any other purpose without your prior consent.</p>
+              </Section>
+
+              <Section title="4. Legal Basis for Processing">
+                <p>We process your personal information on the following grounds under POPIA:</p>
+                <ul>
+                  <li><strong>Consent</strong> — you have given explicit consent by ticking the consent checkbox before submitting your assessment</li>
+                  <li><strong>Contractual necessity</strong> — processing is necessary to deliver the RMCP service you have requested</li>
+                  <li><strong>Legal obligation</strong> — we are required to maintain accurate records of compliance services rendered</li>
+                </ul>
+              </Section>
+
+              <Section title="5. Who We Share Your Information With">
+                <p>We do not sell or share your personal information with third parties for marketing purposes. Your information may be shared only with:</p>
+                <ul>
+                  <li>Our internal staff directly involved in preparing your RMCP</li>
+                  <li>Service providers (e.g. email delivery) who process data strictly on our behalf and under confidentiality obligations</li>
+                  <li>Regulatory authorities (e.g. FIC, PPRA) where required by law</li>
+                </ul>
+              </Section>
+
+              <Section title="6. Retention">
+                <p>We retain your personal information for a minimum of <strong>5 years</strong> from the date of submission, in line with FICA record-keeping requirements. After this period, records are securely destroyed.</p>
+              </Section>
+
+              <Section title="7. Your Rights Under POPIA">
+                <p>You have the right to:</p>
+                <ul>
+                  <li>Access the personal information we hold about you</li>
+                  <li>Request correction of inaccurate information</li>
+                  <li>Request deletion of your information (subject to legal retention obligations)</li>
+                  <li>Object to processing of your information</li>
+                  <li>Lodge a complaint with the <strong>Information Regulator</strong> at <em>inforeg@justice.gov.za</em></li>
+                </ul>
+                <p>To exercise any of these rights, contact: <strong>jerome@bigbayadmin.co.za</strong></p>
+              </Section>
+
+              <Section title="8. Security">
+                <p>We take reasonable technical and organisational measures to protect your personal information against unauthorised access, loss, or misuse. Access to submissions is restricted to authorised Big Bay Administrators staff only.</p>
+              </Section>
+
+              <Section title="9. PAIA — Promotion of Access to Information Act">
+                <p>In terms of the Promotion of Access to Information Act 2 of 2000 (<strong>PAIA</strong>), you have the right to request access to records held by Big Bay Administrators.</p>
+                <p><strong>Information Officer:</strong> Jerome Adams<br /><strong>Request procedure:</strong> Submit a written request to jerome@bigbayadmin.co.za describing the records you seek. We will respond within <strong>30 days</strong> as required by PAIA.<br /><strong>Form to use:</strong> PAIA Form C (available from the South African Government website)</p>
+                <p>Requests may be refused on grounds set out in PAIA (e.g. third-party privacy, commercial confidentiality). You may appeal a refusal to the Information Regulator.</p>
+              </Section>
+
+              <Section title="10. Changes to This Policy">
+                <p>We may update this policy from time to time. The current version is always available on this platform. Continued use of our services after changes constitutes acceptance of the updated policy.</p>
+              </Section>
+            </div>
+            <div style={{ padding: "14px 24px", borderTop: "1px solid #e2e8f0" }}>
+              <button onClick={() => setShowPrivacyPolicy(false)} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {showLeadForm && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: "20px" }}>
           <div style={{ background: "#fff", borderRadius: "16px", padding: "28px", maxWidth: 420, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
@@ -777,11 +900,23 @@ Login to the admin dashboard to review and generate their RMCP document.`;
                   onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
               </div>
             ))}
-            <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
-              <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); }}
+            <div style={{ marginTop: "14px", padding: "12px", borderRadius: "8px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+              <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", cursor: "pointer" }}>
+                <input type="checkbox" checked={popiConsent} onChange={e => setPopiConsent(e.target.checked)}
+                  style={{ marginTop: "2px", accentColor: "#2463AE", flexShrink: 0 }} />
+                <span style={{ fontSize: "11px", color: "#4a5568", lineHeight: 1.6 }}>
+                  I consent to Big Bay Administrators (Pty) Ltd collecting and processing my personal information for the purpose of preparing my RMCP document, in accordance with the{" "}
+                  <button onClick={() => setShowPrivacyPolicy(true)} style={{ background: "none", border: "none", color: "#2463AE", fontSize: "11px", fontWeight: 600, cursor: "pointer", padding: 0, textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+                    Privacy Policy (POPIA)
+                  </button>.
+                </span>
+              </label>
+            </div>
+            <div style={{ display: "flex", gap: "10px", marginTop: "12px" }}>
+              <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); setPopiConsent(false); }}
                 style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Cancel</button>
-              <button onClick={addClient} disabled={!leadData.company.trim()}
-                style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
+              <button onClick={addClient} disabled={!leadData.company.trim() || !popiConsent}
+                style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() && popiConsent ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() && popiConsent ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
                 Start Assessment →
               </button>
             </div>
