@@ -702,8 +702,8 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           <button onClick={() => setShowExplainer(v => !v)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: "12px", cursor: "pointer", fontFamily: "'DM Sans', sans-serif", textDecoration: "underline", padding: 0 }}>
             {showExplainer ? "Hide explanation ▲" : "What is an RMCP? ▼"}
           </button>
-          <a href="https://www.fic.gov.za/Resources/Pages/Legislation.aspx" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.5)", fontSize: "12px", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
-            FIC Act (Section 43) →
+          <a href="https://www.fic.gov.za/FAQ/Pages/default.aspx" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.5)", fontSize: "12px", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+            FIC FAQs →
           </a>
         </div>
         {showExplainer && (
@@ -715,9 +715,30 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 10px" }}>
               Your RMCP must document how your agency identifies, assesses, and manages money laundering and terrorist financing risks. Without one, you are non-compliant and face penalties from the FIC.
             </p>
-            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: 0 }}>
+            <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: "0 0 12px" }}>
               This tool guides you through the required sections. Big Bay Administrators then reviews your answers and produces your formal, signed RMCP document.
             </p>
+            <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "12px" }}>
+              <p style={{ fontSize: "11px", fontWeight: 700, color: "#6BA3E8", textTransform: "uppercase", letterSpacing: "0.6px", margin: "0 0 8px" }}>Who is an Accountable Institution? (Schedule 1, FICA)</p>
+              <ul style={{ margin: 0, padding: "0 0 0 16px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 12px" }}>
+                {[
+                  "Property practitioners (estate agents)",
+                  "Attorneys & conveyancers",
+                  "Accountants & auditors",
+                  "Tax practitioners",
+                  "Banks & mutual banks",
+                  "Life insurers",
+                  "Collective investment schemes",
+                  "Forex & money transfer operators",
+                  "Motor vehicle dealers",
+                  "Dealers in high-value goods",
+                  "Trust & company service providers",
+                  "Gambling institutions",
+                ].map((item, i) => (
+                  <li key={i} style={{ fontSize: "11px", color: "rgba(255,255,255,0.55)", lineHeight: 1.6 }}>{item}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
         <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", marginTop: "16px" }}>Big Bay Administrators reviews and finalises your RMCP document once complete.</p>
