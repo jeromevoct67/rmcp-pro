@@ -579,13 +579,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           {flags.length > 0 && (
             <div style={{ background: "#fff", borderRadius: "12px", padding: "18px", border: "1px solid #e2e8f0", marginBottom: "16px" }}>
               <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#1a2a3a", marginBottom: "14px", display: "flex", alignItems: "center", gap: "6px" }}>
-                📋 Action Plans Required ({flags.filter(f => ACTION_PLANS[`${Object.entries(formData).find(([k, v]) => {
-                  const section = RMCP_SECTIONS.find(s => s.fields.find(f => f.id === k));
-                  return section && v === "Not yet established" || v === "Not yet addressed" || v === "No backup process in place" || v === "Paper-based filing only" || v === "Not yet specified" || !f.data.board_approval_date;
-                })?.[0] || ""}:${Object.entries(formData).find(([k, v]) => {
-                  const section = RMCP_SECTIONS.find(s => s.fields.find(f => f.id === k));
-                  return section && v === "Not yet established" || v === "Not yet addressed" || v === "No backup process in place" || v === "Paper-based filing only" || v === "Not yet specified" || !f.data.board_approval_date;
-                })?.[1] || ""}`] }).length} gaps)
+                📋 Action Plans Required ({flags.filter(f => ACTION_PLANS[f.fieldKey]).length} gaps)
               </h3>
               <p style={{ fontSize: "12px", color: "#64748b", marginBottom: "14px" }}>Below are action plans to address each compliance gap. Review, plan, or request our help to implement.</p>
 
