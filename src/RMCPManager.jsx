@@ -802,7 +802,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
         </div>
       </div>
       {showTerms && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: "20px" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", overflowY: "auto", WebkitOverflowScrolling: "touch", zIndex: 200, padding: "16px 16px 40px", display: "flex", alignItems: "flex-start", justifyContent: "center" }}>
           <div style={{ background: "#fff", borderRadius: "16px", width: "min(560px, 92vw)", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
             <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
@@ -886,7 +886,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
         </div>
       )}
       {showPrivacyPolicy && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: "20px" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", overflowY: "auto", WebkitOverflowScrolling: "touch", zIndex: 200, padding: "16px 16px 40px", display: "flex", alignItems: "flex-start", justifyContent: "center" }}>
           <div style={{ background: "#fff", borderRadius: "16px", width: "min(560px, 92vw)", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
             <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
@@ -979,54 +979,57 @@ Login to the admin dashboard to review and generate their RMCP document.`;
         </div>
       )}
       {showLeadForm && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: "20px" }}>
-          <div style={{ background: "#fff", borderRadius: "16px", padding: "20px", width: "min(420px, 92vw)", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", overflowY: "auto", WebkitOverflowScrolling: "touch", zIndex: 100, padding: "16px 16px 40px" }}>
+          <div style={{ background: "#fff", borderRadius: "16px", padding: "24px 20px", width: "min(420px, 100%)", margin: "0 auto", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
             <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", marginBottom: "4px" }}>Start Your RMCP Assessment</h2>
             <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "18px" }}>Enter your agency details to begin</p>
             {[
               { key: "company", label: "Company / Trading Name *", placeholder: "e.g. Atlantic Seaboard Properties (Pty) Ltd" },
               { key: "contact", label: "Contact Person", placeholder: "Full name" },
-              { key: "email", label: "Email Address", placeholder: "name@company.co.za" },
-              { key: "phone", label: "Phone Number", placeholder: "082 123 4567" },
+              { key: "email", label: "Email Address", placeholder: "name@company.co.za", inputMode: "email" },
+              { key: "phone", label: "Phone Number", placeholder: "082 123 4567", inputMode: "tel" },
               { key: "ffc", label: "FFC Number (PPRA)", placeholder: "Fidelity Fund Certificate number" },
             ].map(f => (
-              <div key={f.key} style={{ marginBottom: "11px" }}>
-                <label style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.4px" }}>{f.label}</label>
+              <div key={f.key} style={{ marginBottom: "14px" }}>
+                <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#374151", marginBottom: "6px" }}>{f.label}</label>
                 <input value={leadData[f.key]} onChange={e => setLeadData({ ...leadData, [f.key]: e.target.value })}
                   placeholder={f.placeholder}
-                  style={{ width: "100%", padding: "14px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px" }}
+                  inputMode={f.inputMode}
+                  style={{ width: "100%", padding: "14px", borderRadius: "10px", border: "1.5px solid #e2e8f0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px", WebkitAppearance: "none" }}
                   onFocus={e => e.target.style.borderColor = "#2463AE"}
                   onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
               </div>
             ))}
-            <div style={{ marginTop: "14px", padding: "12px", borderRadius: "8px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
-              <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", cursor: "pointer" }}>
+            <div style={{ marginTop: "16px", padding: "14px", borderRadius: "10px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+              <label style={{ display: "flex", alignItems: "flex-start", gap: "12px", cursor: "pointer" }}>
                 <input type="checkbox" checked={popiConsent} onChange={e => setPopiConsent(e.target.checked)}
-                  style={{ marginTop: "2px", accentColor: "#2463AE", flexShrink: 0 }} />
-                <span style={{ fontSize: "11px", color: "#4a5568", lineHeight: 1.6 }}>
-                  I consent to Big Bay Administrators (Pty) Ltd collecting and processing my personal information for the purpose of preparing my RMCP document, in accordance with the{" "}
-                  <button onClick={() => setShowPrivacyPolicy(true)} style={{ background: "none", border: "none", color: "#2463AE", fontSize: "11px", fontWeight: 600, cursor: "pointer", padding: 0, textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+                  style={{ width: "20px", height: "20px", marginTop: "1px", accentColor: "#2463AE", flexShrink: 0, cursor: "pointer" }} />
+                <span style={{ fontSize: "13px", color: "#4a5568", lineHeight: 1.6 }}>
+                  I consent to Big Bay Administrators (Pty) Ltd collecting and processing my personal information in accordance with the{" "}
+                  <button onClick={() => setShowPrivacyPolicy(true)} style={{ background: "none", border: "none", color: "#2463AE", fontSize: "13px", fontWeight: 600, cursor: "pointer", padding: 0, textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
                     Privacy Policy (POPIA)
                   </button>.
                 </span>
               </label>
             </div>
-            <div style={{ display: "flex", gap: "10px", marginTop: "12px" }}>
-              <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", cursor: "pointer", marginTop: "8px" }}>
+            <div style={{ marginTop: "10px", padding: "14px", borderRadius: "10px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+              <label style={{ display: "flex", alignItems: "flex-start", gap: "12px", cursor: "pointer" }}>
                 <input type="checkbox" checked={termsConsent} onChange={e => setTermsConsent(e.target.checked)}
-                  style={{ marginTop: "2px", accentColor: "#2463AE", flexShrink: 0 }} />
-                <span style={{ fontSize: "11px", color: "#4a5568", lineHeight: 1.6 }}>
+                  style={{ width: "20px", height: "20px", marginTop: "1px", accentColor: "#2463AE", flexShrink: 0, cursor: "pointer" }} />
+                <span style={{ fontSize: "13px", color: "#4a5568", lineHeight: 1.6 }}>
                   I have read and agree to the{" "}
-                  <button onClick={() => setShowTerms(true)} style={{ background: "none", border: "none", color: "#2463AE", fontSize: "11px", fontWeight: 600, cursor: "pointer", padding: 0, textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+                  <button onClick={() => setShowTerms(true)} style={{ background: "none", border: "none", color: "#2463AE", fontSize: "13px", fontWeight: 600, cursor: "pointer", padding: 0, textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
                     Terms of Use
                   </button>.
                 </span>
               </label>
+            </div>
+            <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
               <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); setPopiConsent(false); setTermsConsent(false); }}
-                style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Cancel</button>
+                style={{ flex: 1, padding: "14px", minHeight: "52px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Cancel</button>
               <button onClick={addClient} disabled={!leadData.company.trim() || !popiConsent || !termsConsent}
-                style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() && popiConsent && termsConsent ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() && popiConsent && termsConsent ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
-                Start Assessment →
+                style={{ flex: 1, padding: "14px", minHeight: "52px", borderRadius: "10px", border: "none", background: leadData.company.trim() && popiConsent && termsConsent ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: leadData.company.trim() && popiConsent && termsConsent ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
+                Start →
               </button>
             </div>
           </div>
