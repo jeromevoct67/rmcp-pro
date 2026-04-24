@@ -459,7 +459,10 @@ export default function RMCPManager() {
   const [sectionError, setSectionError] = useState(false);
   const [showExplainer, setShowExplainer] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
   const [popiConsent, setPopiConsent] = useState(false);
+  const [termsConsent, setTermsConsent] = useState(false);
+  const [adminLoginError, setAdminLoginError] = useState("");
 
   useEffect(() => {
     try {
@@ -771,10 +774,25 @@ Login to the admin dashboard to review and generate their RMCP document.`;
       </div>
       {/* Footer */}
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", padding: "24px 32px", textAlign: "center", position: "relative", zIndex: 2 }}>
+        {/* ECTA s43 Supplier Disclosure */}
+        <div style={{ maxWidth: 560, margin: "0 auto 14px", padding: "12px 16px", borderRadius: "8px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", textAlign: "left" }}>
+          <p style={{ fontSize: "10px", fontWeight: 700, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.6px", margin: "0 0 6px" }}>Supplier Information (ECTA s43)</p>
+          <p style={{ fontSize: "10px", color: "rgba(255,255,255,0.25)", margin: 0, lineHeight: 1.7 }}>
+            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Legal name:</strong> Big Bay Administrators (Pty) Ltd &nbsp;·&nbsp;
+            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Reg no:</strong> [Insert reg no] &nbsp;·&nbsp;
+            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Address:</strong> Big Bay, Blouberg, Cape Town, Western Cape &nbsp;·&nbsp;
+            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Email:</strong> jerome@bigbayadmin.co.za &nbsp;·&nbsp;
+            <strong style={{ color: "rgba(255,255,255,0.35)" }}>Website:</strong> rmcp-pro.vercel.app
+          </p>
+        </div>
         <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.3)", margin: "0 0 8px" }}>
           © {new Date().getFullYear()} Big Bay Administrators (Pty) Ltd · Cape Town, South Africa
         </p>
         <div style={{ display: "flex", justifyContent: "center", gap: "16px", flexWrap: "wrap" }}>
+          <button onClick={() => setShowTerms(true)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontSize: "11px", cursor: "pointer", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: 0 }}>
+            Terms of Use
+          </button>
+          <span style={{ color: "rgba(255,255,255,0.15)", fontSize: "11px" }}>·</span>
           <button onClick={() => setShowPrivacyPolicy(true)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.35)", fontSize: "11px", cursor: "pointer", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: 0 }}>
             Privacy Policy (POPIA)
           </button>
@@ -788,6 +806,90 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           </a>
         </div>
       </div>
+      {showTerms && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: "20px" }}>
+          <div style={{ background: "#fff", borderRadius: "16px", maxWidth: 560, width: "100%", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
+            <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <h2 style={{ fontSize: "16px", fontWeight: 700, color: "#1a2a3a", margin: 0 }}>Terms of Use</h2>
+                <p style={{ fontSize: "11px", color: "#94a3b8", margin: "2px 0 0" }}>Big Bay Administrators (Pty) Ltd — effective {new Date().getFullYear()}</p>
+              </div>
+              <button onClick={() => setShowTerms(false)} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#94a3b8", lineHeight: 1 }}>×</button>
+            </div>
+            <div style={{ overflowY: "auto", padding: "20px 24px", fontSize: "12px", color: "#374151", lineHeight: 1.75 }}>
+
+              <Section title="1. Acceptance of Terms">
+                <p>By accessing or using the RMCPPro platform ("the Platform") operated by Big Bay Administrators (Pty) Ltd ("Big Bay Administrators", "we", "us"), you confirm that you have read, understood, and agree to be bound by these Terms of Use. If you do not agree, you may not use the Platform.</p>
+                <p>These terms constitute a binding electronic agreement under the Electronic Communications and Transactions Act 25 of 2002 (<strong>ECTA</strong>).</p>
+              </Section>
+
+              <Section title="2. Eligibility">
+                <p>You may only use the Platform if you:</p>
+                <ul>
+                  <li>Are 18 years of age or older</li>
+                  <li>Are acting in a business capacity as a registered property practitioner, accountable institution, or authorised representative thereof</li>
+                  <li>Are not prohibited by any applicable law from entering into this agreement</li>
+                </ul>
+                <p>Use of the Platform by consumers acting in a personal capacity is not intended and confers no rights under the Consumer Protection Act 68 of 2008 in respect of the RMCP service.</p>
+              </Section>
+
+              <Section title="3. Nature of Service">
+                <p>The Platform provides a <strong>compliance assessment tool</strong> that guides registered property practitioners and other accountable institutions through the process of documenting their Risk Management and Compliance Programme (RMCP) as required by the Financial Intelligence Centre Act 38 of 2001 (FICA) Section 43.</p>
+                <p><strong>The Platform does not provide legal advice.</strong> The information and output generated are based on the answers you provide and constitute a template document prepared with your input. Big Bay Administrators reviews your submission and produces a formal RMCP document, but:</p>
+                <ul>
+                  <li>The final RMCP is based solely on the information you supply — accuracy is your responsibility</li>
+                  <li>We do not guarantee that the document will satisfy every regulatory requirement applicable to your specific circumstances</li>
+                  <li>You should obtain independent legal or compliance advice if you are uncertain about your obligations</li>
+                </ul>
+              </Section>
+
+              <Section title="4. Limitation of Liability">
+                <p>To the maximum extent permitted by South African law, Big Bay Administrators shall not be liable for:</p>
+                <ul>
+                  <li>Any regulatory penalties, fines, or sanctions imposed on you by the FIC, PPRA, or any other authority arising from your RMCP or compliance programme</li>
+                  <li>Any loss, damage, or expense arising from reliance on the Platform's output without independent verification</li>
+                  <li>Inaccuracies in your RMCP resulting from incorrect or incomplete information you provided</li>
+                  <li>Interruptions in service, data loss, or technical failures beyond our reasonable control</li>
+                </ul>
+                <p>Our total aggregate liability to you in respect of any claim shall not exceed the fees paid by you to Big Bay Administrators in the 12 months preceding the claim.</p>
+              </Section>
+
+              <Section title="5. User Obligations">
+                <p>You agree to:</p>
+                <ul>
+                  <li>Provide accurate, complete, and truthful information in your assessment</li>
+                  <li>Not use the Platform for any unlawful purpose</li>
+                  <li>Not attempt to access, modify, or interfere with the Platform's systems or data</li>
+                  <li>Keep your access credentials confidential</li>
+                  <li>Notify us immediately if you become aware of any unauthorised use of the Platform</li>
+                </ul>
+              </Section>
+
+              <Section title="6. Intellectual Property">
+                <p>All content on the Platform, including the assessment structure, action plan library, compliance guidance, and generated document templates, is the intellectual property of Big Bay Administrators (Pty) Ltd. You may not copy, reproduce, or distribute any content without our prior written consent.</p>
+                <p>The RMCP document generated for you is licensed for your internal compliance use only and may not be sold, sublicensed, or represented as independently authored.</p>
+              </Section>
+
+              <Section title="7. Amendments">
+                <p>We may update these Terms of Use at any time. Continued use of the Platform after changes are published constitutes acceptance of the updated terms. Material changes will be notified via the email address you provided.</p>
+              </Section>
+
+              <Section title="8. Governing Law">
+                <p>These Terms of Use are governed by the laws of the Republic of South Africa. Any dispute arising from or in connection with these terms shall be subject to the exclusive jurisdiction of the courts of the Western Cape Division of the High Court of South Africa.</p>
+              </Section>
+
+              <Section title="9. Contact">
+                <p><strong>Big Bay Administrators (Pty) Ltd</strong><br />Big Bay, Blouberg, Cape Town, Western Cape<br />Email: jerome@bigbayadmin.co.za</p>
+              </Section>
+            </div>
+            <div style={{ padding: "14px 24px", borderTop: "1px solid #e2e8f0" }}>
+              <button onClick={() => setShowTerms(false)} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {showPrivacyPolicy && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: "20px" }}>
           <div style={{ background: "#fff", borderRadius: "16px", maxWidth: 560, width: "100%", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
@@ -915,10 +1017,20 @@ Login to the admin dashboard to review and generate their RMCP document.`;
               </label>
             </div>
             <div style={{ display: "flex", gap: "10px", marginTop: "12px" }}>
-              <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); setPopiConsent(false); }}
+              <label style={{ display: "flex", alignItems: "flex-start", gap: "10px", cursor: "pointer", marginTop: "8px" }}>
+                <input type="checkbox" checked={termsConsent} onChange={e => setTermsConsent(e.target.checked)}
+                  style={{ marginTop: "2px", accentColor: "#2463AE", flexShrink: 0 }} />
+                <span style={{ fontSize: "11px", color: "#4a5568", lineHeight: 1.6 }}>
+                  I have read and agree to the{" "}
+                  <button onClick={() => setShowTerms(true)} style={{ background: "none", border: "none", color: "#2463AE", fontSize: "11px", fontWeight: 600, cursor: "pointer", padding: 0, textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+                    Terms of Use
+                  </button>.
+                </span>
+              </label>
+              <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); setPopiConsent(false); setTermsConsent(false); }}
                 style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Cancel</button>
-              <button onClick={addClient} disabled={!leadData.company.trim() || !popiConsent}
-                style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() && popiConsent ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() && popiConsent ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
+              <button onClick={addClient} disabled={!leadData.company.trim() || !popiConsent || !termsConsent}
+                style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() && popiConsent && termsConsent ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() && popiConsent && termsConsent ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
                 Start Assessment →
               </button>
             </div>
@@ -1206,11 +1318,27 @@ Login to the admin dashboard to review and generate their RMCP document.`;
         <div style={{ background: "#fff", padding: "40px", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", maxWidth: 400, width: "100%" }}>
           <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", marginBottom: "24px" }}>Admin Login</h2>
           <input type="password" placeholder="Enter admin password" id="adminPwd"
-            onKeyPress={(e) => { if (e.key === "Enter" && e.target.value === "BigBay2024") { setIsAdmin(true); setView("admin"); } }}
-            style={{ width: "100%", padding: "12px", marginBottom: "16px", borderRadius: "6px", border: "1px solid #ddd", fontSize: "14px", boxSizing: "border-box" }} autoFocus />
-          <button onClick={() => { const pwd = document.getElementById("adminPwd").value; if (pwd === "BigBay2024") { setIsAdmin(true); setView("admin"); } else { alert("Incorrect password"); } }}
+            onKeyPress={async (e) => {
+              if (e.key !== "Enter") return;
+              setAdminLoginError("");
+              const pwd = e.target.value;
+              try {
+                const r = await fetch("/api/admin-auth", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: pwd }) });
+                if (r.ok) { setIsAdmin(true); setView("admin"); } else { setAdminLoginError("Incorrect password"); }
+              } catch { setAdminLoginError("Login failed — please try again"); }
+            }}
+            style={{ width: "100%", padding: "12px", marginBottom: "8px", borderRadius: "6px", border: adminLoginError ? "1.5px solid #dc2626" : "1px solid #ddd", fontSize: "14px", boxSizing: "border-box" }} autoFocus />
+          {adminLoginError && <p style={{ color: "#dc2626", fontSize: "12px", margin: "0 0 12px", fontWeight: 600 }}>{adminLoginError}</p>}
+          <button onClick={async () => {
+            setAdminLoginError("");
+            const pwd = document.getElementById("adminPwd").value;
+            try {
+              const r = await fetch("/api/admin-auth", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ password: pwd }) });
+              if (r.ok) { setIsAdmin(true); setView("admin"); } else { setAdminLoginError("Incorrect password"); }
+            } catch { setAdminLoginError("Login failed — please try again"); }
+          }}
             style={{ width: "100%", padding: "12px", borderRadius: "6px", border: "none", background: "#2463AE", color: "#fff", fontWeight: 600, cursor: "pointer", marginBottom: "12px" }}>Login</button>
-          <button onClick={() => setView("landing")}
+          <button onClick={() => { setAdminLoginError(""); setView("landing"); }}
             style={{ width: "100%", padding: "12px", borderRadius: "6px", border: "1px solid #ddd", background: "#fff", color: "#666", fontWeight: 600, cursor: "pointer" }}>Cancel</button>
         </div>
       </div>
@@ -1280,7 +1408,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
 <div class="cover page-break"><div style="font-size:32px;font-weight:bold;color:#1C5BA3">Risk Management and Compliance Programme</div><div style="font-size:14px;color:#666;margin:20px 0">Financial Intelligence Centre Act 38 of 2001</div><table style="border:none;margin-top:40px"><tr style="border:none"><td style="border:none"><strong>Institution:</strong></td><td style="border:none">${client.company}</td></tr><tr style="border:none"><td style="border:none"><strong>FFC Number:</strong></td><td style="border:none">${client.ffc||"Not specified"}</td></tr><tr style="border:none"><td style="border:none"><strong>Date:</strong></td><td style="border:none">${today}</td></tr><tr style="border:none"><td style="border:none"><strong>Version:</strong></td><td style="border:none">1.0</td></tr></table></div>
 <div class="page-break"><h1>PART 1: RISK IDENTIFICATION & ASSESSMENT</h1><h2>1.1 Business Profile</h2><table><tr><th>Factor</th><th>Details</th></tr><tr><td>Client Types</td><td>${(d.client_types||[]).join(", ")}</td></tr><tr><td>Services</td><td>${(d.transaction_types||[]).join(", ")}</td></tr><tr><td>Geographic Exposure</td><td>${d.geographic_risk||""}</td></tr><tr><td>Transaction Value</td><td>${d.value_range||""}</td></tr></table><h2>1.2 Risk Assessment</h2><p>ML/TF/PF risk assessed using likelihood × impact matrix.</p><table><tr><th>Risk Type</th><th>Rating</th></tr><tr><td>Inherent Risk</td><td><strong>Medium</strong></td></tr><tr><td>Residual Risk</td><td><strong>Low</strong></td></tr></table></div>
 <div class="page-break"><h1>PART 2: RISK MITIGATION CONTROLS</h1><h2>2.1 Customer Due Diligence (CDD)</h2><table><tr><th>Risk Level</th><th>Identity</th><th>Address</th><th>Monitoring</th></tr><tr><td>Low</td><td>Certified ID</td><td>Utility bill ≤3 months</td><td>Annual</td></tr><tr><td>Medium</td><td>ID + source verification</td><td>Independent verification</td><td>Transaction-triggered</td></tr><tr><td>High (EDD)</td><td>Senior approval required</td><td>Independent + call</td><td>Monthly</td></tr></table><h2>2.2 Reporting Obligations</h2><table><tr><th>Report</th><th>Deadline</th><th>Method</th></tr><tr><td>STR</td><td>15 days</td><td>goAML</td></tr><tr><td>CTR</td><td><strong>3 business days</strong></td><td>goAML</td></tr><tr><td>TPR</td><td>Immediately</td><td>goAML + FIC email</td></tr></table><div class="warning"><strong>⚠️ TIPPING-OFF PROHIBITION (Section 29(2)):</strong> No employee may disclose STR/CTR/TPR filings. Criminal offence.</div><h2>2.3 Targeted Financial Sanctions</h2><p><strong>Match Protocol:</strong> Freeze → Do not proceed → Escalate within 1 hour → Report to FIC within 2 hours → Maintain confidentiality</p><h2>2.4 Record Keeping</h2><p>All records retained minimum 5 years. Formal certified destruction with audit trail.</p><h2>2.5 Training</h2><p><strong>Status:</strong> ${d.training_policy||"Not specified"}</p></div>
-<div><h1>PART 3: MONITORING, REVIEW & GOVERNANCE</h1><h2>3.1 Oversight</h2><table><tr><th>Role</th><th>Details</th></tr><tr><td>Compliance Officer</td><td>${d.compliance_officer||""}</td></tr><tr><td>Board Approval</td><td>${d.board_approval_date||""}</td></tr><tr><td>Review Frequency</td><td>Annually</td></tr></table><h2>3.2 Quality Assurance</h2><ul><li>Quarterly CDD audits (10% or 5 files)</li><li>Annual RMCP review</li><li>RCR submission per Directive 6 by 30 Sept</li><li>Employee screening per Directive 8</li></ul><div class="warning"><strong>CRITICAL:</strong> Documentation ≠ Compliance. All controls must be actively implemented.</div><h2>3.3 Signatures</h2><p><strong>Board/Senior Management:</strong> Signature: ____________ Date: ____________</p><p><strong>Compliance Officer:</strong> ${d.compliance_officer||""} Signature: ____________ Date: ____________</p><br><p>Prepared by Big Bay Administrators (Pty) Ltd | Cape Town | jerome@bigbayadmin.co.za</p></div></body></html>`;
+<div><h1>PART 3: MONITORING, REVIEW & GOVERNANCE</h1><h2>3.1 Oversight</h2><table><tr><th>Role</th><th>Details</th></tr><tr><td>Compliance Officer</td><td>${d.compliance_officer||""}</td></tr><tr><td>Board Approval</td><td>${d.board_approval_date||""}</td></tr><tr><td>Review Frequency</td><td>Annually</td></tr></table><h2>3.2 Quality Assurance</h2><ul><li>Quarterly CDD audits (10% or 5 files)</li><li>Annual RMCP review</li><li>RCR submission per Directive 6 by 30 Sept</li><li>Employee screening per Directive 8</li></ul><div class="warning"><strong>CRITICAL:</strong> Documentation ≠ Compliance. All controls must be actively implemented.</div><h2>3.3 Signatures</h2><p><strong>Board/Senior Management:</strong> Signature: ____________ Date: ____________</p><p><strong>Compliance Officer:</strong> ${d.compliance_officer||""} Signature: ____________ Date: ____________</p><br><p>Prepared by Big Bay Administrators (Pty) Ltd | Cape Town | jerome@bigbayadmin.co.za</p></div><div style="margin-top:40px;padding:16px 20px;background:#f8f9fa;border:1px solid #dee2e6;border-radius:4px;font-size:11px;color:#6c757d;line-height:1.6"><strong>DISCLAIMER:</strong> This Risk Management and Compliance Programme document was prepared by Big Bay Administrators (Pty) Ltd based solely on information provided by the client through the RMCPPro assessment tool. It constitutes a template compliance document and does not constitute legal advice. The accuracy and completeness of this document depend entirely on the accuracy of the information supplied by the client. Big Bay Administrators makes no representation or warranty that this document will satisfy all regulatory requirements applicable to the client's specific circumstances. The client remains solely responsible for implementing the controls described herein and for compliance with all applicable legislation including FICA 38 of 2001. Independent legal or compliance advice is recommended. Big Bay Administrators (Pty) Ltd shall not be liable for any regulatory penalties, fines, sanctions, or losses arising from reliance on this document. | Governed by South African law.</div></body></html>`;
       return html;
     };
 
