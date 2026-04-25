@@ -8,12 +8,12 @@ const RMCP_SECTIONS = [
     icon: "⚖️",
     description: "Board/management commitment to AML/CFT compliance",
     fields: [
-      { id: "compliance_officer", label: "Designated Compliance Officer", type: "text", placeholder: "Full name of appointed compliance officer" },
+      { id: "compliance_officer", label: "Designated Compliance Officer", hint: "Required by FICA s43. Must be a senior employee with authority to implement and enforce your compliance controls.", type: "text", placeholder: "Full name of appointed compliance officer" },
       { id: "compliance_officer_contact", label: "Compliance Officer Contact", type: "text", placeholder: "Email / phone number" },
-      { id: "board_approval_date", label: "Date RMCP approved by management", type: "date" },
-      { id: "review_frequency", label: "How often will your RMCP be reviewed?", type: "select", options: ["Annually", "Bi-annually", "Quarterly", "As needed"] },
+      { id: "board_approval_date", label: "Date RMCP approved by management", hint: "Your RMCP is only legally valid once formally approved by your board or senior management. Without this sign-off it is not enforceable.", type: "date" },
+      { id: "review_frequency", label: "How often will your RMCP be reviewed?", hint: "FICA requires your RMCP to stay current as your business evolves. Annual review is the minimum — more often if your risk profile changes.", type: "select", options: ["Annually", "Bi-annually", "Quarterly", "As needed"] },
       { id: "last_review_date", label: "Date of last RMCP review", type: "date" },
-      { id: "training_policy", label: "How do you train staff on AML/CFT?", type: "select", options: ["Annual workshops", "Online modules", "External provider", "In-house training", "Not yet established"] },
+      { id: "training_policy", label: "How do you train staff on AML/CFT?", hint: "All staff who interact with clients must receive AML/CFT training — not just the Compliance Officer. Untrained staff is a common FIC inspection finding.", type: "select", options: ["Annual workshops", "Online modules", "External provider", "In-house training", "Not yet established"] },
     ]
   },
   {
@@ -22,12 +22,12 @@ const RMCP_SECTIONS = [
     icon: "🔍",
     description: "Identifying your money laundering and terror financing risks",
     fields: [
-      { id: "client_types", label: "What types of clients do you work with?", type: "multi", options: ["Individual buyers", "Individual sellers", "Companies / Trusts", "Foreign nationals", "Politically Exposed Persons (PEPs)", "Property developers", "Investors"] },
-      { id: "transaction_types", label: "What types of transactions do you handle?", type: "multi", options: ["Residential sales", "Commercial sales", "Residential rentals", "Property management", "New developments", "Auction sales"] },
-      { id: "geographic_risk", label: "Where do most of your clients come from?", type: "select", options: ["Local area only", "National — across South Africa", "International / foreign clients", "Mix of local and international"] },
-      { id: "value_range", label: "What is your typical transaction value?", type: "select", options: ["Under R1 million", "R1m to R5m", "R5m to R15m", "R15m to R50m", "Over R50m", "Mixed range"] },
-      { id: "risk_rating", label: "How would you rate your overall ML/TF risk?", type: "select", options: ["Low — straightforward local transactions", "Medium — some complex or higher-value deals", "High — foreign clients, large transactions, or complex structures"] },
-      { id: "risk_assessment_date", label: "When was your last formal risk assessment done?", type: "date" },
+      { id: "client_types", label: "What types of clients do you work with?", hint: "Select all that apply. A more diverse client base generally means a higher ML/TF risk profile and more rigorous due diligence requirements.", type: "multi", options: ["Individual buyers", "Individual sellers", "Companies / Trusts", "Foreign nationals", "Politically Exposed Persons (PEPs)", "Property developers", "Investors"] },
+      { id: "transaction_types", label: "What types of transactions do you handle?", hint: "Select all transaction types your agency is involved in. Each type carries different risk characteristics under FICA.", type: "multi", options: ["Residential sales", "Commercial sales", "Residential rentals", "Property management", "New developments", "Auction sales"] },
+      { id: "geographic_risk", label: "Where do most of your clients come from?", hint: "Foreign clients and cross-border transactions carry elevated money laundering risk and trigger enhanced due diligence requirements.", type: "select", options: ["Local area only", "National — across South Africa", "International / foreign clients", "Mix of local and international"] },
+      { id: "value_range", label: "What is your typical transaction value?", hint: "Transactions above R5 million are generally considered higher risk. Properties over R15m typically require enhanced due diligence and source-of-funds verification.", type: "select", options: ["Under R1 million", "R1m to R5m", "R5m to R15m", "R15m to R50m", "Over R50m", "Mixed range"] },
+      { id: "risk_rating", label: "How would you rate your overall ML/TF risk?", hint: "Be honest — your risk rating determines the level of due diligence required. Under-rating your risk is itself a compliance issue if challenged by the FIC.", type: "select", options: ["Low — straightforward local transactions", "Medium — some complex or higher-value deals", "High — foreign clients, large transactions, or complex structures"] },
+      { id: "risk_assessment_date", label: "When was your last formal risk assessment done?", hint: "A documented risk assessment must be on file. If you have never done one formally, Big Bay Admin can assist.", type: "date" },
     ]
   },
   {
@@ -36,12 +36,12 @@ const RMCP_SECTIONS = [
     icon: "👤",
     description: "How you verify client identity before doing business",
     fields: [
-      { id: "id_verification", label: "How do you verify client identity?", type: "multi", options: ["Certified copy of ID document", "Smart ID card scan", "Passport copy (foreign nationals)", "Biometric verification", "Electronic verification (e.g. XDS / Lexis)"] },
-      { id: "address_verification", label: "How do you verify client address?", type: "multi", options: ["Utility bill (not older than 3 months)", "Bank statement", "Municipal account", "Lease agreement", "Sworn affidavit"] },
-      { id: "beneficial_owner", label: "For companies or trusts — how do you identify the beneficial owner?", type: "select", options: ["CIPC records plus signed declarations", "Company resolution plus director ID documents", "Trust deed plus trustee ID documents", "Not applicable — we only work with individuals", "Combination of methods depending on structure"] },
-      { id: "pep_screening", label: "How do you screen for Politically Exposed Persons (PEPs)?", type: "select", options: ["Manual checklist against known PEP list", "Third-party screening tool", "Online database check", "Not yet established"] },
-      { id: "enhanced_dd", label: "Which situations trigger enhanced due diligence for you?", type: "multi", options: ["Foreign nationals", "PEPs or their family members", "Complex ownership structures", "High-value transactions", "Cash payments", "Unusual or suspicious patterns"] },
-      { id: "ongoing_dd", label: "How do you monitor clients on an ongoing basis?", type: "select", options: ["Per-transaction review for all clients", "Annual review of all client files", "Risk-based — more frequent for high-risk clients", "Not yet established"] },
+      { id: "id_verification", label: "How do you verify client identity?", hint: "You must verify identity before entering into any business relationship. Select all methods your agency currently uses in practice.", type: "multi", options: ["Certified copy of ID document", "Smart ID card scan", "Passport copy (foreign nationals)", "Biometric verification", "Electronic verification (e.g. XDS / Lexis)"] },
+      { id: "address_verification", label: "How do you verify client address?", hint: "Proof of address documents must not be older than 3 months at the time of verification. Bank statements and utility bills are most commonly accepted.", type: "multi", options: ["Utility bill (not older than 3 months)", "Bank statement", "Municipal account", "Lease agreement", "Sworn affidavit"] },
+      { id: "beneficial_owner", label: "For companies or trusts — how do you identify the beneficial owner?", hint: "A beneficial owner is the natural person who ultimately owns or controls the entity — typically anyone holding 25% or more. FICA requires you to identify and verify them, not just the company itself.", type: "select", options: ["CIPC records plus signed declarations", "Company resolution plus director ID documents", "Trust deed plus trustee ID documents", "Not applicable — we only work with individuals", "Combination of methods depending on structure"] },
+      { id: "pep_screening", label: "How do you screen for Politically Exposed Persons (PEPs)?", hint: "A PEP is anyone who holds or has held a prominent public position — politicians, judges, senior military officers, SOE executives — plus their immediate family and known close associates. PEPs carry higher corruption and bribery risk.", type: "select", options: ["Manual checklist against known PEP list", "Third-party screening tool", "Online database check", "Not yet established"] },
+      { id: "enhanced_dd", label: "Which situations trigger enhanced due diligence for you?", hint: "Enhanced due diligence (EDD) means additional steps beyond standard checks: senior management approval, source-of-funds verification, and more frequent ongoing monitoring. Select all that apply to your agency.", type: "multi", options: ["Foreign nationals", "PEPs or their family members", "Complex ownership structures", "High-value transactions", "Cash payments", "Unusual or suspicious patterns"] },
+      { id: "ongoing_dd", label: "How do you monitor clients on an ongoing basis?", hint: "Client screening is not a once-off exercise. FICA requires ongoing monitoring — especially if a client's circumstances or risk profile change after onboarding.", type: "select", options: ["Per-transaction review for all clients", "Annual review of all client files", "Risk-based — more frequent for high-risk clients", "Not yet established"] },
     ]
   },
   {
@@ -50,11 +50,11 @@ const RMCP_SECTIONS = [
     icon: "📋",
     description: "How you report suspicious activity and cash transactions to the FIC",
     fields: [
-      { id: "str_process", label: "How do you file Suspicious Transaction Reports (STRs)?", type: "select", options: ["Registered on goAML and actively filing", "Registered on goAML but not yet filed", "Not yet registered on goAML", "Our compliance provider files on our behalf"] },
-      { id: "ctr_process", label: "How do you handle Cash Threshold Reports (CTRs) for cash over R24,999?", type: "select", options: ["Filed via goAML automatically", "Filed manually via goAML", "Not applicable — we do not accept cash above the threshold", "Not yet established"] },
-      { id: "tpr_process", label: "Do you have a process for Terrorist Property Reports (TPRs)?", type: "select", options: ["Yes — documented and tested with staff", "Yes — documented but not yet tested", "Aware of the obligation but no formal process yet", "Not yet addressed"] },
-      { id: "tipping_off", label: "Do you have measures to prevent tipping off a suspect?", type: "select", options: ["Yes — policy in place and staff are trained", "Yes — policy drafted but staff not yet trained", "Aware of the obligation but no policy yet", "Not yet addressed"] },
-      { id: "internal_reporting", label: "How does staff escalate suspicious activity internally?", type: "select", options: ["Staff reports to Compliance Officer who files on goAML", "Staff reports directly to Compliance Officer for a decision", "All staff are authorised to file directly on goAML", "Not yet established"] },
+      { id: "str_process", label: "How do you file Suspicious Transaction Reports (STRs)?", hint: "An STR must be filed within 15 days of suspicion arising — not when you have proof, when you have suspicion. goAML is the FIC's free online portal. All accountable institutions must be registered.", type: "select", options: ["Registered on goAML and actively filing", "Registered on goAML but not yet filed", "Not yet registered on goAML", "Our compliance provider files on our behalf"] },
+      { id: "ctr_process", label: "How do you handle Cash Threshold Reports (CTRs) for cash over R24,999?", hint: "A CTR must be filed within 3 business days whenever cash of R24,999 or more is paid or received in a single transaction — regardless of whether it seems suspicious.", type: "select", options: ["Filed via goAML automatically", "Filed manually via goAML", "Not applicable — we do not accept cash above the threshold", "Not yet established"] },
+      { id: "tpr_process", label: "Do you have a process for Terrorist Property Reports (TPRs)?", hint: "If you know or reasonably suspect any property is connected to terrorism, you must report immediately to the FIC — not within days, immediately. This includes property belonging to sanctioned persons.", type: "select", options: ["Yes — documented and tested with staff", "Yes — documented but not yet tested", "Aware of the obligation but no formal process yet", "Not yet addressed"] },
+      { id: "tipping_off", label: "Do you have measures to prevent tipping off a suspect?", hint: "It is a criminal offence under FICA s29(2) to tell a client — or anyone else — that a report has been filed about them. Your staff must understand this and know what they can and cannot say.", type: "select", options: ["Yes — policy in place and staff are trained", "Yes — policy drafted but staff not yet trained", "Aware of the obligation but no policy yet", "Not yet addressed"] },
+      { id: "internal_reporting", label: "How does staff escalate suspicious activity internally?", hint: "Staff need a clear, safe process to report suspicions without confronting the client themselves. Without this, suspicious transactions often go unreported out of uncertainty.", type: "select", options: ["Staff reports to Compliance Officer who files on goAML", "Staff reports directly to Compliance Officer for a decision", "All staff are authorised to file directly on goAML", "Not yet established"] },
     ]
   },
   {
@@ -63,10 +63,10 @@ const RMCP_SECTIONS = [
     icon: "🗂️",
     description: "How you store and maintain compliance records (5 year minimum required)",
     fields: [
-      { id: "record_system", label: "How do you store your compliance records?", type: "select", options: ["Digital — cloud-based system", "Digital — local server or computer", "Paper-based filing only", "Hybrid — both digital and paper", "Practice management software with compliance module"] },
-      { id: "retention_period", label: "How long do you keep compliance records?", type: "select", options: ["5 years (FICA minimum)", "7 years", "10 years", "Indefinitely", "Not yet specified"] },
-      { id: "destruction_policy", label: "Do you have a policy for destroying records after the retention period?", type: "select", options: ["Yes — documented process with management sign-off", "Informal — records deleted on an ad hoc basis", "Not yet established"] },
-      { id: "backup_process", label: "How do you back up your compliance records?", type: "select", options: ["Automated cloud backup", "Regular manual backup to local drive", "Periodic backup to external drive", "No backup process in place"] },
+      { id: "record_system", label: "How do you store your compliance records?", hint: "Records must be stored securely and be retrievable on request by the FIC. Cloud-based or practice management systems are preferred for audit trail purposes.", type: "select", options: ["Digital — cloud-based system", "Digital — local server or computer", "Paper-based filing only", "Hybrid — both digital and paper", "Practice management software with compliance module"] },
+      { id: "retention_period", label: "How long do you keep compliance records?", hint: "FICA requires a minimum of 5 years from the end of the business relationship or the date of the transaction — whichever is later. Shorter retention is a direct FICA breach.", type: "select", options: ["5 years (FICA minimum)", "7 years", "10 years", "Indefinitely", "Not yet specified"] },
+      { id: "destruction_policy", label: "Do you have a policy for destroying records after the retention period?", hint: "After the retention period, records must be formally and securely destroyed — not just deleted. You need a documented process with management sign-off to demonstrate compliant disposal.", type: "select", options: ["Yes — documented process with management sign-off", "Informal — records deleted on an ad hoc basis", "Not yet established"] },
+      { id: "backup_process", label: "How do you back up your compliance records?", hint: "Records lost due to hardware failure or theft are still a compliance breach. Automated cloud backup is the most reliable way to meet your retention obligations.", type: "select", options: ["Automated cloud backup", "Regular manual backup to local drive", "Periodic backup to external drive", "No backup process in place"] },
     ]
   },
   {
@@ -75,9 +75,9 @@ const RMCP_SECTIONS = [
     icon: "🚫",
     description: "Screening clients against UN and South African targeted financial sanctions lists",
     fields: [
-      { id: "sanctions_screening", label: "How do you screen clients against sanctions lists?", type: "select", options: ["Automated screening tool integrated into onboarding", "Manual check against UN and SA sanctions lists", "Third-party screening service provider", "Not yet established"] },
-      { id: "screening_frequency", label: "How often do you screen clients?", type: "select", options: ["Every new client before onboarding", "Before each transaction", "Periodic batch screening of all clients", "Not yet established"] },
-      { id: "match_process", label: "What do you do if a client matches a sanctions list?", type: "select", options: ["Documented procedure — freeze assets and report to FIC immediately", "Ad hoc — consult compliance officer and take action", "No process established yet"] },
+      { id: "sanctions_screening", label: "How do you screen clients against sanctions lists?", hint: "South Africa is bound by UN Security Council resolutions. You must check all clients against both the UN Consolidated Sanctions List and the SA Targeted Financial Sanctions (TFS) list before entering into any business relationship.", type: "select", options: ["Automated screening tool integrated into onboarding", "Manual check against UN and SA sanctions lists", "Third-party screening service provider", "Not yet established"] },
+      { id: "screening_frequency", label: "How often do you screen clients?", hint: "Clients can be added to sanctions lists after onboarding. Screening only once at onboarding is not sufficient — ongoing or periodic screening is required to catch late additions.", type: "select", options: ["Every new client before onboarding", "Before each transaction", "Periodic batch screening of all clients", "Not yet established"] },
+      { id: "match_process", label: "What do you do if a client matches a sanctions list?", hint: "A sanctions match is not optional to act on. You must immediately freeze the transaction, not proceed with any business, and report to the FIC. Failing to act is a criminal offence.", type: "select", options: ["Documented procedure — freeze assets and report to FIC immediately", "Ad hoc — consult compliance officer and take action", "No process established yet"] },
     ]
   }
 ];
@@ -1518,9 +1518,12 @@ Please contact the client to discuss implementation.`;
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {section.fields.map(field => (
               <div key={field.id}>
-                <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#1e293b", marginBottom: "8px", lineHeight: 1.4 }}>
+                <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#1e293b", marginBottom: field.hint ? "4px" : "8px", lineHeight: 1.4 }}>
                   {field.label}
                 </label>
+                {field.hint && (
+                  <p style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.55, margin: "0 0 8px", fontWeight: 400 }}>{field.hint}</p>
+                )}
                 {field.type === "text" && (
                   <input value={formData[field.id] || ""} onChange={e => updateField(field.id, e.target.value)}
                     placeholder={field.placeholder}
