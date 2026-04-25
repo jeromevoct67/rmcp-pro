@@ -991,7 +991,7 @@ Please contact the client to discuss implementation.`;
         </div>
 
         {selectedPlan && <ActionPlanModal plan={selectedPlan} onClose={() => setSelectedPlan(null)} onRequestHelp={() => requestHelp(Object.keys(ACTION_PLANS).find(k => ACTION_PLANS[k] === selectedPlan))} />}
-        {showExitConfirm && <ExitConfirmModal onStay={() => setShowExitConfirm(false)} onExit={() => { setShowExitConfirm(false); setView("landing"); setActiveClient(null); }} />}
+        {showExitConfirm && <ExitConfirmModal onStay={() => setShowExitConfirm(false)} onExit={() => { setShowExitConfirm(false); setView(isAdmin ? "clients" : "landing"); setActiveClient(null); }} />}
       </div>
     );
   }
@@ -1461,7 +1461,7 @@ Please contact the client to discuss implementation.`;
 
         <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "11px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 20 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <button onClick={() => setView("clients")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "18px", color: "#64748b" }}>←</button>
+            <button onClick={() => setShowExitConfirm(true)} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "18px", color: "#64748b" }}>←</button>
             <div>
               <div style={{ fontSize: "13px", fontWeight: 700, color: "#1a2a3a" }}>{client.company}</div>
               <div style={{ fontSize: "12px", color: "#94a3b8" }}>RMCP Assessment — Section {activeSection + 1} of {RMCP_SECTIONS.length}</div>
