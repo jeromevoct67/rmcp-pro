@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
+import { supabase, mapFromDb, mapToDb } from "./lib/supabase";
 
 const RMCP_SECTIONS = [
   {
@@ -463,6 +464,8 @@ export default function RMCPManager() {
   const [termsConsent, setTermsConsent] = useState(false);
   const [adminLoginError, setAdminLoginError] = useState("");
   const [adminPwd, setAdminPwd] = useState("");
+  const [loadingClients, setLoadingClients] = useState(false);
+  const supabaseTimer = useRef(null);
 
   useEffect(() => {
     try {
@@ -479,18 +482,31 @@ export default function RMCPManager() {
     setTimeout(() => setSaving(false), 800);
   }, []);
 
+  const syncClientToDb = async (client) => {
+    try {
+      const { data, error } = await supabase.from("clients").upsert(mapToDb(client)).select("id").single();
+      if (error) console.error("Supabase sync failed:", error.message);
+      return data?.id;
+    } catch (e) { console.error("Supabase sync error:", e); }
+  };
+
   const updateField = (fieldId, value) => {
     const updated = { ...formData, [fieldId]: value };
     setFormData(updated);
     setSectionError(false);
     if (activeClient !== null) {
-      saveClients(clients.map((c, i) => i === activeClient ? { ...c, data: updated, lastModified: new Date().toISOString() } : c));
+      const updatedClients = clients.map((c, i) => i === activeClient ? { ...c, data: updated, lastModified: new Date().toISOString() } : c);
+      saveClients(updatedClients);
+      clearTimeout(supabaseTimer.current);
+      supabaseTimer.current = setTimeout(() => syncClientToDb(updatedClients[activeClient]), 2000);
     }
   };
 
-  const addClient = () => {
+  const addClient = async () => {
     if (!leadData.company.trim()) return;
     const newClient = { ...leadData, created: new Date().toISOString(), lastModified: new Date().toISOString(), data: {}, submitted: false, helpRequests: {} };
+    const dbId = await syncClientToDb(newClient);
+    if (dbId) newClient.id = dbId;
     const updated = [...clients, newClient];
     saveClients(updated);
     setActiveClient(updated.length - 1);
@@ -502,12 +518,20 @@ export default function RMCPManager() {
   };
 
   const openClient = (idx) => { setActiveClient(idx); setFormData(clients[idx].data || {}); setHelpRequests(clients[idx].helpRequests || {}); setActiveSection(0); setView("editor"); };
-  const deleteClient = (idx) => { const u = clients.filter((_, i) => i !== idx); saveClients(u); if (activeClient === idx) { setActiveClient(null); setView("clients"); } };
+  const deleteClient = (idx) => {
+    const client = clients[idx];
+    if (client?.id) supabase.from("clients").delete().eq("id", client.id).then(({ error }) => { if (error) console.error("Supabase delete failed:", error.message); });
+    const u = clients.filter((_, i) => i !== idx);
+    saveClients(u);
+    if (activeClient === idx) { setActiveClient(null); setView("clients"); }
+  };
 
   const submitRMCP = async () => {
     if (activeClient !== null) {
       const client = clients[activeClient];
-      saveClients(clients.map((c, i) => i === activeClient ? { ...c, submitted: true, submittedDate: new Date().toISOString(), helpRequests } : c));
+      const submittedClient = { ...client, submitted: true, submittedDate: new Date().toISOString(), helpRequests };
+      saveClients(clients.map((c, i) => i === activeClient ? submittedClient : c));
+      syncClientToDb(submittedClient);
       setView("submitted");
 
       // Send notification email to Jerome
@@ -557,10 +581,11 @@ Login to the admin dashboard to review and generate their RMCP document.`;
   };
 
   const requestHelp = (planKey) => {
-    setHelpRequests({ ...helpRequests, [planKey]: true });
-    const client = clients[activeClient];
-    const updated = clients.map((c, i) => i === activeClient ? { ...c, helpRequests: { ...helpRequests, [planKey]: true } } : c);
+    const newHelp = { ...helpRequests, [planKey]: true };
+    setHelpRequests(newHelp);
+    const updated = clients.map((c, i) => i === activeClient ? { ...c, helpRequests: newHelp } : c);
     saveClients(updated);
+    if (activeClient !== null) syncClientToDb(updated[activeClient]);
     setSelectedPlan(null);
   };
 
@@ -1311,12 +1336,20 @@ Login to the admin dashboard to review and generate their RMCP document.`;
 
   // ── ADMIN LOGIN ──────────────────────────────────────────────────
   if (view === "adminLogin") {
-    const doAdminLogin = () => {
+    const doAdminLogin = async () => {
       if (!adminPwd) { setAdminLoginError("Please enter a password"); return; }
       if (adminPwd === "Bigbay26") {
-        setAdminLoginError("");
+        setAdminLoginError("Loading…");
         setAdminPwd("");
         setIsAdmin(true);
+        setLoadingClients(true);
+        try {
+          const { data, error } = await supabase.from("clients").select("*").order("created_at", { ascending: false });
+          if (!error && data) setClients(data.map(mapFromDb));
+          else if (error) console.error("Failed to load clients:", error.message);
+        } catch (e) { console.error("Supabase load error:", e); }
+        setLoadingClients(false);
+        setAdminLoginError("");
         setView("admin");
       } else {
         setAdminLoginError("Incorrect password");
@@ -1363,14 +1396,14 @@ Login to the admin dashboard to review and generate their RMCP document.`;
   // ── ADMIN DASHBOARD ─────────────────────────────────────────────
   if (view === "admin") {
     const submittedClients = clients.filter(c => c.submitted);
-    
+
     return (
       <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif" }}>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <h1 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", margin: "0 0 2px" }}>Big Bay Administrators</h1>
-            <p style={{ fontSize: "12px", color: "#94a3b8", margin: 0 }}>Admin Dashboard — RMCP Submissions</p>
+            <p style={{ fontSize: "12px", color: "#94a3b8", margin: 0 }}>Admin Dashboard — RMCP Submissions{loadingClients ? " · Loading…" : ""}</p>
           </div>
           <button onClick={() => setView("landing")} style={{ padding: "12px 16px", minHeight: "44px", borderRadius: "6px", border: "1px solid #ccc", background: "#fff", cursor: "pointer", fontSize: "13px" }}>Logout</button>
         </div>
