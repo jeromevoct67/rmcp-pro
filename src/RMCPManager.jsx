@@ -235,6 +235,214 @@ const ACTION_PLANS = {
   },
 };
 
+// ── PROPOSAL ENGINE ───────────────────────────────────────────────────
+const BBA_PRICING = {
+  rmcp_board_approval: { name: "RMCP Board Approval Pack",                 onceOff: 3500, monthly: 0,   ref: "FICA s43(1)(b), GN7A §3",    timeline: "18 days" },
+  goaml_registration:  { name: "goAML Registration Service",               onceOff: 1500, monthly: 0,   ref: "FICA s29, s43; GN7A §5",     timeline: "18 days" },
+  tipping_off_policy:  { name: "Tipping-Off Prevention Policy + Training", onceOff: 2500, monthly: 0,   ref: "FICA s29(2)",                 timeline: "14 days" },
+  pep_screening:       { name: "PEP Screening Process Setup",              onceOff: 4500, monthly: 750, ref: "FICA s21B; GN7A §6.2",       timeline: "14 days" },
+  sanctions_screening: { name: "UN Sanctions Screening Setup",             onceOff: 3500, monthly: 575, ref: "FICA s43; UN SCR; GN7A §7",  timeline: "14 days" },
+  digitise_records:    { name: "Digitise Compliance Records",              onceOff: 3000, monthly: 275, ref: "FICA s22–23; GN7A §8",       timeline: "28 days" },
+  record_backup:       { name: "Compliance Record Backup System",          onceOff: 1800, monthly: 225, ref: "FICA s22–23",                 timeline: "7 days"  },
+  staff_training:      { name: "Staff AML/CFT Training Programme",         onceOff: 3500, monthly: 167, ref: "FICA s43(1)(c); GN7A §4",    timeline: "14 days" },
+  retention_policy:    { name: "Record Retention Policy",                  onceOff: 2500, monthly: 0,   ref: "FICA s22; GN7A §8.1",        timeline: "14 days" },
+  destruction_policy:  { name: "Record Destruction Policy",                onceOff: 2000, monthly: 100, ref: "FICA s22–23; POPIA s14",     timeline: "14 days" },
+};
+
+const BBA_VALUE_PROPS = {
+  rmcp_board_approval:  "Formal board approval transforms your RMCP from a draft into a legally defensible document — the single most important step for FICA s43 compliance.",
+  goaml_registration:   "goAML registration is a legal obligation. Big Bay Admin handles the full process on your behalf, ensuring it is completed correctly the first time.",
+  tipping_off_policy:   "A tipping-off offence under FICA s29(2) carries criminal penalties. This policy and training protects your business and staff personally.",
+  pep_screening:        "Systematic PEP screening protects your agency from facilitating politically-connected money laundering and demonstrates enhanced due diligence to regulators.",
+  sanctions_screening:  "UN sanctions screening is mandatory for all accountable institutions. Failure exposes your business to regulatory action and serious reputational damage.",
+  digitise_records:     "Cloud-based records are searchable, auto-backed-up, and remotely accessible — making FIC inspections and audits effortless.",
+  record_backup:        "A single hardware failure can permanently destroy years of compliance records. Automated cloud backup eliminates that risk entirely.",
+  staff_training:       "Your staff are your first line of defence against money laundering. Annual FIC-compliant training reduces risk and satisfies your legal obligation under FICA s43(1)(c).",
+  retention_policy:     "A written retention policy ensures you keep records for FICA's 5-year minimum and documents exactly when and how records may be legally disposed of.",
+  destruction_policy:   "Proper record destruction prevents data breaches and POPIA violations while maintaining a defensible audit trail that records were destroyed correctly.",
+};
+
+const BBA_DELIVERABLES = {
+  rmcp_board_approval:  ["Professional board presentation pack", "RMCP summary for management", "Signed board resolution document", "Staff communication memo"],
+  goaml_registration:   ["Full goAML registration handled on your behalf", "Secure login credentials handover", "Filing procedures guide", "1-hour STR/CTR/TPR staff training"],
+  tipping_off_policy:   ["Written tipping-off prevention policy", "Signed management approval record", "1-hour mandatory staff training session", "Staff sign-off acknowledgement forms"],
+  pep_screening:        ["Written PEP screening procedure", "Updated client onboarding checklist", "Screening tool recommendation and configuration", "1-hour staff training"],
+  sanctions_screening:  ["Written UN sanctions screening procedure", "Screening tool setup or manual process guide", "Freeze and escalation procedure", "1-hour staff training"],
+  digitise_records:     ["Cloud folder structure configured (Google Drive / OneDrive)", "Scanning and naming guide", "Automated daily backup configured", "1-hour digital records training"],
+  record_backup:        ["Cloud backup configured and tested", "Recovery procedure tested and documented", "Written backup procedure", "Monthly verification checklist"],
+  staff_training:       ["Customised training programme designed", "Half-day training session (up to 8 staff)", "Attendance register + FIC-compliant certificates", "Annual refresher included"],
+  retention_policy:     ["Written retention policy document", "Management sign-off obtained", "Staff acknowledgement forms", "Annual review calendar"],
+  destruction_policy:   ["Written destruction policy document", "Destruction service recommendation", "Management approval obtained", "Destruction audit trail template"],
+};
+
+function generateProposal(client) {
+  const d = client.data || {};
+  const clientTypes = d.client_types || [];
+  const hasForeignOrPEP = clientTypes.some(t => t.includes("Foreign") || t.includes("PEP"));
+  const hasCompanyTrust = clientTypes.some(t => t.includes("Compan") || t.includes("Trust"));
+  const isCloud = ["Digital — cloud-based system", "Practice management software with compliance module"].includes(d.record_system);
+  const isTrainingCurrent = ["Annual workshops", "External provider", "Online modules", "In-house training"].includes(d.training_policy);
+  const isGoAML = ["Registered on goAML and actively filing", "Registered on goAML but not yet filed"].includes(d.str_process);
+  const isRMCPApproved = !!d.board_approval_date;
+  const isPEPScreened = ["Third-party screening tool", "Online database check"].includes(d.pep_screening);
+  const isSanctionsScreened = ["Automated screening tool integrated into onboarding", "Third-party screening service provider"].includes(d.sanctions_screening);
+  const isInternational = ["International / foreign clients", "Mix of local and international"].includes(d.geographic_risk);
+  const hasTippingOff = ["Yes — policy in place and staff are trained", "Yes — policy drafted but staff not yet trained"].includes(d.tipping_off);
+
+  let pkg = "Starter";
+  if (hasForeignOrPEP || (isCloud && isTrainingCurrent && isSanctionsScreened)) pkg = "Enterprise";
+  else if (hasCompanyTrust || isInternational || isPEPScreened) pkg = "Professional";
+
+  const selected = [];
+  const gaps = [];
+
+  if (!isRMCPApproved)     { selected.push("rmcp_board_approval");  gaps.push("RMCP not formally approved by management — required under FICA s43(1)(b)"); }
+  if (!isGoAML)            { selected.push("goaml_registration");   gaps.push("Not registered on goAML — cannot legally file STRs, CTRs, or TPRs (FICA s29)"); }
+  if (!hasTippingOff)      { selected.push("tipping_off_policy");   gaps.push("No tipping-off prevention policy — criminal offence under FICA s29(2)"); }
+  if (!isPEPScreened)      { selected.push("pep_screening");        gaps.push("No systematic PEP screening — required under FICA s21B for higher-risk clients"); }
+  if (!isSanctionsScreened){ selected.push("sanctions_screening");  gaps.push("No UN targeted financial sanctions screening — required under FICA s43 and UN Security Council resolutions"); }
+  if (!isCloud)            { selected.push("digitise_records");     gaps.push("Compliance records not cloud-based — at risk of loss and difficult to produce for FIC inspections"); }
+  if (!isCloud && d.backup_process === "No backup process in place") { selected.push("record_backup"); gaps.push("No automated backup — compliance records at permanent risk of loss"); }
+  if (!isTrainingCurrent)  { selected.push("staff_training");       gaps.push("Staff AML/CFT training not current — required annually under FICA s43(1)(c)"); }
+  if (d.retention_period === "Not yet specified") { selected.push("retention_policy"); gaps.push("Record retention period not specified — 5-year minimum required under FICA s22"); }
+  if (["Not yet established", "Informal — records deleted on an ad hoc basis"].includes(d.destruction_policy)) { selected.push("destruction_policy"); gaps.push("No formal record destruction policy — required under FICA s22–23 and POPIA s14"); }
+
+  const services = [...new Set(selected)].map(key => ({
+    service_name: BBA_PRICING[key].name,
+    once_off_fee_zar: BBA_PRICING[key].onceOff,
+    monthly_fee_zar: BBA_PRICING[key].monthly,
+    regulatory_reference: BBA_PRICING[key].ref,
+    value_proposition: BBA_VALUE_PROPS[key],
+    timeline: BBA_PRICING[key].timeline,
+    deliverables: BBA_DELIVERABLES[key],
+  }));
+
+  const totalOnce = services.reduce((s, x) => s + x.once_off_fee_zar, 0);
+  const totalMthly = services.reduce((s, x) => s + x.monthly_fee_zar, 0);
+  const vatOnce = Math.round(totalOnce * 0.15);
+  const vatMthly = Math.round(totalMthly * 0.15);
+
+  return {
+    business_name: client.company,
+    fic_org_id: client.ffc || "Not provided",
+    generated_date: new Date().toLocaleDateString("en-ZA", { day: "numeric", month: "long", year: "numeric" }),
+    recommended_package: pkg,
+    services,
+    pricing_summary: {
+      total_once_off: totalOnce,
+      total_monthly_recurring: totalMthly,
+      vat_15_percent_once_off: vatOnce,
+      vat_15_percent_monthly: vatMthly,
+      grand_total_once_off_incl_vat: totalOnce + vatOnce,
+      grand_total_monthly_incl_vat: totalMthly + vatMthly,
+    },
+    compliance_gaps_flagged: gaps,
+  };
+}
+
+function ProposalModal({ proposal, onClose }) {
+  const fmt = (n) => `R${n.toLocaleString("en-ZA")}`;
+  const pkgColor = { Starter: "#6BA3E8", Professional: "#2463AE", Enterprise: "#1a2a3a", Custom: "#6c757d" };
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.65)", overflowY: "auto", zIndex: 300, padding: "16px" }}>
+      <div style={{ maxWidth: 640, margin: "0 auto", background: "#fff", borderRadius: "14px", overflow: "hidden", boxShadow: "0 24px 80px rgba(0,0,0,0.35)" }}>
+        {/* Header */}
+        <div style={{ background: "linear-gradient(135deg, #050F24, #0D2147)", padding: "22px 24px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+            <div>
+              <div style={{ fontSize: "11px", color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.8px", marginBottom: "4px" }}>Service Proposal · Big Bay Administrators</div>
+              <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#fff", margin: "0 0 4px" }}>{proposal.business_name}</h2>
+              <div style={{ fontSize: "12px", color: "rgba(255,255,255,0.45)" }}>FIC Org ID: {proposal.fic_org_id} · Generated {proposal.generated_date}</div>
+            </div>
+            <button onClick={onClose} style={{ background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", width: 36, height: 36, borderRadius: "8px", cursor: "pointer", fontSize: "18px", display: "flex", alignItems: "center", justifyContent: "center" }}>×</button>
+          </div>
+          <div style={{ marginTop: "14px", display: "inline-block", padding: "4px 14px", borderRadius: "20px", background: pkgColor[proposal.recommended_package] || "#6BA3E8", fontSize: "12px", fontWeight: 700, color: "#fff", letterSpacing: "0.5px" }}>
+            {proposal.recommended_package} Package
+          </div>
+        </div>
+
+        <div style={{ padding: "20px 24px" }}>
+          {/* Compliance Gaps */}
+          {proposal.compliance_gaps_flagged.length > 0 && (
+            <div style={{ background: "#fff8f0", border: "1.5px solid #fed7aa", borderRadius: "10px", padding: "14px 16px", marginBottom: "20px" }}>
+              <div style={{ fontSize: "11px", fontWeight: 700, color: "#c2410c", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "8px" }}>Compliance Gaps Identified ({proposal.compliance_gaps_flagged.length})</div>
+              {proposal.compliance_gaps_flagged.map((gap, i) => (
+                <div key={i} style={{ fontSize: "12px", color: "#7c2d12", display: "flex", gap: "6px", marginBottom: "4px" }}>
+                  <span style={{ flexShrink: 0 }}>⚠</span><span>{gap}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Services */}
+          <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#1a2a3a", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "12px" }}>Recommended Services ({proposal.services.length})</h3>
+          {proposal.services.map((svc, i) => (
+            <div key={i} style={{ border: "1px solid #e2e8f0", borderRadius: "10px", padding: "14px 16px", marginBottom: "10px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "10px", marginBottom: "6px" }}>
+                <div style={{ fontWeight: 700, fontSize: "13px", color: "#1a2a3a" }}>{svc.service_name}</div>
+                <div style={{ flexShrink: 0, textAlign: "right" }}>
+                  <div style={{ fontSize: "13px", fontWeight: 700, color: "#2463AE" }}>{fmt(svc.once_off_fee_zar)}</div>
+                  {svc.monthly_fee_zar > 0 && <div style={{ fontSize: "11px", color: "#64748b" }}>+ {fmt(svc.monthly_fee_zar)}/mo</div>}
+                </div>
+              </div>
+              <div style={{ fontSize: "11px", color: "#6BA3E8", fontWeight: 600, marginBottom: "4px" }}>{svc.regulatory_reference} · {svc.timeline}</div>
+              <div style={{ fontSize: "12px", color: "#4a5568", marginBottom: "8px", lineHeight: 1.5 }}>{svc.value_proposition}</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "4px" }}>
+                {svc.deliverables.map((d, j) => (
+                  <span key={j} style={{ fontSize: "11px", padding: "2px 8px", borderRadius: "4px", background: "#f0f7ff", color: "#2463AE", fontWeight: 500 }}>✓ {d}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          {/* Pricing Summary */}
+          <div style={{ background: "#f8fafc", borderRadius: "10px", padding: "16px 18px", marginTop: "16px", border: "1px solid #e2e8f0" }}>
+            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1a2a3a", textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "12px" }}>Pricing Summary (excl. VAT)</div>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+              <span style={{ fontSize: "13px", color: "#4a5568" }}>Once-off services</span>
+              <span style={{ fontSize: "13px", fontWeight: 600, color: "#1a2a3a" }}>{fmt(proposal.pricing_summary.total_once_off)}</span>
+            </div>
+            {proposal.pricing_summary.total_monthly_recurring > 0 && (
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                <span style={{ fontSize: "13px", color: "#4a5568" }}>Monthly recurring</span>
+                <span style={{ fontSize: "13px", fontWeight: 600, color: "#1a2a3a" }}>{fmt(proposal.pricing_summary.total_monthly_recurring)}/mo</span>
+              </div>
+            )}
+            <div style={{ borderTop: "1px solid #e2e8f0", marginTop: "8px", paddingTop: "8px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "4px" }}>
+                <span style={{ fontSize: "12px", color: "#94a3b8" }}>VAT (15%)</span>
+                <span style={{ fontSize: "12px", color: "#94a3b8" }}>{fmt(proposal.pricing_summary.vat_15_percent_once_off)}</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", marginTop: "8px" }}>
+                <span style={{ fontSize: "15px", fontWeight: 700, color: "#1a2a3a" }}>Total once-off (incl. VAT)</span>
+                <span style={{ fontSize: "15px", fontWeight: 700, color: "#2463AE" }}>{fmt(proposal.pricing_summary.grand_total_once_off_incl_vat)}</span>
+              </div>
+              {proposal.pricing_summary.total_monthly_recurring > 0 && (
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "4px" }}>
+                  <span style={{ fontSize: "13px", fontWeight: 600, color: "#1a2a3a" }}>Monthly total (incl. VAT)</span>
+                  <span style={{ fontSize: "13px", fontWeight: 600, color: "#2463AE" }}>{fmt(proposal.pricing_summary.grand_total_monthly_incl_vat)}/mo</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
+            <button onClick={() => navigator.clipboard.writeText(JSON.stringify(proposal, null, 2))}
+              style={{ flex: 1, padding: "11px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+              Copy JSON
+            </button>
+            <button onClick={onClose}
+              style={{ flex: 1, padding: "11px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function calculateCompleteness(data) {
   let total = 0, filled = 0;
   RMCP_SECTIONS.forEach(s => s.fields.forEach(f => {
@@ -464,6 +672,7 @@ export default function RMCPManager() {
   const [termsConsent, setTermsConsent] = useState(false);
   const [adminLoginError, setAdminLoginError] = useState("");
   const [adminPwd, setAdminPwd] = useState("");
+  const [proposal, setProposal] = useState(null);
   const [loadingClients, setLoadingClients] = useState(false);
   const supabaseTimer = useRef(null);
 
@@ -580,13 +789,48 @@ Login to the admin dashboard to review and generate their RMCP document.`;
     }
   };
 
-  const requestHelp = (planKey) => {
+  const requestHelp = async (planKey) => {
     const newHelp = { ...helpRequests, [planKey]: true };
     setHelpRequests(newHelp);
     const updated = clients.map((c, i) => i === activeClient ? { ...c, helpRequests: newHelp } : c);
     saveClients(updated);
     if (activeClient !== null) syncClientToDb(updated[activeClient]);
     setSelectedPlan(null);
+
+    if (activeClient !== null) {
+      const client = clients[activeClient];
+      const plan = ACTION_PLANS[planKey];
+      const body = `Help Request Received — RMCPPro
+
+Client: ${client.company}
+Contact: ${client.contact || "Not provided"}
+Email: ${client.email || "Not provided"}
+Phone: ${client.phone || "Not provided"}
+
+Action Plan Requested:
+${plan ? plan.title : planKey}
+${plan ? `Priority: ${plan.priority}` : ""}
+${plan ? `Timeline: ${plan.estimatedTimeline}` : ""}
+${plan ? `Estimated Cost: ${plan.estimatedCost}` : ""}
+${plan ? `Regulatory Reference: ${plan.law}` : ""}
+
+Please contact the client to discuss implementation.`;
+
+      try {
+        await fetch("https://rmcp-pro.vercel.app/api/send-rmcp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            clientEmail: "jerome@bigbayadmin.co.za",
+            clientName: `HELP REQUEST: ${client.company} — ${plan ? plan.title : planKey}`,
+            rmcpHtml: `<html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px"><h1 style="color:#1C5BA3">Help Request: ${client.company}</h1><pre style="background:#f5f5f5;padding:16px;border-radius:6px;white-space:pre-wrap">${body}</pre></body></html>`,
+            coverLetter: body,
+          }),
+        });
+      } catch (err) {
+        console.error("Help request notification failed:", err.message);
+      }
+    }
   };
 
   // ── DASHBOARD (with action plans) ──────────────────────────────────
@@ -1461,6 +1705,7 @@ Login to the admin dashboard to review and generate their RMCP document.`;
     };
 
     return (
+      <>
       <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif", padding: "20px" }}>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <div style={{ maxWidth: 600, margin: "0 auto", background: "#fff", borderRadius: "12px", padding: "24px" }}>
@@ -1486,6 +1731,8 @@ Login to the admin dashboard to review and generate their RMCP document.`;
             </div>
           )}
           <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
+            <button onClick={() => setProposal(generateProposal(client))}
+              style={{ padding: "12px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontWeight: 700, cursor: "pointer", fontSize: "14px" }}>📋 Generate Service Proposal</button>
             <button onClick={() => { const html = generateDoc(); const blob = new Blob([html], { type: "text/html" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `RMCP_${client.company.replace(/[^a-zA-Z0-9]/g, "_")}_${new Date().toISOString().split("T")[0]}.html`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }}
               style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📄 Download RMCP Document</button>
             <button onClick={async () => { const btn = event.target; btn.textContent = "⏳ Sending..."; btn.disabled = true; try { const html = generateDoc(); const r = await fetch("https://rmcp-pro.vercel.app/api/send-rmcp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clientEmail: client.email, clientName: client.company, rmcpHtml: html, coverLetter: `Dear ${client.contact},\n\nPlease find attached your RMCP document.\n\nBest regards,\nBig Bay Administrators` }) }); const res = await r.json(); if (r.ok) { alert("✅ Email sent to " + client.email); } else { alert("Error: " + (res.error || "Failed")); } } catch (e) { alert("Error: " + e.message); } finally { btn.textContent = "📧 Email to Client"; btn.disabled = false; } }}
@@ -1493,6 +1740,8 @@ Login to the admin dashboard to review and generate their RMCP document.`;
           </div>
         </div>
       </div>
+      {proposal && <ProposalModal proposal={proposal} onClose={() => setProposal(null)} />}
+      </>
     );
   }
 
