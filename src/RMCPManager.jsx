@@ -503,6 +503,29 @@ function getRiskFlags(data) {
 
 // ── COMPONENTS ────────────────────────────────────────────────────────
 
+function FieldLabel({ label, hint }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ marginBottom: "8px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <span style={{ fontSize: "13px", fontWeight: 600, color: "#1e293b", lineHeight: 1.4 }}>{label}</span>
+        {hint && (
+          <button
+            onClick={() => setOpen(v => !v)}
+            style={{ width: "18px", height: "18px", borderRadius: "50%", background: open ? "#2463AE" : "#dbeafe", border: "none", cursor: "pointer", fontSize: "11px", fontWeight: 700, color: open ? "#fff" : "#2463AE", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, padding: 0, lineHeight: 1, fontFamily: "serif" }}
+            aria-label="Show guidance"
+          >i</button>
+        )}
+      </div>
+      {hint && open && (
+        <div style={{ marginTop: "7px", padding: "10px 12px", borderRadius: "8px", background: "#eff6ff", border: "1px solid #bfdbfe", fontSize: "12px", color: "#1e3a5f", lineHeight: 1.65 }}>
+          {hint}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function SelectField({ value, onChange, options }) {
   const [open, setOpen] = useState(false);
   const selected = value || "";
@@ -1518,12 +1541,7 @@ Please contact the client to discuss implementation.`;
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             {section.fields.map(field => (
               <div key={field.id}>
-                <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#1e293b", marginBottom: field.hint ? "4px" : "8px", lineHeight: 1.4 }}>
-                  {field.label}
-                </label>
-                {field.hint && (
-                  <p style={{ fontSize: "12px", color: "#64748b", lineHeight: 1.55, margin: "0 0 8px", fontWeight: 400 }}>{field.hint}</p>
-                )}
+                <FieldLabel label={field.label} hint={field.hint} />
                 {field.type === "text" && (
                   <input value={formData[field.id] || ""} onChange={e => updateField(field.id, e.target.value)}
                     placeholder={field.placeholder}
