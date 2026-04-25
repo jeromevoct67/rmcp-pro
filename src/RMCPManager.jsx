@@ -650,6 +650,30 @@ function Section({ title, children }) {
   );
 }
 
+// ── COMPONENTS ────────────────────────────────────────────────────────
+
+function ExitConfirmModal({ onStay, onExit }) {
+  return (
+    <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.65)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 500, padding: "24px" }}>
+      <div style={{ background: "#fff", borderRadius: "16px", padding: "28px 24px", width: "min(360px, 100%)", textAlign: "center", boxShadow: "0 20px 60px rgba(0,0,0,0.4)", fontFamily: "'DM Sans', sans-serif" }}>
+        <div style={{ fontSize: "38px", marginBottom: "12px" }}>⚠️</div>
+        <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", margin: "0 0 10px" }}>Exit assessment?</h2>
+        <p style={{ fontSize: "14px", color: "#64748b", lineHeight: 1.6, margin: "0 0 22px" }}>
+          Your progress has been saved — you can return at any time. Are you sure you want to leave?
+        </p>
+        <button onClick={onStay}
+          style={{ width: "100%", padding: "14px", marginBottom: "10px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "15px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+          Continue assessment
+        </button>
+        <button onClick={onExit}
+          style={{ width: "100%", padding: "12px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: "14px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+          Yes, exit
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ── MAIN APP ──────────────────────────────────────────────────────────
 
 export default function RMCPManager() {
@@ -674,6 +698,7 @@ export default function RMCPManager() {
   const [adminPwd, setAdminPwd] = useState("");
   const [proposal, setProposal] = useState(null);
   const [loadingClients, setLoadingClients] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const supabaseTimer = useRef(null);
 
   useEffect(() => {
@@ -682,6 +707,23 @@ export default function RMCPManager() {
       if (saved) setClients(JSON.parse(saved));
     } catch (e) { console.log("No saved data"); }
   }, []);
+
+  useEffect(() => {
+    const inForm = view === "editor" || view === "dashboard";
+    if (!inForm) return;
+    window.history.pushState({ rmcp: true }, "");
+    const onPop = () => {
+      setShowExitConfirm(true);
+      window.history.pushState({ rmcp: true }, "");
+    };
+    const onBeforeUnload = (e) => { e.preventDefault(); e.returnValue = ""; };
+    window.addEventListener("popstate", onPop);
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      window.removeEventListener("beforeunload", onBeforeUnload);
+    };
+  }, [view]);
 
   const saveClients = useCallback((updated) => {
     setSaving(true);
@@ -949,6 +991,7 @@ Please contact the client to discuss implementation.`;
         </div>
 
         {selectedPlan && <ActionPlanModal plan={selectedPlan} onClose={() => setSelectedPlan(null)} onRequestHelp={() => requestHelp(Object.keys(ACTION_PLANS).find(k => ACTION_PLANS[k] === selectedPlan))} />}
+        {showExitConfirm && <ExitConfirmModal onStay={() => setShowExitConfirm(false)} onExit={() => { setShowExitConfirm(false); setView("landing"); setActiveClient(null); }} />}
       </div>
     );
   }
@@ -1412,6 +1455,7 @@ Please contact the client to discuss implementation.`;
     const completeness = calculateCompleteness(formData);
 
     return (
+      <>
       <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif" }}>
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
@@ -1524,6 +1568,8 @@ Please contact the client to discuss implementation.`;
           </div>
         </div>
       </div>
+      {showExitConfirm && <ExitConfirmModal onStay={() => setShowExitConfirm(false)} onExit={() => { setShowExitConfirm(false); setView("landing"); setActiveClient(null); }} />}
+      </>
     );
   }
 
