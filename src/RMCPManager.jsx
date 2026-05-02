@@ -1,6 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase, mapFromDb, mapToDb } from "./lib/supabase";
 
+// Typography tokens — Superdesign system
+const FONT_BODY = "'Inter', system-ui, -apple-system, sans-serif";       // UI, body, form labels, buttons
+const FONT_HEAD = "'Lora', Georgia, serif";                               // Landing/modal headlines only
+const FONT_BRAND = "'Space Grotesk', 'Inter', sans-serif";                // 'Big Bay Administrators' wordmark, badges
+
 const RMCP_SECTIONS = [
   {
     id: "governance",
@@ -429,11 +434,11 @@ function ProposalModal({ proposal, onClose }) {
           {/* Actions */}
           <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
             <button onClick={() => navigator.clipboard.writeText(JSON.stringify(proposal, null, 2))}
-              style={{ flex: 1, padding: "11px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+              style={{ flex: 1, padding: "11px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>
               Copy JSON
             </button>
             <button onClick={onClose}
-              style={{ flex: 1, padding: "11px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+              style={{ flex: 1, padding: "11px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>
               Close
             </button>
           </div>
@@ -534,7 +539,7 @@ function SelectField({ value, onChange, options }) {
       <div onClick={() => setOpen(!open)} style={{
         width: "100%", padding: "14px 44px 14px 14px", borderRadius: "8px",
         border: selected ? "2px solid #2463AE" : "1.5px solid #d1d9e0",
-        fontSize: "16px", fontFamily: "'DM Sans', sans-serif",
+        fontSize: "16px", fontFamily: FONT_BODY,
         boxSizing: "border-box", background: selected ? "#eff6ff" : "#fff",
         color: selected ? "#1a2a3a" : "#6b7280", cursor: "pointer",
         display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -554,7 +559,7 @@ function SelectField({ value, onChange, options }) {
           {options.map(opt => (
             <div key={opt} onClick={() => { onChange(opt); setOpen(false); }}
               style={{
-                padding: "14px 16px", fontSize: "15px", fontFamily: "'DM Sans', sans-serif",
+                padding: "14px 16px", fontSize: "15px", fontFamily: FONT_BODY,
                 cursor: "pointer", color: selected === opt ? "#1C5BA3" : "#1a2a3a",
                 background: selected === opt ? "#eff6ff" : "#fff",
                 fontWeight: selected === opt ? 600 : 400,
@@ -585,7 +590,7 @@ function MultiSelect({ options, selected = [], onChange }) {
               border: on ? "2px solid #2463AE" : "1.5px solid #d1d9e0",
               background: on ? "#eff6ff" : "#fff",
               color: on ? "#1C5BA3" : "#4a5568",
-              fontSize: "15px", fontFamily: "'DM Sans', sans-serif",
+              fontSize: "15px", fontFamily: FONT_BODY,
               cursor: "pointer", fontWeight: on ? 600 : 400,
               display: "flex", alignItems: "center", gap: "8px", transition: "all 0.15s"
             }}>
@@ -608,7 +613,7 @@ function ProgressRing({ percent, size = 64, stroke = 5, color = "#1C5BA3" }) {
         strokeDasharray={circ} strokeDashoffset={circ - (percent / 100) * circ}
         strokeLinecap="round" style={{ transition: "stroke-dashoffset 0.6s ease" }} />
       <text x={size/2} y={size/2} textAnchor="middle" dominantBaseline="central"
-        style={{ transform: "rotate(90deg)", transformOrigin: "center", fontSize: size * 0.26, fontWeight: 700, fill: "#1a2a3a", fontFamily: "'DM Sans', sans-serif" }}>
+        style={{ transform: "rotate(90deg)", transformOrigin: "center", fontSize: size * 0.26, fontWeight: 700, fill: "#1a2a3a", fontFamily: FONT_BODY }}>
         {percent}%
       </text>
     </svg>
@@ -618,44 +623,44 @@ function ProgressRing({ percent, size = 64, stroke = 5, color = "#1C5BA3" }) {
 // ── ACTION PLAN MODAL ─────────────────────────────────────────────────
 function ActionPlanModal({ plan, onClose, onRequestHelp }) {
   return (
-    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: "20px" }}>
-      <div style={{ background: "#fff", borderRadius: "16px", padding: "28px", maxWidth: 700, width: "100%", maxHeight: "85vh", overflowY: "auto", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
-        <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", marginBottom: "6px" }}>{plan.title}</h2>
-        <p style={{ fontSize: "12px", color: "#64748b", marginBottom: "16px" }}>{plan.description}</p>
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(5,15,36,0.7)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, padding: "20px" }}>
+      <div style={{ background: "rgba(30, 41, 59, 0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "16px", padding: "28px", maxWidth: 700, width: "100%", maxHeight: "85vh", overflowY: "auto", WebkitOverflowScrolling: "touch", boxShadow: "0 20px 60px rgba(0,0,0,0.5)", color: "#f1f5f9", fontFamily: FONT_BODY }}>
+        <h2 style={{ fontFamily: FONT_HEAD, fontSize: "22px", fontWeight: 600, color: "#fff", marginBottom: "6px" }}>{plan.title}</h2>
+        <p style={{ fontSize: "13px", color: "#cbd5e1", marginBottom: "16px" }}>{plan.description}</p>
 
-        <div style={{ background: "#f0faf4", borderRadius: "8px", padding: "12px 14px", marginBottom: "16px", border: "1px solid #d1fae5" }}>
+        <div style={{ background: "rgba(107,163,232,0.1)", borderRadius: "8px", padding: "12px 14px", marginBottom: "16px", border: "1px solid rgba(107,163,232,0.25)" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
             <div>
-              <div style={{ fontSize: "12px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "2px" }}>Timeline</div>
-              <div style={{ fontSize: "14px", fontWeight: 700, color: "#1A4A8A" }}>{plan.estimatedTimeline}</div>
+              <div style={{ fontFamily: FONT_BRAND, fontSize: "11px", color: "#6BA3E8", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>Timeline</div>
+              <div style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>{plan.estimatedTimeline}</div>
             </div>
             <div>
-              <div style={{ fontSize: "12px", color: "#059669", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.4px", marginBottom: "2px" }}>Estimated Cost</div>
-              <div style={{ fontSize: "14px", fontWeight: 700, color: "#1A4A8A" }}>{plan.estimatedCost}</div>
+              <div style={{ fontFamily: FONT_BRAND, fontSize: "11px", color: "#6BA3E8", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "2px" }}>Estimated Cost</div>
+              <div style={{ fontSize: "14px", fontWeight: 700, color: "#fff" }}>{plan.estimatedCost}</div>
             </div>
           </div>
         </div>
 
-        <h3 style={{ fontSize: "13px", fontWeight: 700, color: "#1a2a3a", marginBottom: "12px" }}>Implementation Steps</h3>
+        <h3 style={{ fontFamily: FONT_BRAND, fontSize: "12px", fontWeight: 700, color: "#6BA3E8", textTransform: "uppercase", letterSpacing: "0.6px", marginBottom: "12px" }}>Implementation Steps</h3>
         {plan.steps.map((s, i) => (
-          <div key={i} style={{ marginBottom: "14px", paddingLeft: "20px", borderLeft: "2px solid #d1fae5" }}>
-            <div style={{ fontSize: "12px", fontWeight: 700, color: "#1C5BA3" }}>Step {s.step}: {s.action}</div>
-            <div style={{ fontSize: "11px", color: "#64748b", marginTop: "3px" }}>
+          <div key={i} style={{ marginBottom: "14px", paddingLeft: "20px", borderLeft: "2px solid rgba(107,163,232,0.3)" }}>
+            <div style={{ fontSize: "13px", fontWeight: 700, color: "#fff" }}>Step {s.step}: {s.action}</div>
+            <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "3px" }}>
               <span style={{ fontWeight: 600 }}>Owner:</span> {s.owner} · <span style={{ fontWeight: 600 }}>Timeline:</span> {s.timeline} · <span style={{ fontWeight: 600 }}>Cost:</span> {s.cost}
             </div>
-            <div style={{ fontSize: "11px", color: "#4a5568", marginTop: "2px", fontStyle: "italic" }}>{s.details}</div>
+            <div style={{ fontSize: "12px", color: "#cbd5e1", marginTop: "2px", fontStyle: "italic" }}>{s.details}</div>
           </div>
         ))}
 
-        <div style={{ fontSize: "12px", color: "#94a3b8", padding: "10px 12px", background: "#f8fafc", borderRadius: "6px", marginBottom: "16px", borderLeft: "3px solid #cbd5e0" }}>
-          <span style={{ fontWeight: 700 }}>Legal Requirement:</span> {plan.law}
+        <div style={{ fontSize: "12px", color: "#cbd5e1", padding: "10px 12px", background: "rgba(255,255,255,0.04)", borderRadius: "6px", marginBottom: "16px", borderLeft: "3px solid rgba(107,163,232,0.5)" }}>
+          <span style={{ fontWeight: 700, color: "#6BA3E8" }}>Legal Requirement:</span> {plan.law}
         </div>
 
         <div style={{ display: "flex", gap: "10px" }}>
-          <button onClick={onClose} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+          <button onClick={onClose} style={{ flex: 1, padding: "12px", minHeight: "44px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.05)", color: "#e2e8f0", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>
             Close
           </button>
-          <button onClick={onRequestHelp} style={{ flex: 1, padding: "10px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+          <button onClick={onRequestHelp} style={{ flex: 1, padding: "12px", minHeight: "44px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, boxShadow: "0 0 20px rgba(36,99,174,0.4)" }}>
             Request Help from Big Bay Administrators
           </button>
         </div>
@@ -667,8 +672,8 @@ function ActionPlanModal({ plan, onClose, onRequestHelp }) {
 function Section({ title, children }) {
   return (
     <div style={{ marginBottom: "18px" }}>
-      <h3 style={{ fontSize: "12px", fontWeight: 700, color: "#1a2a3a", textTransform: "uppercase", letterSpacing: "0.5px", margin: "0 0 6px", borderBottom: "1px solid #f1f5f9", paddingBottom: "4px" }}>{title}</h3>
-      <div style={{ fontSize: "12px", color: "#374151", lineHeight: 1.75 }}>{children}</div>
+      <h3 style={{ fontFamily: FONT_BRAND, fontSize: "11px", fontWeight: 700, color: "#6BA3E8", textTransform: "uppercase", letterSpacing: "0.7px", margin: "0 0 8px", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "6px" }}>{title}</h3>
+      <div style={{ fontSize: "13px", color: "#e2e8f0", lineHeight: 1.75 }}>{children}</div>
     </div>
   );
 }
@@ -678,18 +683,18 @@ function Section({ title, children }) {
 function ExitConfirmModal({ onStay, onExit }) {
   return (
     <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.65)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 500, padding: "24px" }}>
-      <div style={{ background: "#fff", borderRadius: "16px", padding: "28px 24px", width: "min(360px, 100%)", textAlign: "center", boxShadow: "0 20px 60px rgba(0,0,0,0.4)", fontFamily: "'DM Sans', sans-serif" }}>
+      <div style={{ background: "#fff", borderRadius: "16px", padding: "28px 24px", width: "min(360px, 100%)", textAlign: "center", boxShadow: "0 20px 60px rgba(0,0,0,0.4)", fontFamily: FONT_BODY }}>
         <div style={{ fontSize: "38px", marginBottom: "12px" }}>⚠️</div>
         <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", margin: "0 0 10px" }}>Exit assessment?</h2>
         <p style={{ fontSize: "14px", color: "#64748b", lineHeight: 1.6, margin: "0 0 22px" }}>
           Your progress has been saved — you can return at any time. Are you sure you want to leave?
         </p>
         <button onClick={onStay}
-          style={{ width: "100%", padding: "14px", marginBottom: "10px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "15px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+          style={{ width: "100%", padding: "14px", marginBottom: "10px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "15px", fontWeight: 700, cursor: "pointer", fontFamily: FONT_BODY }}>
           Continue assessment
         </button>
         <button onClick={onExit}
-          style={{ width: "100%", padding: "12px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: "14px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+          style={{ width: "100%", padding: "12px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: "14px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>
           Yes, exit
         </button>
       </div>
@@ -719,6 +724,7 @@ export default function RMCPManager() {
   const [termsConsent, setTermsConsent] = useState(false);
   const [adminLoginError, setAdminLoginError] = useState("");
   const [adminPwd, setAdminPwd] = useState("");
+  const [openFaq, setOpenFaq] = useState(null);
   const [proposal, setProposal] = useState(null);
   const [loadingClients, setLoadingClients] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
@@ -906,8 +912,7 @@ Please contact the client to discuss implementation.`;
     const flags = getRiskFlags(formData);
 
     return (
-      <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif" }}>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: FONT_BODY }}>
         <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "13px 18px", display: "flex", alignItems: "center", gap: "10px" }}>
           <button onClick={() => setView("editor")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "18px", color: "#64748b" }}>←</button>
           <div>
@@ -965,10 +970,10 @@ Please contact the client to discuss implementation.`;
                     </div>
 
                     <div style={{ display: "flex", gap: "8px" }}>
-                      <button onClick={() => setSelectedPlan(plan)} style={{ flex: 1, padding: "11px 12px", minHeight: "44px", borderRadius: "6px", border: "1.5px solid #cbd5e0", background: "#fff", color: "#4a5568", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                      <button onClick={() => setSelectedPlan(plan)} style={{ flex: 1, padding: "11px 12px", minHeight: "44px", borderRadius: "6px", border: "1.5px solid #cbd5e0", background: "#fff", color: "#4a5568", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>
                         View Full Plan
                       </button>
-                      <button onClick={() => requestHelp(planKey)} disabled={isRequested} style={{ flex: 1, padding: "11px 12px", minHeight: "44px", borderRadius: "6px", border: "none", background: isRequested ? "#d1fae5" : "#2463AE", color: isRequested ? "#1A4A8A" : "#fff", fontSize: "11px", fontWeight: 600, cursor: isRequested ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                      <button onClick={() => requestHelp(planKey)} disabled={isRequested} style={{ flex: 1, padding: "11px 12px", minHeight: "44px", borderRadius: "6px", border: "none", background: isRequested ? "#d1fae5" : "#2463AE", color: isRequested ? "#1A4A8A" : "#fff", fontSize: "11px", fontWeight: 600, cursor: isRequested ? "default" : "pointer", fontFamily: FONT_BODY }}>
                         {isRequested ? "✓ Help Requested" : "Request Help"}
                       </button>
                     </div>
@@ -1005,10 +1010,10 @@ Please contact the client to discuss implementation.`;
           </div>
 
           {/* Submit */}
-          <button onClick={submitRMCP} style={{ width: "100%", padding: "13px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "14px", fontWeight: 700, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 16px rgba(36,99,174,0.25)", marginBottom: "10px" }}>
+          <button onClick={submitRMCP} style={{ width: "100%", padding: "13px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "14px", fontWeight: 700, cursor: "pointer", fontFamily: FONT_BODY, boxShadow: "0 4px 16px rgba(36,99,174,0.25)", marginBottom: "10px" }}>
             ✓ Submit to Big Bay Administrators for Review
           </button>
-          <button onClick={() => { setActiveSection(0); setView("editor"); }} style={{ width: "100%", padding: "10px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+          <button onClick={() => { setActiveSection(0); setView("editor"); }} style={{ width: "100%", padding: "10px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#64748b", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>
             ← Back to Edit
           </button>
         </div>
@@ -1021,37 +1026,39 @@ Please contact the client to discuss implementation.`;
 
   // ── LANDING ──────────────────────────────────────────────────────────
   if (view === "landing") return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(165deg, #050F24 0%, #0D2147 40%, #071A3B 100%)", fontFamily: "'DM Sans', sans-serif", color: "#fff", position: "relative", overflow: "hidden" }}>
-      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+    <div style={{ minHeight: "100vh", background: "linear-gradient(165deg, #050F24 0%, #0D2147 40%, #071A3B 100%)", fontFamily: FONT_BODY, color: "#fff", position: "relative", overflow: "hidden" }}>
+      {/* Subtle grid overlay */}
+      <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)", backgroundSize: "48px 48px", maskImage: "radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%)", WebkitMaskImage: "radial-gradient(ellipse at 50% 30%, #000 30%, transparent 75%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(107,163,232,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: -150, left: -100, width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(36,99,174,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
       <div style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 2 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <div style={{ width: 36, height: 36, borderRadius: "10px", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>⚖</div>
-          <span style={{ fontSize: "17px", fontWeight: 700 }}>RMCP<span style={{ color: "#6BA3E8" }}>Pro</span></span>
+          <span style={{ fontFamily: FONT_BRAND, fontSize: "17px", fontWeight: 700, letterSpacing: "-0.01em" }}>RMCP<span style={{ color: "#6BA3E8" }}>Pro</span></span>
         </div>
-        <button onClick={() => setView("adminLogin")} style={{ padding: "12px 20px", minHeight: "44px", borderRadius: "8px", border: "1.5px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.5)", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+        <button onClick={() => setView("adminLogin")} style={{ padding: "12px 20px", minHeight: "44px", borderRadius: "8px", border: "1.5px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.5)", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>
           Admin Login
         </button>
       </div>
       <div style={{ maxWidth: 620, margin: "0 auto", padding: "32px 20px 32px", textAlign: "center", position: "relative", zIndex: 2 }}>
-        <div style={{ display: "inline-block", padding: "5px 14px", borderRadius: "20px", background: "rgba(107,163,232,0.15)", border: "1px solid rgba(107,163,232,0.25)", fontSize: "11px", fontWeight: 600, color: "#6BA3E8", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: "24px" }}>
-          FICA Section 43 Compliance Tool
+        <div style={{ fontFamily: FONT_BRAND, display: "inline-block", padding: "6px 16px", borderRadius: "20px", background: "rgba(107,163,232,0.15)", border: "1px solid rgba(107,163,232,0.4)", fontSize: "11px", fontWeight: 600, color: "#6BA3E8", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: "24px", boxShadow: "0 0 20px rgba(107,163,232,0.15)" }}>
+          ✦ FICA Section 43 Compliance Tool
         </div>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(30px, 5vw, 46px)", fontWeight: 700, lineHeight: 1.15, marginBottom: "20px" }}>
-          Your RMCP,<br /><span style={{ color: "#6BA3E8" }}>done properly.</span>
+        <h1 style={{ fontFamily: FONT_HEAD, fontSize: "clamp(40px, 7vw, 84px)", fontWeight: 600, lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: "20px" }}>
+          Your RMCP,<br /><span style={{ color: "#6BA3E8", fontStyle: "italic" }}>done properly.</span>
         </h1>
         <p style={{ fontSize: "16px", lineHeight: 1.7, color: "rgba(255,255,255,0.65)", maxWidth: 500, margin: "0 auto 14px" }}>
           Answer a few simple questions about your property agency. We use your answers to build your Risk Management and Compliance Programme and show you action plans to close any gaps.
         </p>
         <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.4)", marginBottom: "36px" }}>Takes about 10–15 minutes. No compliance knowledge needed.</p>
-        <button onClick={() => setShowLeadForm(true)} style={{ padding: "14px 36px", borderRadius: "10px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 24px rgba(107,163,232,0.3)" }}>
+        <button onClick={() => setShowLeadForm(true)} style={{ position: "relative", padding: "16px 40px", minHeight: "52px", borderRadius: "12px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, boxShadow: "0 0 40px rgba(36,99,174,0.45), 0 0 80px rgba(107,163,232,0.2), 0 8px 24px rgba(0,0,0,0.3)" }}>
           Start My Free RMCP Assessment →
         </button>
         <div style={{ marginTop: "16px", display: "flex", justifyContent: "center", gap: "18px", flexWrap: "wrap" }}>
-          <button onClick={() => setShowExplainer(v => !v)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: "12px", cursor: "pointer", fontFamily: "'DM Sans', sans-serif", textDecoration: "underline", padding: 0 }}>
+          <button onClick={() => setShowExplainer(v => !v)} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.5)", fontSize: "12px", cursor: "pointer", fontFamily: FONT_BODY, textDecoration: "underline", padding: 0 }}>
             {showExplainer ? "Hide explanation ▲" : "What is an RMCP? ▼"}
           </button>
-          <a href="https://www.fic.gov.za/faq/" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.5)", fontSize: "12px", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+          <a href="https://www.fic.gov.za/faq/" target="_blank" rel="noopener noreferrer" style={{ color: "rgba(255,255,255,0.5)", fontSize: "12px", textDecoration: "underline", fontFamily: FONT_BODY }}>
             FIC FAQs →
           </a>
         </div>
@@ -1107,6 +1114,40 @@ Please contact the client to discuss implementation.`;
         </div>
         <p style={{ fontSize: "11px", color: "rgba(255,255,255,0.25)", marginTop: "20px" }}>Big Bay Administrators reviews and finalises your RMCP document once complete.</p>
       </div>
+
+      {/* FAQ Section */}
+      <div style={{ position: "relative", zIndex: 2, padding: "60px 20px 40px", maxWidth: 760, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+          <div style={{ fontFamily: FONT_BRAND, fontSize: "11px", fontWeight: 600, color: "#6BA3E8", letterSpacing: "0.8px", textTransform: "uppercase", marginBottom: "10px" }}>Common Questions</div>
+          <h2 style={{ fontFamily: FONT_HEAD, fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 600, color: "#fff", margin: 0, lineHeight: 1.2, letterSpacing: "-0.01em" }}>
+            Frequently asked <span style={{ color: "#6BA3E8", fontStyle: "italic" }}>questions</span>
+          </h2>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {[
+            { q: "What is an RMCP and who needs one?", a: "A Risk Management and Compliance Programme (RMCP) is a document required by FICA Section 43 for all accountable institutions — including property practitioners registered with the PPRA, attorneys, accountants, and others listed in Schedule 1. Without one, you are non-compliant and face penalties from the Financial Intelligence Centre." },
+            { q: "Am I a 'property practitioner' under FICA?", a: "If you hold a Fidelity Fund Certificate (FFC) from the PPRA and you facilitate the sale, lease, financing, or letting of property, you are an accountable institution under FICA Schedule 1, Item 20 — and you must have an RMCP." },
+            { q: "Is my data safe? (POPIA)", a: "Yes. Big Bay Administrators is the responsible party under POPIA. Your information is stored on secure infrastructure, encrypted in transit, and only accessed for the purpose of preparing your RMCP. We do not sell or share your data with third parties. See our Privacy Policy for full details and your data subject rights." },
+            { q: "How long does the assessment take?", a: "Most practitioners complete it in 10–15 minutes. There are six sections covering governance, risk assessment, customer due diligence, monitoring, record keeping, and reporting. You can save and return at any time." },
+            { q: "What does Big Bay Administrators do with my submission?", a: "We review your answers, identify any compliance gaps, and produce a formal, signed RMCP document tailored to your agency. You receive a copy by email. We may contact you about action plans to close any gaps we identify." },
+            { q: "Do you store passwords or financial information?", a: "No. The platform does not request or store passwords for any of your other systems, banking details, or client financial records. We only collect the information needed to draft your RMCP." },
+          ].map((item, i) => {
+            const open = openFaq === i;
+            return (
+              <div key={i} style={{ background: open ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.03)", border: `1px solid ${open ? "rgba(107,163,232,0.3)" : "rgba(255,255,255,0.08)"}`, borderRadius: "12px", overflow: "hidden", transition: "background 200ms ease, border 200ms ease" }}>
+                <button onClick={() => setOpenFaq(open ? null : i)} style={{ width: "100%", padding: "18px 20px", minHeight: "56px", background: "none", border: "none", color: "#fff", fontSize: "15px", fontWeight: 600, fontFamily: FONT_BODY, textAlign: "left", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px" }}>
+                  <span>{item.q}</span>
+                  <span style={{ display: "inline-flex", width: "28px", height: "28px", borderRadius: "50%", background: open ? "#6BA3E8" : "rgba(107,163,232,0.15)", color: open ? "#0D2147" : "#6BA3E8", alignItems: "center", justifyContent: "center", fontSize: "14px", fontWeight: 700, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 300ms ease, background 200ms ease", flexShrink: 0 }}>⌃</span>
+                </button>
+                <div style={{ maxHeight: open ? "600px" : "0px", overflow: "hidden", transition: "max-height 350ms ease, padding 300ms ease", padding: open ? "0 20px 20px" : "0 20px" }}>
+                  <p style={{ fontSize: "14px", lineHeight: 1.7, color: "rgba(255,255,255,0.7)", margin: 0 }}>{item.a}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Footer */}
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", padding: "24px 32px", textAlign: "center", position: "relative", zIndex: 2 }}>
         {/* ECTA s43 Supplier Disclosure */}
@@ -1128,26 +1169,26 @@ Please contact the client to discuss implementation.`;
             { label: "Privacy Policy (POPIA)", action: () => setShowPrivacyPolicy(true) },
             { label: "PAIA Manual", action: () => setShowPrivacyPolicy(true) },
           ].map((item, i) => (
-            <button key={i} onClick={item.action} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: "12px", cursor: "pointer", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: "8px 4px", minHeight: "44px" }}>
+            <button key={i} onClick={item.action} style={{ background: "none", border: "none", color: "rgba(255,255,255,0.4)", fontSize: "12px", cursor: "pointer", textDecoration: "underline", fontFamily: FONT_BODY, padding: "8px 4px", minHeight: "44px" }}>
               {item.label}
             </button>
           ))}
-          <a href="mailto:jerome@bigbayadmin.co.za" style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", textDecoration: "underline", fontFamily: "'DM Sans', sans-serif", padding: "8px 4px", display: "inline-flex", alignItems: "center", minHeight: "44px" }}>
+          <a href="mailto:jerome@bigbayadmin.co.za" style={{ color: "rgba(255,255,255,0.4)", fontSize: "12px", textDecoration: "underline", fontFamily: FONT_BODY, padding: "8px 4px", display: "inline-flex", alignItems: "center", minHeight: "44px" }}>
             jerome@bigbayadmin.co.za
           </a>
         </div>
       </div>
       {showTerms && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", overflowY: "auto", WebkitOverflowScrolling: "touch", zIndex: 200, padding: "16px 16px 40px", display: "flex", alignItems: "flex-start", justifyContent: "center" }}>
-          <div style={{ background: "#fff", borderRadius: "16px", width: "min(560px, 92vw)", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
-            <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(5,15,36,0.75)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", overflowY: "auto", WebkitOverflowScrolling: "touch", zIndex: 200, padding: "16px 16px 40px", display: "flex", alignItems: "flex-start", justifyContent: "center" }}>
+          <div style={{ background: "rgba(30, 41, 59, 0.88)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "16px", width: "min(560px, 92vw)", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.5)", color: "#f1f5f9", fontFamily: FONT_BODY }}>
+            <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <h2 style={{ fontSize: "16px", fontWeight: 700, color: "#1a2a3a", margin: 0 }}>Terms of Use</h2>
-                <p style={{ fontSize: "11px", color: "#94a3b8", margin: "2px 0 0" }}>Big Bay Administrators (Pty) Ltd — effective {new Date().getFullYear()}</p>
+                <h2 style={{ fontFamily: FONT_HEAD, fontSize: "20px", fontWeight: 600, color: "#fff", margin: 0 }}>Terms of Use</h2>
+                <p style={{ fontFamily: FONT_BRAND, fontSize: "11px", color: "#6BA3E8", margin: "4px 0 0", textTransform: "uppercase", letterSpacing: "0.6px" }}>Big Bay Administrators (Pty) Ltd · {new Date().getFullYear()}</p>
               </div>
-              <button onClick={() => setShowTerms(false)} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#94a3b8", lineHeight: 1, width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px" }}>×</button>
+              <button onClick={() => setShowTerms(false)} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", fontSize: "20px", cursor: "pointer", color: "#cbd5e1", lineHeight: 1, width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px" }}>×</button>
             </div>
-            <div style={{ overflowY: "auto", padding: "20px 24px", fontSize: "12px", color: "#374151", lineHeight: 1.75 }}>
+            <div style={{ overflowY: "auto", WebkitOverflowScrolling: "touch", padding: "20px 24px", fontSize: "13px", color: "#e2e8f0", lineHeight: 1.75 }}>
 
               <Section title="1. Acceptance of Terms">
                 <p>By accessing or using the RMCPPro platform ("the Platform") operated by Big Bay Administrators (Pty) Ltd ("Big Bay Administrators", "we", "us"), you confirm that you have read, understood, and agree to be bound by these Terms of Use. If you do not agree, you may not use the Platform.</p>
@@ -1213,8 +1254,8 @@ Please contact the client to discuss implementation.`;
                 <p><strong>Big Bay Administrators (Pty) Ltd</strong><br />Big Bay, Blouberg, Cape Town, Western Cape<br />Email: jerome@bigbayadmin.co.za</p>
               </Section>
             </div>
-            <div style={{ padding: "14px 24px", borderTop: "1px solid #e2e8f0" }}>
-              <button onClick={() => setShowTerms(false)} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+            <div style={{ padding: "14px 24px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+              <button onClick={() => setShowTerms(false)} style={{ width: "100%", padding: "12px", minHeight: "44px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, boxShadow: "0 0 20px rgba(36,99,174,0.4)" }}>
                 Close
               </button>
             </div>
@@ -1222,16 +1263,16 @@ Please contact the client to discuss implementation.`;
         </div>
       )}
       {showPrivacyPolicy && (
-        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.75)", overflowY: "auto", WebkitOverflowScrolling: "touch", zIndex: 200, padding: "16px 16px 40px", display: "flex", alignItems: "flex-start", justifyContent: "center" }}>
-          <div style={{ background: "#fff", borderRadius: "16px", width: "min(560px, 92vw)", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.4)" }}>
-            <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid #e2e8f0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(5,15,36,0.75)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", overflowY: "auto", WebkitOverflowScrolling: "touch", zIndex: 200, padding: "16px 16px 40px", display: "flex", alignItems: "flex-start", justifyContent: "center" }}>
+          <div style={{ background: "rgba(30, 41, 59, 0.88)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "16px", width: "min(560px, 92vw)", maxHeight: "85vh", display: "flex", flexDirection: "column", boxShadow: "0 24px 80px rgba(0,0,0,0.5)", color: "#f1f5f9", fontFamily: FONT_BODY }}>
+            <div style={{ padding: "22px 24px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
-                <h2 style={{ fontSize: "16px", fontWeight: 700, color: "#1a2a3a", margin: 0 }}>Privacy Policy & PAIA Manual</h2>
-                <p style={{ fontSize: "11px", color: "#94a3b8", margin: "2px 0 0" }}>Big Bay Administrators (Pty) Ltd — effective {new Date().getFullYear()}</p>
+                <h2 style={{ fontFamily: FONT_HEAD, fontSize: "20px", fontWeight: 600, color: "#fff", margin: 0 }}>Privacy Policy & PAIA Manual</h2>
+                <p style={{ fontFamily: FONT_BRAND, fontSize: "11px", color: "#6BA3E8", margin: "4px 0 0", textTransform: "uppercase", letterSpacing: "0.6px" }}>Big Bay Administrators (Pty) Ltd · {new Date().getFullYear()}</p>
               </div>
-              <button onClick={() => setShowPrivacyPolicy(false)} style={{ background: "none", border: "none", fontSize: "20px", cursor: "pointer", color: "#94a3b8", lineHeight: 1, width: "44px", height: "44px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px" }}>×</button>
+              <button onClick={() => setShowPrivacyPolicy(false)} style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", fontSize: "20px", cursor: "pointer", color: "#cbd5e1", lineHeight: 1, width: "40px", height: "40px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "8px" }}>×</button>
             </div>
-            <div style={{ overflowY: "auto", padding: "20px 24px", fontSize: "12px", color: "#374151", lineHeight: 1.75 }}>
+            <div style={{ overflowY: "auto", WebkitOverflowScrolling: "touch", padding: "20px 24px", fontSize: "13px", color: "#e2e8f0", lineHeight: 1.75 }}>
 
               <Section title="1. Who We Are">
                 <p>Big Bay Administrators (Pty) Ltd ("Big Bay Administrators", "we", "us") is a compliance services company registered in South Africa. We are the <strong>responsible party</strong> for the personal information you provide through this platform, as defined in the Protection of Personal Information Act 4 of 2013 (<strong>POPIA</strong>).</p>
@@ -1306,8 +1347,8 @@ Please contact the client to discuss implementation.`;
                 <p>We may update this policy from time to time. The current version is always available on this platform. Continued use of our services after changes constitutes acceptance of the updated policy.</p>
               </Section>
             </div>
-            <div style={{ padding: "14px 24px", borderTop: "1px solid #e2e8f0" }}>
-              <button onClick={() => setShowPrivacyPolicy(false)} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+            <div style={{ padding: "14px 24px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+              <button onClick={() => setShowPrivacyPolicy(false)} style={{ width: "100%", padding: "12px", minHeight: "44px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY, boxShadow: "0 0 20px rgba(36,99,174,0.4)" }}>
                 Close
               </button>
             </div>
@@ -1331,7 +1372,7 @@ Please contact the client to discuss implementation.`;
                 <input value={leadData[f.key]} onChange={e => setLeadData({ ...leadData, [f.key]: e.target.value })}
                   placeholder={f.placeholder}
                   inputMode={f.inputMode}
-                  style={{ width: "100%", padding: "14px", borderRadius: "10px", border: "1.5px solid #e2e8f0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px", WebkitAppearance: "none" }}
+                  style={{ width: "100%", padding: "14px", borderRadius: "10px", border: "1.5px solid #e2e8f0", fontSize: "16px", fontFamily: FONT_BODY, boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px", WebkitAppearance: "none" }}
                   onFocus={e => e.target.style.borderColor = "#2463AE"}
                   onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
               </div>
@@ -1342,7 +1383,7 @@ Please contact the client to discuss implementation.`;
                   style={{ width: "20px", height: "20px", marginTop: "1px", accentColor: "#2463AE", flexShrink: 0, cursor: "pointer" }} />
                 <span style={{ fontSize: "13px", color: "#4a5568", lineHeight: 1.6 }}>
                   I consent to Big Bay Administrators (Pty) Ltd collecting and processing my personal information in accordance with the{" "}
-                  <button onClick={() => setShowPrivacyPolicy(true)} style={{ background: "none", border: "none", color: "#2463AE", fontSize: "13px", fontWeight: 600, cursor: "pointer", padding: 0, textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+                  <button onClick={() => setShowPrivacyPolicy(true)} style={{ background: "none", border: "none", color: "#2463AE", fontSize: "13px", fontWeight: 600, cursor: "pointer", padding: 0, textDecoration: "underline", fontFamily: FONT_BODY }}>
                     Privacy Policy (POPIA)
                   </button>.
                 </span>
@@ -1354,7 +1395,7 @@ Please contact the client to discuss implementation.`;
                   style={{ width: "20px", height: "20px", marginTop: "1px", accentColor: "#2463AE", flexShrink: 0, cursor: "pointer" }} />
                 <span style={{ fontSize: "13px", color: "#4a5568", lineHeight: 1.6 }}>
                   I have read and agree to the{" "}
-                  <button onClick={() => setShowTerms(true)} style={{ background: "none", border: "none", color: "#2463AE", fontSize: "13px", fontWeight: 600, cursor: "pointer", padding: 0, textDecoration: "underline", fontFamily: "'DM Sans', sans-serif" }}>
+                  <button onClick={() => setShowTerms(true)} style={{ background: "none", border: "none", color: "#2463AE", fontSize: "13px", fontWeight: 600, cursor: "pointer", padding: 0, textDecoration: "underline", fontFamily: FONT_BODY }}>
                     Terms of Use
                   </button>.
                 </span>
@@ -1362,9 +1403,9 @@ Please contact the client to discuss implementation.`;
             </div>
             <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
               <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); setPopiConsent(false); setTermsConsent(false); }}
-                style={{ flex: 1, padding: "14px", minHeight: "52px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Cancel</button>
+                style={{ flex: 1, padding: "14px", minHeight: "52px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>Cancel</button>
               <button onClick={addClient} disabled={!leadData.company.trim() || !popiConsent || !termsConsent}
-                style={{ flex: 1, padding: "14px", minHeight: "52px", borderRadius: "10px", border: "none", background: leadData.company.trim() && popiConsent && termsConsent ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: leadData.company.trim() && popiConsent && termsConsent ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
+                style={{ flex: 1, padding: "14px", minHeight: "52px", borderRadius: "10px", border: "none", background: leadData.company.trim() && popiConsent && termsConsent ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: leadData.company.trim() && popiConsent && termsConsent ? "pointer" : "default", fontFamily: FONT_BODY }}>
                 Start →
               </button>
             </div>
@@ -1379,8 +1420,7 @@ Please contact the client to discuss implementation.`;
     if (!isAdmin) { setView("adminLogin"); return null; }
   }
   if (view === "clients") return (
-    <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif" }}>
-      <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: FONT_BODY }}>
       <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "14px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <button onClick={() => setView("landing")} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "18px", color: "#64748b" }}>←</button>
@@ -1389,7 +1429,7 @@ Please contact the client to discuss implementation.`;
         </div>
         <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
           {saving && <span style={{ fontSize: "11px", color: "#6BA3E8" }}>✓ Saved</span>}
-          <button onClick={() => setShowLeadForm(true)} style={{ padding: "12px 16px", minHeight: "44px", borderRadius: "7px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>+ Add Client</button>
+          <button onClick={() => setShowLeadForm(true)} style={{ padding: "12px 16px", minHeight: "44px", borderRadius: "7px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>+ Add Client</button>
         </div>
       </div>
 
@@ -1410,16 +1450,16 @@ Please contact the client to discuss implementation.`;
                   <label style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.4px" }}>{f.label}</label>
                   <input value={leadData[f.key]} onChange={e => setLeadData({ ...leadData, [f.key]: e.target.value })}
                     placeholder={f.placeholder}
-                    style={{ width: "100%", padding: "14px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px" }}
+                    style={{ width: "100%", padding: "14px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "16px", fontFamily: FONT_BODY, boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px" }}
                     onFocus={e => e.target.style.borderColor = "#2463AE"}
                     onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
                 </div>
               ))}
               <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
                 <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); }}
-                  style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>Cancel</button>
+                  style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>Cancel</button>
                 <button onClick={addClient} disabled={!leadData.company.trim()}
-                  style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() ? "pointer" : "default", fontFamily: "'DM Sans', sans-serif" }}>
+                  style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() ? "pointer" : "default", fontFamily: FONT_BODY }}>
                   Create & Open
                 </button>
               </div>
@@ -1437,7 +1477,7 @@ Please contact the client to discuss implementation.`;
             <div style={{ fontSize: "36px", marginBottom: "10px" }}>📋</div>
             <h3 style={{ fontSize: "15px", fontWeight: 700, color: "#1a2a3a", marginBottom: "6px" }}>No clients yet</h3>
             <p style={{ fontSize: "13px", color: "#64748b", marginBottom: "16px" }}>Add a property practitioner to start their RMCP</p>
-            <button onClick={() => setShowLeadForm(true)} style={{ padding: "10px 22px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>+ Add First Client</button>
+            <button onClick={() => setShowLeadForm(true)} style={{ padding: "10px 22px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>+ Add First Client</button>
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
@@ -1479,8 +1519,7 @@ Please contact the client to discuss implementation.`;
 
     return (
       <>
-      <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif" }}>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: FONT_BODY }}>
 
         <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "11px 18px", display: "flex", justifyContent: "space-between", alignItems: "center", position: "sticky", top: 0, zIndex: 20 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -1492,7 +1531,7 @@ Please contact the client to discuss implementation.`;
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             {saving && <span style={{ fontSize: "11px", color: "#6BA3E8" }}>✓ Saved</span>}
-            <button onClick={() => setView("dashboard")} style={{ padding: "10px 12px", minHeight: "44px", borderRadius: "6px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+            <button onClick={() => setView("dashboard")} style={{ padding: "10px 12px", minHeight: "44px", borderRadius: "6px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "11px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>
               Review Summary →
             </button>
           </div>
@@ -1518,7 +1557,7 @@ Please contact the client to discuss implementation.`;
                   background: activeSection === i ? "#e8f5ee" : "transparent",
                   color: activeSection === i ? "#1C5BA3" : "#64748b",
                   fontSize: "12px", fontWeight: activeSection === i ? 700 : 400,
-                  cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
+                  cursor: "pointer", fontFamily: FONT_BODY,
                   display: "flex", alignItems: "center", gap: "4px", whiteSpace: "nowrap"
                 }}>
                   {s.icon} {s.title.split(" ")[0]}{sc === 100 && <span style={{ color: "#6BA3E8", fontSize: "12px" }}>✓</span>}
@@ -1545,13 +1584,13 @@ Please contact the client to discuss implementation.`;
                 {field.type === "text" && (
                   <input value={formData[field.id] || ""} onChange={e => updateField(field.id, e.target.value)}
                     placeholder={field.placeholder}
-                    style={{ width: "100%", padding: "14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #2463AE" : "1.5px solid #d1d9e0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", background: formData[field.id] ? "#eff6ff" : "#fff", color: "#1a2a3a", minHeight: "52px" }}
+                    style={{ width: "100%", padding: "14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #2463AE" : "1.5px solid #d1d9e0", fontSize: "16px", fontFamily: FONT_BODY, boxSizing: "border-box", outline: "none", background: formData[field.id] ? "#eff6ff" : "#fff", color: "#1a2a3a", minHeight: "52px" }}
                     onFocus={e => e.target.style.borderColor = "#2463AE"}
                     onBlur={e => { if (!formData[field.id]) e.target.style.borderColor = "#d1d9e0"; }} />
                 )}
                 {field.type === "date" && (
                   <input type="date" value={formData[field.id] || ""} onChange={e => updateField(field.id, e.target.value)}
-                    style={{ width: "100%", padding: "14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #2463AE" : "1.5px solid #d1d9e0", fontSize: "16px", fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box", outline: "none", background: "#fff", color: "#1a2a3a", colorScheme: "light", minHeight: "52px" }}
+                    style={{ width: "100%", padding: "14px", borderRadius: "8px", border: formData[field.id] ? "2px solid #2463AE" : "1.5px solid #d1d9e0", fontSize: "16px", fontFamily: FONT_BODY, boxSizing: "border-box", outline: "none", background: "#fff", color: "#1a2a3a", colorScheme: "light", minHeight: "52px" }}
                     onFocus={e => e.target.style.borderColor = "#2463AE"}
                     onBlur={e => { if (!formData[field.id]) e.target.style.borderColor = "#d1d9e0"; }} />
                 )}
@@ -1567,7 +1606,7 @@ Please contact the client to discuss implementation.`;
 
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "30px", paddingBottom: "40px", gap: "12px" }}>
             <button onClick={() => setActiveSection(Math.max(0, activeSection - 1))} disabled={activeSection === 0}
-              style={{ padding: "13px 20px", minHeight: "44px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: activeSection === 0 ? "#d1d9e0" : "#4a5568", fontSize: "13px", fontWeight: 600, cursor: activeSection === 0 ? "default" : "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+              style={{ padding: "13px 20px", minHeight: "44px", borderRadius: "8px", border: "1.5px solid #e2e8f0", background: "#fff", color: activeSection === 0 ? "#d1d9e0" : "#4a5568", fontSize: "13px", fontWeight: 600, cursor: activeSection === 0 ? "default" : "pointer", fontFamily: FONT_BODY }}>
               ← Previous
             </button>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
@@ -1582,7 +1621,7 @@ Please contact the client to discuss implementation.`;
                 setSectionError(false);
                 activeSection < RMCP_SECTIONS.length - 1 ? setActiveSection(activeSection + 1) : setView("dashboard");
               }}
-                style={{ padding: "13px 22px", minHeight: "44px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                style={{ padding: "13px 22px", minHeight: "44px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>
                 {activeSection < RMCP_SECTIONS.length - 1 ? "Next →" : "Review & Submit →"}
               </button>
             </div>
@@ -1601,9 +1640,8 @@ Please contact the client to discuss implementation.`;
     const requestedHelps = Object.entries(helpRequests).filter(([_, v]) => v).map(([k]) => k);
 
     return (
-      <div style={{ minHeight: "100vh", background: "linear-gradient(165deg, #050F24 0%, #0D2147 40%, #071A3B 100%)", fontFamily: "'DM Sans', sans-serif", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
-        <div style={{ maxWidth: 500, textAlign: "center" }}>
+      <div style={{ minHeight: "100vh", background: "linear-gradient(165deg, #050F24 0%, #0D2147 40%, #071A3B 100%)", fontFamily: FONT_BODY, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+          <div style={{ maxWidth: 500, textAlign: "center" }}>
           <div style={{ width: 68, height: 68, borderRadius: "50%", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "30px", margin: "0 auto 22px", boxShadow: "0 8px 32px rgba(107,163,232,0.3)" }}>✓</div>
           <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "26px", fontWeight: 700, marginBottom: "10px", lineHeight: 1.2 }}>
             Assessment Submitted
@@ -1637,7 +1675,7 @@ Please contact the client to discuss implementation.`;
             <div style={{ fontSize: "14px", fontWeight: 600, color: "#6BA3E8" }}>jerome@bigbayadmin.co.za</div>
           </div>
 
-          <button onClick={() => setView("landing")} style={{ padding: "10px 24px", borderRadius: "8px", border: "1.5px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.6)", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+          <button onClick={() => setView("landing")} style={{ padding: "10px 24px", borderRadius: "8px", border: "1.5px solid rgba(255,255,255,0.2)", background: "transparent", color: "rgba(255,255,255,0.6)", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>
             ← Back to Home
           </button>
         </div>
@@ -1668,8 +1706,7 @@ Please contact the client to discuss implementation.`;
     };
 
     return (
-      <div style={{ minHeight: "100vh", background: "#f0f2f5", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'DM Sans', sans-serif", padding: "20px" }}>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <div style={{ minHeight: "100vh", background: "#f0f2f5", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: FONT_BODY, padding: "20px" }}>
         <div style={{ background: "#fff", padding: "32px 24px", borderRadius: "12px", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", width: "min(400px, 100%)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
             <div style={{ width: 32, height: 32, borderRadius: "8px", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "16px" }}>⚖</div>
@@ -1709,8 +1746,7 @@ Please contact the client to discuss implementation.`;
     const submittedClients = clients.filter(c => c.submitted);
 
     return (
-      <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif" }}>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: FONT_BODY }}>
         <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "16px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
             <h1 style={{ fontSize: "18px", fontWeight: 700, color: "#1a2a3a", margin: "0 0 2px" }}>Big Bay Administrators</h1>
@@ -1773,8 +1809,7 @@ Please contact the client to discuss implementation.`;
 
     return (
       <>
-      <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: "'DM Sans', sans-serif", padding: "20px" }}>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+      <div style={{ minHeight: "100vh", background: "#f0f2f5", fontFamily: FONT_BODY, padding: "20px" }}>
         <div style={{ maxWidth: 600, margin: "0 auto", background: "#fff", borderRadius: "12px", padding: "24px" }}>
           <button onClick={() => setView("admin")} style={{ marginBottom: "20px", padding: "12px 16px", minHeight: "44px", borderRadius: "6px", border: "1px solid #ccc", background: "#fff", cursor: "pointer" }}>← Back to List</button>
           <h2 style={{ marginBottom: "16px", color: "#1a2a3a" }}>{client.company}</h2>
