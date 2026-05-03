@@ -1928,11 +1928,6 @@ Please contact the client to discuss implementation.`;
     </div>
   </div>
 
-  <div class="page-footer">
-    <span>RMCP — ${val(client.company)}</span>
-    <span>Prepared by Big Bay Administrators (Pty) Ltd</span>
-    <span>${today}</span>
-  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ TABLE OF CONTENTS -->
@@ -1962,9 +1957,6 @@ Please contact the client to discuss implementation.`;
       </tr>`;
     }).join("")}
   </table>
-  <div class="page-footer" style="margin-top:60px">
-    <span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span>
-  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 1 -->
@@ -2000,7 +1992,6 @@ Please contact the client to discuss implementation.`;
   ${riskLevel === "HIGH" ? `<div class="critical"><strong>⚠ HIGH RISK INSTITUTION:</strong> Enhanced due diligence, senior management approval, and source-of-funds verification are mandatory for all new business relationships. Monthly monitoring of existing high-risk clients is required.</div>` : ""}
   ${riskLevel === "MEDIUM" ? `<div class="warning"><strong>⚠ MEDIUM RISK:</strong> Standard CDD applies to most clients. Enhanced due diligence must be applied whenever any of the EDD triggers identified in Part 2.5 are present.</div>` : ""}
 
-  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 2 -->
@@ -2052,7 +2043,6 @@ Please contact the client to discuss implementation.`;
   <p style="padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px"><strong>Monitoring approach:</strong> ${val(d.ongoing_dd)}</p>
   <p style="margin-top:10px;font-size:10pt;color:#374151">Client monitoring is not a once-off exercise. CDD must be refreshed whenever there is a material change in the client's circumstances, risk profile, or when suspicion arises. Records of all monitoring activities must be retained for the minimum 5-year period.</p>
 
-  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 3 -->
@@ -2099,7 +2089,6 @@ Please contact the client to discuss implementation.`;
     </tbody>
   </table>
 
-  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 4 -->
@@ -2130,7 +2119,6 @@ Please contact the client to discuss implementation.`;
     </tbody>
   </table>
 
-  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 5 -->
@@ -2158,7 +2146,6 @@ Please contact the client to discuss implementation.`;
 
   <p style="margin-top:20px;font-size:10pt;color:#374151"><strong>Records that must be retained include:</strong> Client CDD documents (ID, proof of address), beneficial ownership documentation, PEP screening records, all STR/CTR/TPR filings and related correspondence, ongoing monitoring records, training attendance registers, and this RMCP document itself.</p>
 
-  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 6 -->
@@ -2218,7 +2205,6 @@ Please contact the client to discuss implementation.`;
   </table>
   <div class="warning" style="margin-top:20px"><strong>CRITICAL — Documentation ≠ Compliance:</strong> Having a written RMCP is the minimum legal requirement — not the goal. All controls must be actively implemented, tested, and evidenced. An FIC inspection will examine whether your written procedures match your actual day-to-day operations.</div>
 
-  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ APPENDIX A: GAPS -->
@@ -2227,7 +2213,6 @@ Please contact the client to discuss implementation.`;
   <p style="font-family:Arial,sans-serif;font-size:10.5pt;margin-bottom:16px">The following compliance gaps were identified at the time of this assessment based on your responses. Each gap represents a control that has not yet been established or is insufficient for FICA compliance. Big Bay Administrators can assist with action plans to close each gap.</p>
   ${gapsList}
   ${flags.length > 0 ? `<div class="warning" style="margin-top:20px"><strong>Next step:</strong> Contact Big Bay Administrators at jerome@bigbayadmin.co.za to receive costed action plans for each gap listed above, including timelines, responsible parties, and cost estimates.</div>` : ""}
-  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ APPENDIX B: SIGNATURES -->
@@ -2273,7 +2258,6 @@ Please contact the client to discuss implementation.`;
     <strong>DISCLAIMER:</strong> This Risk Management and Compliance Programme was prepared by Big Bay Administrators (Pty) Ltd based solely on information provided by the client through the RMCPPro assessment tool. It constitutes a template compliance document and does not constitute legal advice. The accuracy and completeness of this document depend entirely on the accuracy of the information supplied by the client. Big Bay Administrators makes no representation or warranty that this document will satisfy all regulatory requirements applicable to the client's specific circumstances. The client remains solely responsible for implementing the controls described herein and for compliance with all applicable legislation including FICA 38 of 2001. Independent legal or compliance advice is recommended. Big Bay Administrators (Pty) Ltd shall not be liable for any regulatory penalties, fines, sanctions, or losses arising from reliance on this document. Governed by the laws of the Republic of South Africa.
   </div>
 
-  <div class="page-footer"><span>RMCP — ${val(client.company)} &nbsp;|&nbsp; Ref: ${refNo}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
 </div>
 
 </body></html>`;
