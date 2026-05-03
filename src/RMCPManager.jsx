@@ -1799,11 +1799,459 @@ Please contact the client to discuss implementation.`;
     const generateDoc = () => {
       const d = client.data || {};
       const today = new Date().toLocaleDateString("en-ZA", { day: "numeric", month: "long", year: "numeric" });
-      const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>RMCP - ${client.company}</title><style>body{font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:20px;color:#333}h1{color:#1C5BA3;border-bottom:3px solid #1C5BA3;padding-bottom:10px}h2{color:#1C5BA3;margin-top:20px}table{width:100%;border-collapse:collapse;margin:15px 0}th,td{border:1px solid #ddd;padding:10px;text-align:left}th{background:#f5f5f5}.warning{background:#fee2e2;border-left:4px solid #dc2626;padding:15px;margin:15px 0}.cover{text-align:center;padding:60px 20px;border:2px solid #1C5BA3;margin:40px 0}.page-break{page-break-after:always}</style></head><body>
-<div class="cover page-break"><div style="font-size:32px;font-weight:bold;color:#1C5BA3">Risk Management and Compliance Programme</div><div style="font-size:14px;color:#666;margin:20px 0">Financial Intelligence Centre Act 38 of 2001</div><table style="border:none;margin-top:40px"><tr style="border:none"><td style="border:none"><strong>Institution:</strong></td><td style="border:none">${client.company}</td></tr><tr style="border:none"><td style="border:none"><strong>FFC Number:</strong></td><td style="border:none">${client.ffc||"Not specified"}</td></tr><tr style="border:none"><td style="border:none"><strong>Date:</strong></td><td style="border:none">${today}</td></tr><tr style="border:none"><td style="border:none"><strong>Version:</strong></td><td style="border:none">1.0</td></tr></table></div>
-<div class="page-break"><h1>PART 1: RISK IDENTIFICATION & ASSESSMENT</h1><h2>1.1 Business Profile</h2><table><tr><th>Factor</th><th>Details</th></tr><tr><td>Client Types</td><td>${(d.client_types||[]).join(", ")}</td></tr><tr><td>Services</td><td>${(d.transaction_types||[]).join(", ")}</td></tr><tr><td>Geographic Exposure</td><td>${d.geographic_risk||""}</td></tr><tr><td>Transaction Value</td><td>${d.value_range||""}</td></tr></table><h2>1.2 Risk Assessment</h2><p>ML/TF/PF risk assessed using likelihood × impact matrix.</p><table><tr><th>Risk Type</th><th>Rating</th></tr><tr><td>Inherent Risk</td><td><strong>Medium</strong></td></tr><tr><td>Residual Risk</td><td><strong>Low</strong></td></tr></table></div>
-<div class="page-break"><h1>PART 2: RISK MITIGATION CONTROLS</h1><h2>2.1 Customer Due Diligence (CDD)</h2><table><tr><th>Risk Level</th><th>Identity</th><th>Address</th><th>Monitoring</th></tr><tr><td>Low</td><td>Certified ID</td><td>Utility bill ≤3 months</td><td>Annual</td></tr><tr><td>Medium</td><td>ID + source verification</td><td>Independent verification</td><td>Transaction-triggered</td></tr><tr><td>High (EDD)</td><td>Senior approval required</td><td>Independent + call</td><td>Monthly</td></tr></table><h2>2.2 Reporting Obligations</h2><table><tr><th>Report</th><th>Deadline</th><th>Method</th></tr><tr><td>STR</td><td>15 days</td><td>goAML</td></tr><tr><td>CTR</td><td><strong>3 business days</strong></td><td>goAML</td></tr><tr><td>TPR</td><td>Immediately</td><td>goAML + FIC email</td></tr></table><div class="warning"><strong>⚠️ TIPPING-OFF PROHIBITION (Section 29(2)):</strong> No employee may disclose STR/CTR/TPR filings. Criminal offence.</div><h2>2.3 Targeted Financial Sanctions</h2><p><strong>Match Protocol:</strong> Freeze → Do not proceed → Escalate within 1 hour → Report to FIC within 2 hours → Maintain confidentiality</p><h2>2.4 Record Keeping</h2><p>All records retained minimum 5 years. Formal certified destruction with audit trail.</p><h2>2.5 Training</h2><p><strong>Status:</strong> ${d.training_policy||"Not specified"}</p></div>
-<div><h1>PART 3: MONITORING, REVIEW & GOVERNANCE</h1><h2>3.1 Oversight</h2><table><tr><th>Role</th><th>Details</th></tr><tr><td>Compliance Officer</td><td>${d.compliance_officer||""}</td></tr><tr><td>Board Approval</td><td>${d.board_approval_date||""}</td></tr><tr><td>Review Frequency</td><td>Annually</td></tr></table><h2>3.2 Quality Assurance</h2><ul><li>Quarterly CDD audits (10% or 5 files)</li><li>Annual RMCP review</li><li>RCR submission per Directive 6 by 30 Sept</li><li>Employee screening per Directive 8</li></ul><div class="warning"><strong>CRITICAL:</strong> Documentation ≠ Compliance. All controls must be actively implemented.</div><h2>3.3 Signatures</h2><p><strong>Board/Senior Management:</strong> Signature: ____________ Date: ____________</p><p><strong>Compliance Officer:</strong> ${d.compliance_officer||""} Signature: ____________ Date: ____________</p><br><p>Prepared by Big Bay Administrators (Pty) Ltd | Cape Town | jerome@bigbayadmin.co.za</p></div><div style="margin-top:40px;padding:16px 20px;background:#f8f9fa;border:1px solid #dee2e6;border-radius:4px;font-size:11px;color:#6c757d;line-height:1.6"><strong>DISCLAIMER:</strong> This Risk Management and Compliance Programme document was prepared by Big Bay Administrators (Pty) Ltd based solely on information provided by the client through the RMCPPro assessment tool. It constitutes a template compliance document and does not constitute legal advice. The accuracy and completeness of this document depend entirely on the accuracy of the information supplied by the client. Big Bay Administrators makes no representation or warranty that this document will satisfy all regulatory requirements applicable to the client's specific circumstances. The client remains solely responsible for implementing the controls described herein and for compliance with all applicable legislation including FICA 38 of 2001. Independent legal or compliance advice is recommended. Big Bay Administrators (Pty) Ltd shall not be liable for any regulatory penalties, fines, sanctions, or losses arising from reliance on this document. | Governed by South African law.</div></body></html>`;
+      const refNo = `BBA-RMCP-${new Date().getFullYear()}-${String(Math.floor(Math.random()*9000)+1000)}`;
+
+      // Helpers
+      const val = (v, fallback = "Not specified") => v || fallback;
+      const list = (arr) => Array.isArray(arr) && arr.length > 0 ? arr.join(", ") : "Not specified";
+      const bullets = (arr) => Array.isArray(arr) && arr.length > 0
+        ? `<ul style="margin:4px 0;padding-left:18px">${arr.map(i => `<li style="margin:3px 0">${i}</li>`).join("")}</ul>`
+        : `<span style="color:#6b7280">Not specified</span>`;
+
+      // Risk level derivation
+      const rawRisk = d.risk_rating || "";
+      const riskLevel = rawRisk.startsWith("High") ? "HIGH" : rawRisk.startsWith("Medium") ? "MEDIUM" : rawRisk.startsWith("Low") ? "LOW" : "MEDIUM";
+      const residualRisk = riskLevel === "HIGH" ? "MEDIUM" : "LOW";
+      const riskBadge = (r) => {
+        if (r === "HIGH") return `<span style="background:#fee2e2;color:#b91c1c;padding:2px 10px;border-radius:12px;font-size:9.5pt;font-weight:bold;white-space:nowrap">HIGH</span>`;
+        if (r === "MEDIUM") return `<span style="background:#fef3c7;color:#92400e;padding:2px 10px;border-radius:12px;font-size:9.5pt;font-weight:bold;white-space:nowrap">MEDIUM</span>`;
+        return `<span style="background:#dcfce7;color:#166534;padding:2px 10px;border-radius:12px;font-size:9.5pt;font-weight:bold;white-space:nowrap">LOW</span>`;
+      };
+
+      // Compliance gaps for summary
+      const gapsList = flags.length > 0
+        ? `<table style="width:100%;border-collapse:collapse;margin:12px 0;font-size:10pt">
+            <thead><tr>
+              <th style="background:#991b1b;color:#fff;padding:8px 12px;text-align:left">#</th>
+              <th style="background:#991b1b;color:#fff;padding:8px 12px;text-align:left">Compliance Gap Identified</th>
+              <th style="background:#991b1b;color:#fff;padding:8px 12px;text-align:left">Action Required</th>
+            </tr></thead>
+            <tbody>${flags.map((f, i) => `<tr style="background:${i%2===0?"#fff":"#fef2f2"}">
+              <td style="padding:8px 12px;border-bottom:1px solid #fecaca;font-weight:bold;color:#991b1b">${i+1}</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #fecaca">${f.text}</td>
+              <td style="padding:8px 12px;border-bottom:1px solid #fecaca;color:#dc2626">Action plan available — contact Big Bay Administrators</td>
+            </tr>`).join("")}</tbody>
+          </table>`
+        : `<div style="background:#dcfce7;border:1px solid #86efac;border-left:4px solid #16a34a;padding:12px 16px;border-radius:4px;color:#166534"><strong>✓ No critical compliance gaps identified at time of assessment.</strong> Continue to monitor and maintain controls as documented.</div>`;
+
+      const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RMCP — ${client.company}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;color:#1a1a1a;background:#fff;line-height:1.6}
+  h1{font-size:15pt;color:#0D2147;margin:0 0 6px;font-family:Georgia,serif}
+  h2{font-size:12pt;color:#0D2147;margin:22px 0 8px;font-family:Georgia,serif}
+  p{margin:6px 0}
+  ul,ol{padding-left:20px;margin:6px 0}
+  li{margin:3px 0}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:10.5pt}
+  th{background:#0D2147;color:#fff;padding:9px 12px;text-align:left;font-size:10pt;font-family:Arial,sans-serif;font-weight:600}
+  td{padding:8px 12px;border-bottom:1px solid #e2e8f0;vertical-align:top}
+  tr:nth-child(even) td{background:#f8fafc}
+  .part-header{background:#0D2147;color:#fff;padding:14px 20px;font-size:14pt;font-weight:bold;margin:30px -32px 20px;font-family:Arial,sans-serif;letter-spacing:0.3px}
+  .section-header{background:#EEF3F8;color:#0D2147;padding:8px 14px;font-size:11pt;font-weight:bold;margin:20px 0 10px;border-left:4px solid #2463AE;font-family:Arial,sans-serif}
+  .warning{background:#fff8e1;border:1px solid #fbbf24;border-left:5px solid #d97706;padding:12px 16px;margin:14px 0;border-radius:4px;font-size:10.5pt}
+  .critical{background:#fee2e2;border:1px solid #fca5a5;border-left:5px solid #dc2626;padding:12px 16px;margin:14px 0;border-radius:4px;font-size:10.5pt}
+  .compliant{background:#f0fdf4;border:1px solid #86efac;border-left:5px solid #16a34a;padding:12px 16px;margin:14px 0;border-radius:4px;font-size:10.5pt}
+  .info-box{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2463AE;padding:12px 16px;margin:14px 0;border-radius:4px;font-size:10.5pt}
+  .page-break{page-break-after:always}
+  .footer-bar{border-top:2px solid #2463AE;margin-top:30px;padding-top:12px;font-size:9pt;color:#64748b;font-family:Arial,sans-serif;text-align:center}
+  .page-footer{font-family:Arial,sans-serif;font-size:8.5pt;color:#94a3b8;display:flex;justify-content:space-between;border-top:1px solid #e2e8f0;padding-top:8px;margin-top:40px}
+  .sig-block{margin:20px 0;display:inline-block;min-width:280px}
+  .sig-line{display:block;border-bottom:1px solid #333;width:240px;margin:32px 0 4px}
+  @media print{.page-break{page-break-after:always}body{font-size:10pt}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ COVER PAGE -->
+<div class="page-break" style="min-height:100vh;display:flex;flex-direction:column">
+  <!-- Header bar -->
+  <div style="background:#0D2147;padding:24px 32px;display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <div style="font-family:Arial,sans-serif;font-size:11pt;font-weight:700;color:#6BA3E8;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Big Bay Administrators (Pty) Ltd</div>
+      <div style="font-size:9pt;color:rgba(255,255,255,0.55);font-family:Arial,sans-serif">Cape Town · jerome@bigbayadmin.co.za</div>
+    </div>
+    <div style="text-align:right;font-family:Arial,sans-serif">
+      <div style="font-size:9pt;color:rgba(255,255,255,0.55)">Document Ref: ${refNo}</div>
+      <div style="font-size:9pt;color:rgba(255,255,255,0.55)">Date: ${today}</div>
+      <div style="font-size:9pt;color:rgba(255,255,255,0.55)">Version 1.0 — Confidential</div>
+    </div>
+  </div>
+
+  <!-- Cover body -->
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:60px 48px;text-align:center">
+    <div style="width:64px;height:4px;background:#2463AE;margin:0 auto 32px"></div>
+    <div style="font-family:Arial,sans-serif;font-size:10pt;font-weight:600;color:#6BA3E8;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px">Financial Intelligence Centre Act 38 of 2001 · Section 43</div>
+    <h1 style="font-size:30pt;color:#0D2147;margin-bottom:10px;line-height:1.15">Risk Management and<br>Compliance Programme</h1>
+    <div style="width:64px;height:4px;background:#2463AE;margin:28px auto"></div>
+    <table style="margin:0 auto;width:auto;min-width:380px;border:1px solid #e2e8f0;border-radius:4px;text-align:left">
+      <tr><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0;font-family:Arial,sans-serif;font-weight:600;color:#64748b;font-size:9.5pt;width:150px">Institution</td><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0;font-weight:bold;font-size:12pt;color:#0D2147">${val(client.company)}</td></tr>
+      <tr style="background:#f8fafc"><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0;font-family:Arial,sans-serif;font-weight:600;color:#64748b;font-size:9.5pt">FFC Number</td><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0">${val(client.ffc)}</td></tr>
+      <tr><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0;font-family:Arial,sans-serif;font-weight:600;color:#64748b;font-size:9.5pt">Contact Person</td><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0">${val(client.contact)}</td></tr>
+      <tr style="background:#f8fafc"><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0;font-family:Arial,sans-serif;font-weight:600;color:#64748b;font-size:9.5pt">Email</td><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0">${val(client.email)}</td></tr>
+      <tr><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0;font-family:Arial,sans-serif;font-weight:600;color:#64748b;font-size:9.5pt">Phone</td><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0">${val(client.phone)}</td></tr>
+      <tr style="background:#f8fafc"><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0;font-family:Arial,sans-serif;font-weight:600;color:#64748b;font-size:9.5pt">Prepared Date</td><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0">${today}</td></tr>
+      <tr><td style="padding:10px 20px;font-family:Arial,sans-serif;font-weight:600;color:#64748b;font-size:9.5pt">Document Reference</td><td style="padding:10px 20px;font-family:monospace">${refNo}</td></tr>
+    </table>
+    <div style="margin-top:40px;padding:14px 24px;background:#fef3c7;border:1px solid #fbbf24;border-radius:6px;font-family:Arial,sans-serif;font-size:9.5pt;color:#92400e;max-width:480px">
+      ⚠ This document is <strong>confidential</strong>. It contains sensitive compliance information. Do not distribute outside your organisation without the consent of your compliance officer.
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>RMCP — ${val(client.company)}</span>
+    <span>Prepared by Big Bay Administrators (Pty) Ltd</span>
+    <span>${today}</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TABLE OF CONTENTS -->
+<div class="page-break" style="padding:32px">
+  <div style="background:#0D2147;padding:14px 20px;font-family:Arial,sans-serif;font-size:14pt;font-weight:bold;color:#fff;margin:0 0 24px">Table of Contents</div>
+  <table style="border:none">
+    ${[
+      ["Part 1","Institution Details &amp; Risk Assessment"],
+      ["1.1","Business Profile"],["1.2","Risk Assessment Matrix"],
+      ["Part 2","Customer Due Diligence (CDD) Framework"],
+      ["2.1","Identity Verification"],["2.2","Address Verification"],["2.3","Beneficial Ownership"],["2.4","PEP Screening"],["2.5","Enhanced Due Diligence Triggers"],["2.6","Ongoing Monitoring"],
+      ["Part 3","Reporting Obligations"],
+      ["3.1","Suspicious Transaction Reports (STRs)"],["3.2","Cash Threshold Reports (CTRs)"],["3.3","Terrorist Property Reports (TPRs)"],["3.4","Tipping-Off Prevention"],["3.5","Internal Escalation Procedure"],
+      ["Part 4","Targeted Financial Sanctions Screening"],
+      ["4.1","Screening Method"],["4.2","Screening Frequency"],["4.3","Match Response Procedure"],
+      ["Part 5","Record Keeping"],
+      ["5.1","Record Storage System"],["5.2","Retention Period"],["5.3","Destruction Policy"],["5.4","Backup Procedures"],
+      ["Part 6","Governance &amp; Oversight"],
+      ["6.1","Compliance Structure"],["6.2","Staff Training"],["6.3","Board &amp; Management Oversight"],["6.4","Quality Assurance Programme"],
+      ["Appendix A","Compliance Gaps Summary"],
+      ["Appendix B","Signature Page &amp; Approval"],
+    ].map(([ref, title], i) => {
+      const isPart = ref.startsWith("Part") || ref.startsWith("App");
+      return `<tr style="border:none;background:${isPart?"#f1f5f9":"#fff"}">
+        <td style="border:none;padding:${isPart?"10px 12px":"6px 12px 6px 28px"};font-family:Arial,sans-serif;font-weight:${isPart?"700":"400"};color:${isPart?"#0D2147":"#374151"};font-size:${isPart?"11pt":"10.5pt"};width:120px">${ref}</td>
+        <td style="border:none;padding:${isPart?"10px 12px":"6px 12px"};font-family:Arial,sans-serif;font-weight:${isPart?"700":"400"};color:${isPart?"#0D2147":"#374151"};font-size:${isPart?"11pt":"10.5pt"};border-bottom:1px solid #e2e8f0">${title}</td>
+      </tr>`;
+    }).join("")}
+  </table>
+  <div class="page-footer" style="margin-top:60px">
+    <span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PART 1 -->
+<div class="page-break" style="padding:32px">
+  <div class="part-header">Part 1 — Institution Details &amp; Risk Assessment</div>
+
+  <div class="section-header">1.1 Business Profile</div>
+  <table>
+    <thead><tr><th style="width:35%">Factor</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>Institution Name</td><td><strong>${val(client.company)}</strong></td></tr>
+      <tr><td>FFC Number (PPRA)</td><td>${val(client.ffc)}</td></tr>
+      <tr><td>Compliance Officer</td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td>Compliance Officer Contact</td><td>${val(d.compliance_officer_contact)}</td></tr>
+      <tr><td>Client Types Served</td><td>${bullets(d.client_types)}</td></tr>
+      <tr><td>Transaction Types</td><td>${bullets(d.transaction_types)}</td></tr>
+      <tr><td>Geographic Exposure</td><td>${val(d.geographic_risk)}</td></tr>
+      <tr><td>Typical Transaction Value</td><td>${val(d.value_range)}</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header">1.2 Risk Assessment Matrix</div>
+  <p style="margin-bottom:10px;font-family:Arial,sans-serif;font-size:10.5pt">Risk rated using a likelihood × impact matrix in accordance with FICA s43 and the FIC's Risk-Based Approach (RBA) guidance. The institution's self-assessed risk profile is combined with transactional and geographic risk factors to produce both an inherent and residual risk rating.</p>
+  <table>
+    <thead><tr><th>Risk Dimension</th><th>Rating</th><th>Basis</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Self-Assessed ML/TF Risk</strong></td><td>${riskBadge(riskLevel)}</td><td style="font-size:10pt;color:#64748b">${val(d.risk_rating)}</td></tr>
+      <tr><td><strong>Inherent Risk (pre-controls)</strong></td><td>${riskBadge(riskLevel)}</td><td style="font-size:10pt;color:#64748b">Based on client types, geographic exposure, and transaction values</td></tr>
+      <tr><td><strong>Residual Risk (post-controls)</strong></td><td>${riskBadge(residualRisk)}</td><td style="font-size:10pt;color:#64748b">After applying CDD, reporting, and monitoring controls documented in this RMCP</td></tr>
+      <tr><td><strong>Last Formal Risk Assessment</strong></td><td colspan="2">${val(d.risk_assessment_date)}</td></tr>
+    </tbody>
+  </table>
+  ${riskLevel === "HIGH" ? `<div class="critical"><strong>⚠ HIGH RISK INSTITUTION:</strong> Enhanced due diligence, senior management approval, and source-of-funds verification are mandatory for all new business relationships. Monthly monitoring of existing high-risk clients is required.</div>` : ""}
+  ${riskLevel === "MEDIUM" ? `<div class="warning"><strong>⚠ MEDIUM RISK:</strong> Standard CDD applies to most clients. Enhanced due diligence must be applied whenever any of the EDD triggers identified in Part 2.5 are present.</div>` : ""}
+
+  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PART 2 -->
+<div class="page-break" style="padding:32px">
+  <div class="part-header">Part 2 — Customer Due Diligence (CDD) Framework</div>
+  <div class="info-box" style="margin-bottom:20px"><strong>Legal basis:</strong> FICA ss21–21H, as amended by the Financial Intelligence Centre Amendment Act 1 of 2017. All accountable institutions must apply a risk-based approach to CDD — the level of due diligence must match the ML/TF risk posed by each client.</div>
+
+  <div class="section-header">2.1 Identity Verification</div>
+  <p>This institution verifies client identity using the following methods:</p>
+  ${bullets(d.id_verification)}
+  <table style="margin-top:12px">
+    <thead><tr><th>Risk Level</th><th>Identity Requirement</th><th>Timing</th></tr></thead>
+    <tbody>
+      <tr><td>Standard (Low/Medium)</td><td>Any of the methods listed above; documentation retained on file</td><td>Before entering business relationship</td></tr>
+      <tr><td>Enhanced (High / EDD)</td><td>Above methods + senior compliance officer approval + independent database verification</td><td>Before entering business relationship; no exceptions</td></tr>
+      <tr><td>Foreign Nationals</td><td>Valid passport copy + proof of address from country of origin (certified)</td><td>Before entering business relationship</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header">2.2 Address Verification</div>
+  <p>This institution verifies client residential or business address using the following methods:</p>
+  ${bullets(d.address_verification)}
+  <div class="warning" style="margin-top:10px"><strong>Documentation requirement:</strong> All address documents must not be older than <strong>3 months</strong> at the date of verification. Expired proof of address documents are not compliant under FICA s21A.</div>
+
+  <div class="section-header">2.3 Beneficial Ownership Identification</div>
+  <p>Where a client is a company, close corporation, trust, or other legal entity, this institution identifies the beneficial owner using the following procedure:</p>
+  <p style="margin-top:10px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px"><strong>Method:</strong> ${val(d.beneficial_owner)}</p>
+  <div class="info-box" style="margin-top:10px"><strong>Definition (FICA s21B):</strong> A beneficial owner is the natural person who ultimately owns, controls, or benefits from a legal entity — typically any person holding ≥25% of shares, voting rights, or economic interest. Identifying the company itself is not sufficient.</div>
+
+  <div class="section-header">2.4 Politically Exposed Persons (PEP) Screening</div>
+  <p>PEP screening is performed using the following method:</p>
+  <p style="margin-top:10px;padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px"><strong>Method:</strong> ${val(d.pep_screening)}</p>
+  ${d.pep_screening === "Not yet established" ? `<div class="critical"><strong>⚠ GAP:</strong> PEP screening has not yet been established. This is a direct FICA s21B obligation. All clients must be screened for PEP status before onboarding. Contact Big Bay Administrators for an action plan.</div>` : `<div class="compliant"><strong>✓</strong> PEP screening process is in place. All PEP relationships must be escalated to senior management and subject to Enhanced Due Diligence regardless of transaction value.</div>`}
+
+  <div class="section-header">2.5 Enhanced Due Diligence (EDD) Triggers</div>
+  <p>Enhanced Due Diligence is triggered by any of the following circumstances:</p>
+  ${bullets(d.enhanced_dd)}
+  <table style="margin-top:12px">
+    <thead><tr><th>EDD Requirement</th><th>Applicable Standard</th></tr></thead>
+    <tbody>
+      <tr><td>Source of funds verification</td><td>Required for all EDD clients — bank statements, payslips, or financial statements</td></tr>
+      <tr><td>Source of wealth verification</td><td>Required for PEPs and high-value transactions — explain how the client acquired assets</td></tr>
+      <tr><td>Senior management approval</td><td>Written approval from compliance officer or director required before proceeding</td></tr>
+      <tr><td>Increased monitoring frequency</td><td>Monthly review of transaction patterns for EDD clients</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header">2.6 Ongoing Client Monitoring</div>
+  <p style="padding:10px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:4px"><strong>Monitoring approach:</strong> ${val(d.ongoing_dd)}</p>
+  <p style="margin-top:10px;font-size:10pt;color:#374151">Client monitoring is not a once-off exercise. CDD must be refreshed whenever there is a material change in the client's circumstances, risk profile, or when suspicion arises. Records of all monitoring activities must be retained for the minimum 5-year period.</p>
+
+  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PART 3 -->
+<div class="page-break" style="padding:32px">
+  <div class="part-header">Part 3 — Reporting Obligations</div>
+
+  <table style="margin-bottom:20px">
+    <thead><tr><th>Report Type</th><th>Legal Trigger</th><th>Deadline</th><th>Method</th><th>This Institution</th></tr></thead>
+    <tbody>
+      <tr><td><strong>STR</strong> (Suspicious Transaction Report)</td><td>Suspicion of ML/TF/PF arises — proof not required</td><td style="color:#dc2626;font-weight:bold">Within 15 days of suspicion</td><td>FIC goAML portal</td><td>${val(d.str_process)}</td></tr>
+      <tr><td><strong>CTR</strong> (Cash Threshold Report)</td><td>Cash received/paid ≥ R24,999.99 in single transaction</td><td style="color:#dc2626;font-weight:bold">Within 2 business days</td><td>FIC goAML portal</td><td>${val(d.ctr_process)}</td></tr>
+      <tr><td><strong>TPR</strong> (Terrorist Property Report)</td><td>Property suspected to belong to or be used for terrorism</td><td style="color:#dc2626;font-weight:bold">Immediately</td><td>goAML + FIC email</td><td>${val(d.tpr_process)}</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header">3.1 Suspicious Transaction Reports (STRs) — FICA s29</div>
+  <p><strong>Current status:</strong> ${val(d.str_process)}</p>
+  ${d.str_process === "Not yet registered on goAML" ? `<div class="critical"><strong>⚠ CRITICAL GAP:</strong> Your institution is not yet registered on the FIC goAML platform. You cannot file STRs, CTRs, or TPRs without this registration. This is a criminal offence under FICA. Contact Big Bay Administrators immediately — we can complete your registration.</div>` : ""}
+  <p style="margin-top:10px;font-size:10pt">The STR obligation arises from <em>suspicion</em> — not from certainty of money laundering. You must file within 15 days of the suspicion arising. Filing does not require you to refuse the transaction unless there are other grounds to do so.</p>
+
+  <div class="section-header">3.2 Cash Threshold Reports (CTRs) — FICA s31</div>
+  <p><strong>Current status:</strong> ${val(d.ctr_process)}</p>
+  <p style="margin-top:8px;font-size:10pt">A CTR must be filed within <strong>2 business days</strong> after a cash transaction of R24,999.99 or more. This applies regardless of whether the transaction appears suspicious. The duty to file a CTR is independent of the STR obligation.</p>
+
+  <div class="section-header">3.3 Terrorist Property Reports (TPRs) — FICA s28A</div>
+  <p><strong>Current status:</strong> ${val(d.tpr_process)}</p>
+  <p style="margin-top:8px;font-size:10pt">A TPR must be filed <strong>immediately</strong> upon knowledge or reasonable suspicion. No grace period applies. The institution must simultaneously freeze any affected funds or property.</p>
+
+  <div class="section-header">3.4 Tipping-Off Prevention — FICA s29(2)</div>
+  <p><strong>Current status:</strong> ${val(d.tipping_off)}</p>
+  <div class="critical" style="margin-top:10px"><strong>⚠ CRIMINAL OFFENCE — TIPPING-OFF PROHIBITION (FICA s29(2)):</strong> No director, officer, or employee may disclose to any person — including the subject of a report — that an STR, CTR, or TPR has been or is about to be filed. This prohibition extends to implying that a report may be made. Contravention carries criminal liability including imprisonment.</div>
+  <p style="margin-top:10px;font-size:10pt">Staff must be trained to avoid: discussing the filing with the subject; refusing a transaction without an innocent explanation; making comments that indicate regulatory scrutiny of the client.</p>
+
+  <div class="section-header">3.5 Internal Escalation Procedure — FICA s43(1)(d)</div>
+  <p><strong>Internal reporting procedure:</strong> ${val(d.internal_reporting)}</p>
+  <table style="margin-top:10px">
+    <thead><tr><th>Step</th><th>Action</th><th>Responsible Person</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Staff member identifies suspicious activity or unusual transaction</td><td>Any staff member</td></tr>
+      <tr><td>2</td><td>Staff member escalates to Compliance Officer in writing (no verbal-only reports)</td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td>3</td><td>Compliance Officer assesses suspicion against FICA criteria</td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td>4</td><td>If suspicion confirmed: file STR on goAML within 15 days; do not tip off client</td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td>5</td><td>Document all steps, decisions, and dates in compliance register</td><td>${val(d.compliance_officer)}</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PART 4 -->
+<div class="page-break" style="padding:32px">
+  <div class="part-header">Part 4 — Targeted Financial Sanctions (TFS) Screening</div>
+  <div class="info-box"><strong>Legal basis:</strong> FICA s26A–26C (as amended); UN Security Council resolutions binding on South Africa under the UN Charter; Financial Sanctions Regulations, 2017. Non-compliance is a criminal offence with no grace period.</div>
+
+  <div class="section-header">4.1 Screening Method</div>
+  <p><strong>Screening approach:</strong> ${val(d.sanctions_screening)}</p>
+  ${d.sanctions_screening === "Not yet established" ? `<div class="critical"><strong>⚠ CRITICAL GAP:</strong> Sanctions screening has not been established. South African property practitioners must screen all clients against both the UN Consolidated Sanctions List and the SA Targeted Financial Sanctions list before any business relationship. Failure to do so is a criminal offence.</div>` : ""}
+  <p style="margin-top:10px;font-size:10pt">Both the <strong>UN Consolidated Sanctions List</strong> and the <strong>FIC's South African Targeted Financial Sanctions list</strong> must be checked. Free access is available at: <em>fic.gov.za</em> and <em>un.org/securitycouncil/sanctions</em>.</p>
+
+  <div class="section-header">4.2 Screening Frequency</div>
+  <p><strong>Frequency:</strong> ${val(d.screening_frequency)}</p>
+  <p style="font-size:10pt;margin-top:8px">Screening only at onboarding is insufficient. Clients can be added to sanctions lists after the business relationship commences. Periodic screening of all active clients is required to detect late additions to sanctions lists.</p>
+
+  <div class="section-header">4.3 Match Response Procedure</div>
+  <p><strong>Match protocol:</strong> ${val(d.match_process)}</p>
+  <table style="margin-top:10px">
+    <thead><tr><th>Step</th><th>Required Action</th><th>Timeframe</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Immediately freeze all assets and transactions relating to the matched person</td><td>Immediately upon match</td></tr>
+      <tr><td>2</td><td>Do not proceed with any transaction or business activity</td><td>Immediately upon match</td></tr>
+      <tr><td>3</td><td>Escalate to Compliance Officer and senior management</td><td>Within 1 hour</td></tr>
+      <tr><td>4</td><td>File Terrorist Property Report (TPR) with FIC via goAML</td><td>Within 2 hours</td></tr>
+      <tr><td>5</td><td>Do not disclose to the subject that a report has been filed (tipping-off prohibition)</td><td>Ongoing</td></tr>
+      <tr><td>6</td><td>Document all actions, times, and decisions in the compliance register</td><td>Same day</td></tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PART 5 -->
+<div class="page-break" style="padding:32px">
+  <div class="part-header">Part 5 — Record Keeping</div>
+  <div class="info-box"><strong>Legal basis:</strong> FICA ss22–23. All records must be retained for a minimum of 5 years from the date of the transaction or the end of the business relationship, whichever is the later. The FIC may request access to records at any time.</div>
+
+  <div class="section-header">5.1 Record Storage System</div>
+  <p><strong>Storage method:</strong> ${val(d.record_system)}</p>
+  ${d.record_system === "Paper-based filing only" ? `<div class="warning"><strong>⚠ RISK:</strong> Paper-only storage carries significant risks: fire, flood, theft, and deterioration. The FIC expects records to be retrievable on request. Consider digitising your compliance records — Big Bay Administrators can assist.</div>` : ""}
+
+  <div class="section-header">5.2 Retention Period</div>
+  <p><strong>Policy:</strong> ${val(d.retention_period)}</p>
+  ${d.retention_period === "Not yet specified" ? `<div class="critical"><strong>⚠ GAP:</strong> A formal record retention period has not been specified. FICA s22 requires a minimum of 5 years. Without a documented policy, you cannot demonstrate compliance during an FIC inspection.</div>` : `<div class="compliant"><strong>✓</strong> Records are retained for ${val(d.retention_period)} — meeting the FICA minimum requirement of 5 years.</div>`}
+  <p style="margin-top:10px;font-size:10pt">The retention period runs from the later of: (a) the date of the transaction; or (b) the date on which the business relationship ended.</p>
+
+  <div class="section-header">5.3 Destruction Policy</div>
+  <p><strong>Policy:</strong> ${val(d.destruction_policy)}</p>
+  ${d.destruction_policy === "Not yet established" ? `<div class="warning"><strong>⚠ GAP:</strong> A formal destruction policy does not yet exist. Records must be securely destroyed after the retention period — not simply deleted or discarded. A documented destruction log is required.</div>` : ""}
+  <p style="font-size:10pt;margin-top:8px">After the retention period expires, records must be formally and securely destroyed with management sign-off and a written audit trail of the destruction event.</p>
+
+  <div class="section-header">5.4 Backup Procedures</div>
+  <p><strong>Backup method:</strong> ${val(d.backup_process)}</p>
+  ${d.backup_process === "No backup process in place" ? `<div class="critical"><strong>⚠ GAP:</strong> No backup process is in place. Records destroyed by hardware failure, ransomware, fire, or theft cannot be recovered — and their loss is itself a FICA breach. Implement automated backups immediately.</div>` : `<div class="compliant"><strong>✓</strong> Backup procedure in place: ${val(d.backup_process)}. Test restore functionality quarterly to confirm backups are viable.</div>`}
+
+  <p style="margin-top:20px;font-size:10pt;color:#374151"><strong>Records that must be retained include:</strong> Client CDD documents (ID, proof of address), beneficial ownership documentation, PEP screening records, all STR/CTR/TPR filings and related correspondence, ongoing monitoring records, training attendance registers, and this RMCP document itself.</p>
+
+  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ PART 6 -->
+<div class="page-break" style="padding:32px">
+  <div class="part-header">Part 6 — Governance &amp; Oversight</div>
+
+  <div class="section-header">6.1 Compliance Structure</div>
+  <table>
+    <thead><tr><th style="width:35%">Role / Element</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Designated Compliance Officer</strong></td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td><strong>Compliance Officer Contact</strong></td><td>${val(d.compliance_officer_contact)}</td></tr>
+      <tr><td><strong>Date RMCP Approved by Management</strong></td><td>${val(d.board_approval_date)}</td></tr>
+      <tr><td><strong>Review Frequency</strong></td><td>${val(d.review_frequency)}</td></tr>
+      <tr><td><strong>Last Review Date</strong></td><td>${val(d.last_review_date)}</td></tr>
+      <tr><td><strong>Last Formal Risk Assessment</strong></td><td>${val(d.risk_assessment_date)}</td></tr>
+    </tbody>
+  </table>
+  ${!d.board_approval_date ? `<div class="critical"><strong>⚠ GAP:</strong> This RMCP has not yet been formally approved by management. FICA s43(1)(b) requires board or senior management approval. An unsigned, unapproved RMCP provides no legal protection.</div>` : `<div class="compliant"><strong>✓</strong> RMCP approved by management on ${d.board_approval_date}.</div>`}
+
+  <div class="section-header">6.2 Staff Training — FICA s43(1)(c)</div>
+  <p><strong>Training approach:</strong> ${val(d.training_policy)}</p>
+  ${d.training_policy === "Not yet established" ? `<div class="critical"><strong>⚠ CRITICAL GAP:</strong> No AML/CFT training programme is in place. FICA s43(1)(c) requires all relevant staff to be trained. Untrained staff represent the most common FIC inspection finding and are a direct source of ML/TF risk.</div>` : `<div class="compliant"><strong>✓</strong> Training programme in place: ${val(d.training_policy)}. All staff must complete training; maintain a signed attendance register as evidence for FIC inspections.</div>`}
+  <table style="margin-top:12px">
+    <thead><tr><th>Training Requirement</th><th>FICA Basis</th><th>Frequency</th></tr></thead>
+    <tbody>
+      <tr><td>AML/CFT awareness training</td><td>s43(1)(c)</td><td>At induction + annually</td></tr>
+      <tr><td>Red flag identification</td><td>s43(1)(c)</td><td>Annually</td></tr>
+      <tr><td>STR/CTR/TPR filing procedures</td><td>s29, s31</td><td>Annually</td></tr>
+      <tr><td>Tipping-off prohibition</td><td>s29(2)</td><td>At induction + annually</td></tr>
+      <tr><td>PEP and sanctions screening</td><td>s21B, s26A</td><td>Annually</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-header">6.3 Board &amp; Management Oversight</div>
+  <p style="font-size:10pt">Senior management must demonstrate active oversight of the compliance programme. This includes:</p>
+  <ul style="font-size:10.5pt">
+    <li>Receiving and reviewing regular compliance reports from the Compliance Officer</li>
+    <li>Approving and signing off this RMCP and any amendments</li>
+    <li>Allocating adequate resources (budget, time, personnel) to compliance activities</li>
+    <li>Ensuring a culture of compliance is embedded at all levels of the organisation</li>
+    <li>Responding timeously to FIC queries, inspections, and directives</li>
+  </ul>
+
+  <div class="section-header">6.4 Quality Assurance Programme</div>
+  <table>
+    <thead><tr><th>Activity</th><th>Frequency</th><th>Responsible</th></tr></thead>
+    <tbody>
+      <tr><td>CDD file audits (sample 10% of files or minimum 5)</td><td>Quarterly</td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td>Full RMCP review and update</td><td>${val(d.review_frequency)}</td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td>Risk Control Return (RCR) submission to FIC — Directive 6</td><td>Annually by 30 September</td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td>Employee screening — Directive 8</td><td>At onboarding + periodically</td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td>goAML system access review</td><td>Annually</td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td>Training register update and gap analysis</td><td>Annually</td><td>${val(d.compliance_officer)}</td></tr>
+      <tr><td>Sanctions list update check</td><td>Monthly minimum</td><td>${val(d.compliance_officer)}</td></tr>
+    </tbody>
+  </table>
+  <div class="warning" style="margin-top:20px"><strong>CRITICAL — Documentation ≠ Compliance:</strong> Having a written RMCP is the minimum legal requirement — not the goal. All controls must be actively implemented, tested, and evidenced. An FIC inspection will examine whether your written procedures match your actual day-to-day operations.</div>
+
+  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ APPENDIX A: GAPS -->
+<div class="page-break" style="padding:32px">
+  <div class="part-header">Appendix A — Compliance Gaps Summary</div>
+  <p style="font-family:Arial,sans-serif;font-size:10.5pt;margin-bottom:16px">The following compliance gaps were identified at the time of this assessment based on your responses. Each gap represents a control that has not yet been established or is insufficient for FICA compliance. Big Bay Administrators can assist with action plans to close each gap.</p>
+  ${gapsList}
+  ${flags.length > 0 ? `<div class="warning" style="margin-top:20px"><strong>Next step:</strong> Contact Big Bay Administrators at jerome@bigbayadmin.co.za to receive costed action plans for each gap listed above, including timelines, responsible parties, and cost estimates.</div>` : ""}
+  <div class="page-footer"><span>RMCP — ${val(client.company)}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ APPENDIX B: SIGNATURES -->
+<div style="padding:32px">
+  <div class="part-header">Appendix B — Approval &amp; Signature Page</div>
+  <p style="font-family:Arial,sans-serif;font-size:10.5pt;margin-bottom:20px">This Risk Management and Compliance Programme has been reviewed and formally approved by the authorised representatives of <strong>${val(client.company)}</strong>. By signing below, the signatories confirm that:</p>
+  <ul style="font-size:10.5pt;margin-bottom:24px">
+    <li>They have read and understood the contents of this RMCP</li>
+    <li>The RMCP accurately reflects the institution's current compliance controls and procedures</li>
+    <li>They commit to implementing and maintaining all controls described herein</li>
+    <li>This RMCP will be reviewed at least ${val(d.review_frequency, "annually").toLowerCase()} and updated whenever material changes occur</li>
+  </ul>
+
+  <table style="border:none;margin:30px 0">
+    <tr style="border:none">
+      <td style="border:none;padding:0 40px 0 0;vertical-align:top">
+        <div class="sig-block">
+          <strong style="font-size:11pt;font-family:Arial,sans-serif">Board / Senior Management</strong><br>
+          <span class="sig-line"></span>
+          <div style="font-family:Arial,sans-serif;font-size:9.5pt;color:#374151">Name: ___________________________</div>
+          <div style="font-family:Arial,sans-serif;font-size:9.5pt;color:#374151;margin-top:6px">Designation: ___________________________</div>
+          <div style="font-family:Arial,sans-serif;font-size:9.5pt;color:#374151;margin-top:6px">Date: ___________________________</div>
+        </div>
+      </td>
+      <td style="border:none;padding:0;vertical-align:top">
+        <div class="sig-block">
+          <strong style="font-size:11pt;font-family:Arial,sans-serif">Compliance Officer</strong><br>
+          <span class="sig-line"></span>
+          <div style="font-family:Arial,sans-serif;font-size:9.5pt;color:#374151">Name: <strong>${val(d.compliance_officer)}</strong></div>
+          <div style="font-family:Arial,sans-serif;font-size:9.5pt;color:#374151;margin-top:6px">Contact: ${val(d.compliance_officer_contact)}</div>
+          <div style="font-family:Arial,sans-serif;font-size:9.5pt;color:#374151;margin-top:6px">Date: ___________________________</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div style="background:#0D2147;padding:20px 24px;border-radius:6px;margin-top:30px">
+    <div style="font-family:Arial,sans-serif;font-size:10pt;font-weight:700;color:#6BA3E8;margin-bottom:4px">Prepared by Big Bay Administrators (Pty) Ltd</div>
+    <div style="font-family:Arial,sans-serif;font-size:9.5pt;color:rgba(255,255,255,0.6)">Big Bay, Blouberg, Cape Town, Western Cape &nbsp;|&nbsp; jerome@bigbayadmin.co.za &nbsp;|&nbsp; Document Ref: ${refNo}</div>
+  </div>
+
+  <div style="margin-top:28px;padding:14px 18px;background:#f8f9fa;border:1px solid #dee2e6;border-radius:4px;font-family:Arial,sans-serif;font-size:9pt;color:#6c757d;line-height:1.6">
+    <strong>DISCLAIMER:</strong> This Risk Management and Compliance Programme was prepared by Big Bay Administrators (Pty) Ltd based solely on information provided by the client through the RMCPPro assessment tool. It constitutes a template compliance document and does not constitute legal advice. The accuracy and completeness of this document depend entirely on the accuracy of the information supplied by the client. Big Bay Administrators makes no representation or warranty that this document will satisfy all regulatory requirements applicable to the client's specific circumstances. The client remains solely responsible for implementing the controls described herein and for compliance with all applicable legislation including FICA 38 of 2001. Independent legal or compliance advice is recommended. Big Bay Administrators (Pty) Ltd shall not be liable for any regulatory penalties, fines, sanctions, or losses arising from reliance on this document. Governed by the laws of the Republic of South Africa.
+  </div>
+
+  <div class="page-footer"><span>RMCP — ${val(client.company)} &nbsp;|&nbsp; Ref: ${refNo}</span><span>Prepared by Big Bay Administrators (Pty) Ltd</span><span>${today}</span></div>
+</div>
+
+</body></html>`;
       return html;
     };
 
