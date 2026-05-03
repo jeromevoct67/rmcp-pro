@@ -1863,13 +1863,38 @@ Please contact the client to discuss implementation.`;
   .page-footer{font-family:Arial,sans-serif;font-size:8.5pt;color:#94a3b8;display:flex;justify-content:space-between;border-top:1px solid #e2e8f0;padding-top:8px;margin-top:40px}
   .sig-block{margin:20px 0;display:inline-block;min-width:280px}
   .sig-line{display:block;border-bottom:1px solid #333;width:240px;margin:32px 0 4px}
-  @media print{.page-break{page-break-after:always}body{font-size:10pt}}
+  @media print{
+    .no-print{display:none!important}
+    body{font-size:10pt;margin:0;padding:0}
+    .page-break{page-break-after:always}
+    .cover-wrap{min-height:unset!important;height:26cm;overflow:hidden}
+    h1,h2,h3{page-break-after:avoid}
+    tr{page-break-inside:avoid}
+    .warning,.critical,.compliant,.info-box{page-break-inside:avoid}
+    .sig-block{page-break-inside:avoid}
+    .part-header{margin:20px 0 20px!important}
+  }
 </style>
 </head>
 <body>
 
+<div class="no-print" style="position:sticky;top:0;z-index:999;background:#0D2147;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:Arial,sans-serif;box-shadow:0 2px 12px rgba(0,0,0,0.3)">
+  <div style="color:#fff;font-size:13px;display:flex;align-items:center;gap:12px">
+    <span style="font-weight:700;color:#6BA3E8">Big Bay Administrators</span>
+    <span style="color:rgba(255,255,255,0.4)">|</span>
+    <span style="color:rgba(255,255,255,0.6)">RMCP — ${val(client.company)}</span>
+    <span style="color:rgba(255,255,255,0.4)">|</span>
+    <span style="color:rgba(255,255,255,0.4);font-size:11px">${refNo}</span>
+  </div>
+  <div style="display:flex;gap:10px;align-items:center">
+    <span style="color:rgba(255,255,255,0.4);font-size:11px">Chrome/Edge: File → Print → Save as PDF</span>
+    <button onclick="window.print()" style="padding:9px 22px;background:linear-gradient(135deg,#6BA3E8,#2463AE);color:#fff;border:none;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 0 16px rgba(36,99,174,0.4)">🖨 Save as PDF</button>
+    <button onclick="window.close()" style="padding:9px 16px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.15);border-radius:6px;font-size:13px;cursor:pointer">✕ Close</button>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════════════════ COVER PAGE -->
-<div class="page-break" style="min-height:100vh;display:flex;flex-direction:column">
+<div class="page-break cover-wrap" style="display:flex;flex-direction:column">
   <!-- Header bar -->
   <div style="background:#0D2147;padding:24px 32px;display:flex;justify-content:space-between;align-items:center">
     <div>
@@ -2283,8 +2308,8 @@ Please contact the client to discuss implementation.`;
           <div style={{ display: "flex", gap: "10px", flexDirection: "column" }}>
             <button onClick={() => setProposal(generateProposal(client))}
               style={{ padding: "12px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontWeight: 700, cursor: "pointer", fontSize: "14px" }}>📋 Generate Service Proposal</button>
-            <button onClick={() => { const html = generateDoc(); const blob = new Blob([html], { type: "text/html" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `RMCP_${client.company.replace(/[^a-zA-Z0-9]/g, "_")}_${new Date().toISOString().split("T")[0]}.html`; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }}
-              style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📄 Download RMCP Document</button>
+            <button onClick={() => { const html = generateDoc(); const win = window.open("", "_blank", "width=1000,height=800"); win.document.write(html); win.document.close(); win.focus(); }}
+              style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📄 Open RMCP Document (PDF)</button>
             <button onClick={async () => { const btn = event.target; btn.textContent = "⏳ Sending..."; btn.disabled = true; try { const html = generateDoc(); const r = await fetch("https://rmcp-pro.vercel.app/api/send-rmcp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clientEmail: client.email, clientName: client.company, rmcpHtml: html, coverLetter: `Dear ${client.contact},\n\nPlease find attached your RMCP document.\n\nBest regards,\nBig Bay Administrators` }) }); const res = await r.json(); if (r.ok) { alert("✅ Email sent to " + client.email); } else { alert("Error: " + (res.error || "Failed")); } } catch (e) { alert("Error: " + e.message); } finally { btn.textContent = "📧 Email to Client"; btn.disabled = false; } }}
               style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#3b82f6", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📧 Email to Client</button>
           </div>
