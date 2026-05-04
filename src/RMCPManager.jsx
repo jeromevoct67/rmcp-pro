@@ -1842,37 +1842,38 @@ Please contact the client to discuss implementation.`;
 <title>RMCP — ${client.company}</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:Georgia,"Times New Roman",serif;font-size:11pt;color:#1a1a1a;background:#fff;line-height:1.6}
-  h1{font-size:15pt;color:#0D2147;margin:0 0 6px;font-family:Georgia,serif}
-  h2{font-size:12pt;color:#0D2147;margin:22px 0 8px;font-family:Georgia,serif}
-  p{margin:6px 0}
-  ul,ol{padding-left:20px;margin:6px 0}
-  li{margin:3px 0}
-  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:10.5pt}
-  th{background:#0D2147;color:#fff;padding:9px 12px;text-align:left;font-size:10pt;font-family:Arial,sans-serif;font-weight:600}
-  td{padding:8px 12px;border-bottom:1px solid #e2e8f0;vertical-align:top}
+  body{font-family:Arial,sans-serif;font-size:10.5pt;color:#1a1a1a;background:#fff;line-height:1.5}
+  h1{font-size:15pt;color:#0D2147;margin:0 0 8px;font-family:Arial,sans-serif}
+  h2{font-size:12pt;color:#0D2147;margin:18px 0 8px;font-family:Arial,sans-serif}
+  p{margin:8px 0;font-size:10.5pt}
+  ul,ol{padding-left:22px;margin:8px 0}
+  li{margin:4px 0;font-size:10.5pt}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:10pt}
+  th{background:#0D2147;color:#fff;padding:8px 12px;text-align:left;font-size:9.5pt;font-family:Arial,sans-serif;font-weight:600;letter-spacing:0.2px}
+  td{padding:7px 12px;border-bottom:1px solid #e2e8f0;vertical-align:top;font-size:10pt}
   tr:nth-child(even) td{background:#f8fafc}
-  .part-header{background:#0D2147;color:#fff;padding:14px 20px;font-size:14pt;font-weight:bold;margin:30px -32px 20px;font-family:Arial,sans-serif;letter-spacing:0.3px}
-  .section-header{background:#EEF3F8;color:#0D2147;padding:8px 14px;font-size:11pt;font-weight:bold;margin:20px 0 10px;border-left:4px solid #2463AE;font-family:Arial,sans-serif}
-  .warning{background:#fff8e1;border:1px solid #fbbf24;border-left:5px solid #d97706;padding:12px 16px;margin:14px 0;border-radius:4px;font-size:10.5pt}
-  .critical{background:#fee2e2;border:1px solid #fca5a5;border-left:5px solid #dc2626;padding:12px 16px;margin:14px 0;border-radius:4px;font-size:10.5pt}
-  .compliant{background:#f0fdf4;border:1px solid #86efac;border-left:5px solid #16a34a;padding:12px 16px;margin:14px 0;border-radius:4px;font-size:10.5pt}
-  .info-box{background:#eff6ff;border:1px solid #bfdbfe;border-left:5px solid #2463AE;padding:12px 16px;margin:14px 0;border-radius:4px;font-size:10.5pt}
-  .page-break{page-break-after:always}
-  .footer-bar{border-top:2px solid #2463AE;margin-top:30px;padding-top:12px;font-size:9pt;color:#64748b;font-family:Arial,sans-serif;text-align:center}
+  .part-header{background:#0D2147;color:#fff;padding:12px 20px;font-size:13pt;font-weight:bold;margin:0 -32px 18px;font-family:Arial,sans-serif;letter-spacing:0.3px}
+  .section-header{background:#EEF3F8;color:#0D2147;padding:7px 12px;font-size:10.5pt;font-weight:bold;margin:16px 0 8px;border-left:4px solid #2463AE;font-family:Arial,sans-serif}
+  .warning{background:#fff8e1;border:1px solid #fbbf24;border-left:4px solid #d97706;padding:10px 14px;margin:10px 0;border-radius:3px;font-size:10pt;line-height:1.5}
+  .critical{background:#fee2e2;border:1px solid #fca5a5;border-left:4px solid #dc2626;padding:10px 14px;margin:10px 0;border-radius:3px;font-size:10pt;line-height:1.5}
+  .compliant{background:#f0fdf4;border:1px solid #86efac;border-left:4px solid #16a34a;padding:10px 14px;margin:10px 0;border-radius:3px;font-size:10pt;line-height:1.5}
+  .info-box{background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid #2463AE;padding:10px 14px;margin:10px 0;border-radius:3px;font-size:10pt;line-height:1.5}
+  .page-break{page-break-after:always;padding:32px}
   .page-footer{font-family:Arial,sans-serif;font-size:8.5pt;color:#94a3b8;display:flex;justify-content:space-between;border-top:1px solid #e2e8f0;padding-top:8px;margin-top:40px}
-  .sig-block{margin:20px 0;display:inline-block;min-width:280px}
-  .sig-line{display:block;border-bottom:1px solid #333;width:240px;margin:32px 0 4px}
+  .sig-block{margin:16px 0;display:inline-block;min-width:280px}
+  .sig-line{display:block;border-bottom:1px solid #333;width:240px;margin:28px 0 4px}
   @media print{
     .no-print{display:none!important}
     body{font-size:10pt;margin:0;padding:0}
     .page-break{page-break-after:always}
-    .cover-wrap{min-height:unset!important;height:26cm;overflow:hidden}
+    .cover-wrap{min-height:unset!important;height:26cm;overflow:hidden;padding:0!important}
     h1,h2,h3{page-break-after:avoid}
     tr{page-break-inside:avoid}
     .warning,.critical,.compliant,.info-box{page-break-inside:avoid}
     .sig-block{page-break-inside:avoid}
-    .part-header{margin:20px 0 20px!important}
+    .part-header{margin:0 -32px 18px!important}
+    table{font-size:9.5pt}
+    td,th{padding:6px 10px}
   }
 </style>
 </head>
@@ -1931,8 +1932,8 @@ Please contact the client to discuss implementation.`;
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ TABLE OF CONTENTS -->
-<div class="page-break" style="padding:32px">
-  <div style="background:#0D2147;padding:14px 20px;font-family:Arial,sans-serif;font-size:14pt;font-weight:bold;color:#fff;margin:0 0 24px">Table of Contents</div>
+<div class="page-break">
+  <div class="part-header">Table of Contents</div>
   <table style="border:none">
     ${[
       ["Part 1","Institution Details &amp; Risk Assessment"],
@@ -1960,7 +1961,7 @@ Please contact the client to discuss implementation.`;
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 1 -->
-<div class="page-break" style="padding:32px">
+<div class="page-break">
   <div class="part-header">Part 1 — Institution Details &amp; Risk Assessment</div>
 
   <div class="section-header">1.1 Business Profile</div>
@@ -1995,7 +1996,7 @@ Please contact the client to discuss implementation.`;
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 2 -->
-<div class="page-break" style="padding:32px">
+<div class="page-break">
   <div class="part-header">Part 2 — Customer Due Diligence (CDD) Framework</div>
   <div class="info-box" style="margin-bottom:20px"><strong>Legal basis:</strong> FICA ss21–21H, as amended by the Financial Intelligence Centre Amendment Act 1 of 2017. All accountable institutions must apply a risk-based approach to CDD — the level of due diligence must match the ML/TF risk posed by each client.</div>
 
@@ -2046,7 +2047,7 @@ Please contact the client to discuss implementation.`;
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 3 -->
-<div class="page-break" style="padding:32px">
+<div class="page-break">
   <div class="part-header">Part 3 — Reporting Obligations</div>
 
   <table style="margin-bottom:20px">
@@ -2092,7 +2093,7 @@ Please contact the client to discuss implementation.`;
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 4 -->
-<div class="page-break" style="padding:32px">
+<div class="page-break">
   <div class="part-header">Part 4 — Targeted Financial Sanctions (TFS) Screening</div>
   <div class="info-box"><strong>Legal basis:</strong> FICA s26A–26C (as amended); UN Security Council resolutions binding on South Africa under the UN Charter; Financial Sanctions Regulations, 2017. Non-compliance is a criminal offence with no grace period.</div>
 
@@ -2122,7 +2123,7 @@ Please contact the client to discuss implementation.`;
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 5 -->
-<div class="page-break" style="padding:32px">
+<div class="page-break">
   <div class="part-header">Part 5 — Record Keeping</div>
   <div class="info-box"><strong>Legal basis:</strong> FICA ss22–23. All records must be retained for a minimum of 5 years from the date of the transaction or the end of the business relationship, whichever is the later. The FIC may request access to records at any time.</div>
 
@@ -2149,7 +2150,7 @@ Please contact the client to discuss implementation.`;
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ PART 6 -->
-<div class="page-break" style="padding:32px">
+<div class="page-break">
   <div class="part-header">Part 6 — Governance &amp; Oversight</div>
 
   <div class="section-header">6.1 Compliance Structure</div>
@@ -2208,7 +2209,7 @@ Please contact the client to discuss implementation.`;
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ APPENDIX A: GAPS -->
-<div class="page-break" style="padding:32px">
+<div class="page-break">
   <div class="part-header">Appendix A — Compliance Gaps Summary</div>
   <p style="font-family:Arial,sans-serif;font-size:10.5pt;margin-bottom:16px">The following compliance gaps were identified at the time of this assessment based on your responses. Each gap represents a control that has not yet been established or is insufficient for FICA compliance. Big Bay Administrators can assist with action plans to close each gap.</p>
   ${gapsList}
@@ -2216,7 +2217,7 @@ Please contact the client to discuss implementation.`;
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ APPENDIX B: SIGNATURES -->
-<div style="padding:32px">
+<div class="page-break">
   <div class="part-header">Appendix B — Approval &amp; Signature Page</div>
   <p style="font-family:Arial,sans-serif;font-size:10.5pt;margin-bottom:20px">This Risk Management and Compliance Programme has been reviewed and formally approved by the authorised representatives of <strong>${val(client.company)}</strong>. By signing below, the signatories confirm that:</p>
   <ul style="font-size:10.5pt;margin-bottom:24px">
