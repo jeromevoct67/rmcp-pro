@@ -725,10 +725,34 @@ export default function RMCPManager() {
   const [adminLoginError, setAdminLoginError] = useState("");
   const [adminPwd, setAdminPwd] = useState("");
   const [openFaq, setOpenFaq] = useState(null);
+  const [formErrors, setFormErrors] = useState({ email: "", phone: "", ffc: "" });
+  const [smtpOk, setSmtpOk] = useState(null); // null=unknown, true=ok, false=not configured
   const [proposal, setProposal] = useState(null);
   const [loadingClients, setLoadingClients] = useState(false);
   const [showExitConfirm, setShowExitConfirm] = useState(false);
   const supabaseTimer = useRef(null);
+
+  // Validation helpers
+  const validateField = (key, value) => {
+    if (key === "email" && value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+      return "Please enter a valid email address";
+    if (key === "phone" && value && !/^(\+27|0)[0-9]{9}$/.test(value.replace(/\s/g, "")))
+      return "Please enter a valid SA phone number (e.g. 0821234567 or +27821234567)";
+    if (key === "ffc" && value && !/^\d{6,10}$/.test(value.replace(/\s/g, "")))
+      return "FFC number must be 6–10 digits (numbers only)";
+    return "";
+  };
+  const hasFormErrors = Object.values(formErrors).some(e => e);
+
+  // Check SMTP status once when admin opens a client
+  useEffect(() => {
+    if (view === "client" && smtpOk === null) {
+      fetch("https://rmcp-pro.vercel.app/api/email-status")
+        .then(r => r.json())
+        .then(d => setSmtpOk(d.configured))
+        .catch(() => setSmtpOk(false));
+    }
+  }, [view]);
 
   useEffect(() => {
     try {
@@ -1365,16 +1389,17 @@ Please contact the client to discuss implementation.`;
               { key: "contact", label: "Contact Person", placeholder: "Full name" },
               { key: "email", label: "Email Address", placeholder: "name@company.co.za", inputMode: "email" },
               { key: "phone", label: "Phone Number", placeholder: "082 123 4567", inputMode: "tel" },
-              { key: "ffc", label: "FFC Number (PPRA)", placeholder: "Fidelity Fund Certificate number" },
+              { key: "ffc", label: "FFC Number (PPRA)", placeholder: "e.g. 12345678", inputMode: "numeric" },
             ].map(f => (
               <div key={f.key} style={{ marginBottom: "14px" }}>
                 <label style={{ display: "block", fontSize: "13px", fontWeight: 600, color: "#374151", marginBottom: "6px" }}>{f.label}</label>
-                <input value={leadData[f.key]} onChange={e => setLeadData({ ...leadData, [f.key]: e.target.value })}
+                <input value={leadData[f.key]} onChange={e => { setLeadData({ ...leadData, [f.key]: e.target.value }); if (formErrors[f.key]) setFormErrors({ ...formErrors, [f.key]: "" }); }}
                   placeholder={f.placeholder}
                   inputMode={f.inputMode}
-                  style={{ width: "100%", padding: "14px", borderRadius: "10px", border: "1.5px solid #e2e8f0", fontSize: "16px", fontFamily: FONT_BODY, boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px", WebkitAppearance: "none" }}
-                  onFocus={e => e.target.style.borderColor = "#2463AE"}
-                  onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
+                  style={{ width: "100%", padding: "14px", borderRadius: "10px", border: `1.5px solid ${formErrors[f.key] ? "#dc2626" : "#e2e8f0"}`, fontSize: "16px", fontFamily: FONT_BODY, boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px", WebkitAppearance: "none" }}
+                  onFocus={e => e.target.style.borderColor = formErrors[f.key] ? "#dc2626" : "#2463AE"}
+                  onBlur={e => { const err = validateField(f.key, e.target.value); setFormErrors(prev => ({ ...prev, [f.key]: err })); e.target.style.borderColor = err ? "#dc2626" : "#e2e8f0"; }} />
+                {formErrors[f.key] && <div style={{ fontSize: "12px", color: "#dc2626", marginTop: "4px" }}>⚠ {formErrors[f.key]}</div>}
               </div>
             ))}
             <div style={{ marginTop: "16px", padding: "14px", borderRadius: "10px", background: "#f8fafc", border: "1px solid #e2e8f0" }}>
@@ -1402,10 +1427,10 @@ Please contact the client to discuss implementation.`;
               </label>
             </div>
             <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
-              <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); setPopiConsent(false); setTermsConsent(false); }}
+              <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); setPopiConsent(false); setTermsConsent(false); setFormErrors({ email: "", phone: "", ffc: "" }); }}
                 style={{ flex: 1, padding: "14px", minHeight: "52px", borderRadius: "10px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "15px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>Cancel</button>
-              <button onClick={addClient} disabled={!leadData.company.trim() || !popiConsent || !termsConsent}
-                style={{ flex: 1, padding: "14px", minHeight: "52px", borderRadius: "10px", border: "none", background: leadData.company.trim() && popiConsent && termsConsent ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: leadData.company.trim() && popiConsent && termsConsent ? "pointer" : "default", fontFamily: FONT_BODY }}>
+              <button onClick={addClient} disabled={!leadData.company.trim() || !popiConsent || !termsConsent || hasFormErrors}
+                style={{ flex: 1, padding: "14px", minHeight: "52px", borderRadius: "10px", border: "none", background: leadData.company.trim() && popiConsent && termsConsent && !hasFormErrors ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "15px", fontWeight: 600, cursor: leadData.company.trim() && popiConsent && termsConsent && !hasFormErrors ? "pointer" : "default", fontFamily: FONT_BODY }}>
                 Start →
               </button>
             </div>
@@ -1442,24 +1467,26 @@ Please contact the client to discuss implementation.`;
               {[
                 { key: "company", label: "Company / Trading Name *", placeholder: "e.g. Atlantic Seaboard Properties (Pty) Ltd" },
                 { key: "contact", label: "Contact Person", placeholder: "Full name" },
-                { key: "email", label: "Email Address", placeholder: "name@company.co.za" },
-                { key: "phone", label: "Phone Number", placeholder: "082 123 4567" },
-                { key: "ffc", label: "FFC Number (PPRA)", placeholder: "Fidelity Fund Certificate number" },
+                { key: "email", label: "Email Address", placeholder: "name@company.co.za", inputMode: "email" },
+                { key: "phone", label: "Phone Number", placeholder: "082 123 4567", inputMode: "tel" },
+                { key: "ffc", label: "FFC Number (PPRA)", placeholder: "e.g. 12345678", inputMode: "numeric" },
               ].map(f => (
                 <div key={f.key} style={{ marginBottom: "11px" }}>
                   <label style={{ display: "block", fontSize: "11px", fontWeight: 600, color: "#374151", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.4px" }}>{f.label}</label>
-                  <input value={leadData[f.key]} onChange={e => setLeadData({ ...leadData, [f.key]: e.target.value })}
+                  <input value={leadData[f.key]} onChange={e => { setLeadData({ ...leadData, [f.key]: e.target.value }); if (formErrors[f.key]) setFormErrors({ ...formErrors, [f.key]: "" }); }}
                     placeholder={f.placeholder}
-                    style={{ width: "100%", padding: "14px 12px", borderRadius: "7px", border: "1.5px solid #e2e8f0", fontSize: "16px", fontFamily: FONT_BODY, boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px" }}
-                    onFocus={e => e.target.style.borderColor = "#2463AE"}
-                    onBlur={e => e.target.style.borderColor = "#e2e8f0"} />
+                    inputMode={f.inputMode}
+                    style={{ width: "100%", padding: "14px 12px", borderRadius: "7px", border: `1.5px solid ${formErrors[f.key] ? "#dc2626" : "#e2e8f0"}`, fontSize: "16px", fontFamily: FONT_BODY, boxSizing: "border-box", outline: "none", color: "#1a2a3a", background: "#fff", minHeight: "52px" }}
+                    onFocus={e => e.target.style.borderColor = formErrors[f.key] ? "#dc2626" : "#2463AE"}
+                    onBlur={e => { const err = validateField(f.key, e.target.value); setFormErrors(prev => ({ ...prev, [f.key]: err })); e.target.style.borderColor = err ? "#dc2626" : "#e2e8f0"; }} />
+                  {formErrors[f.key] && <div style={{ fontSize: "11px", color: "#dc2626", marginTop: "3px" }}>⚠ {formErrors[f.key]}</div>}
                 </div>
               ))}
               <div style={{ display: "flex", gap: "10px", marginTop: "16px" }}>
-                <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); }}
+                <button onClick={() => { setShowLeadForm(false); setLeadData({ company: "", contact: "", email: "", phone: "", ffc: "" }); setFormErrors({ email: "", phone: "", ffc: "" }); }}
                   style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "1.5px solid #e2e8f0", background: "#fff", color: "#4a5568", fontSize: "13px", fontWeight: 600, cursor: "pointer", fontFamily: FONT_BODY }}>Cancel</button>
-                <button onClick={addClient} disabled={!leadData.company.trim()}
-                  style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() ? "pointer" : "default", fontFamily: FONT_BODY }}>
+                <button onClick={addClient} disabled={!leadData.company.trim() || hasFormErrors}
+                  style={{ flex: 1, padding: "10px", borderRadius: "7px", border: "none", background: leadData.company.trim() && !hasFormErrors ? "#2463AE" : "#d1d9e0", color: "#fff", fontSize: "13px", fontWeight: 600, cursor: leadData.company.trim() && !hasFormErrors ? "pointer" : "default", fontFamily: FONT_BODY }}>
                   Create & Open
                 </button>
               </div>
@@ -1924,8 +1951,23 @@ Please contact the client to discuss implementation.`;
       <tr style="background:#f8fafc"><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0;font-family:Arial,sans-serif;font-weight:600;color:#64748b;font-size:9.5pt">Prepared Date</td><td style="padding:10px 20px;border-bottom:1px solid #e2e8f0">${today}</td></tr>
       <tr><td style="padding:10px 20px;font-family:Arial,sans-serif;font-weight:600;color:#64748b;font-size:9.5pt">Document Reference</td><td style="padding:10px 20px;font-family:monospace">${refNo}</td></tr>
     </table>
-    <div style="margin-top:40px;padding:14px 24px;background:#fef3c7;border:1px solid #fbbf24;border-radius:6px;font-family:Arial,sans-serif;font-size:9.5pt;color:#92400e;max-width:480px">
-      ⚠ This document is <strong>confidential</strong>. It contains sensitive compliance information. Do not distribute outside your organisation without the consent of your compliance officer.
+    <div style="margin-top:28px;padding:10px 20px;background:#fef3c7;border:1px solid #fbbf24;border-radius:6px;font-family:Arial,sans-serif;font-size:9pt;color:#92400e;max-width:540px">
+      ⚠ <strong>Confidential.</strong> Do not distribute outside your organisation without the consent of your compliance officer.
+    </div>
+    <div style="margin-top:28px;width:100%;max-width:540px">
+      <div style="font-size:8pt;font-weight:700;color:#94a3b8;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;text-align:left">Document Contents</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
+        ${[
+          ["Part 1","Institution Details &amp; Risk Assessment"],
+          ["Part 2","Customer Due Diligence (CDD)"],
+          ["Part 3","Reporting Obligations (STR / CTR / TPR)"],
+          ["Part 4","Targeted Financial Sanctions Screening"],
+          ["Part 5","Record Keeping"],
+          ["Part 6","Governance &amp; Oversight"],
+          ["Appendix A","Compliance Gaps Summary"],
+          ["Appendix B","Approval &amp; Signature Page"],
+        ].map(([ref, title]) => `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-left:3px solid #2463AE;padding:7px 10px;font-size:8.5pt;font-family:Arial,sans-serif;border-radius:3px;text-align:left"><span style="font-weight:700;color:#2463AE;display:block;font-size:7.5pt;margin-bottom:2px">${ref}</span>${title}</div>`).join("")}
+      </div>
     </div>
   </div>
 
@@ -2295,8 +2337,12 @@ Please contact the client to discuss implementation.`;
               style={{ padding: "12px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg, #6BA3E8, #2463AE)", color: "#fff", fontWeight: 700, cursor: "pointer", fontSize: "14px" }}>📋 Generate Service Proposal</button>
             <button onClick={() => { const html = generateDoc(); const win = window.open("", "_blank", "width=1000,height=800"); win.document.write(html); win.document.close(); win.focus(); }}
               style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#2463AE", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📄 Open RMCP Document (PDF)</button>
-            <button onClick={async () => { const btn = event.target; btn.textContent = "⏳ Sending..."; btn.disabled = true; try { const html = generateDoc(); const r = await fetch("https://rmcp-pro.vercel.app/api/send-rmcp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clientEmail: client.email, clientName: client.company, rmcpHtml: html, coverLetter: `Dear ${client.contact},\n\nPlease find attached your RMCP document.\n\nBest regards,\nBig Bay Administrators` }) }); const res = await r.json(); if (r.ok) { alert("✅ Email sent to " + client.email); } else { alert("Error: " + (res.error || "Failed")); } } catch (e) { alert("Error: " + e.message); } finally { btn.textContent = "📧 Email to Client"; btn.disabled = false; } }}
-              style={{ padding: "12px", borderRadius: "8px", border: "none", background: "#3b82f6", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📧 Email to Client</button>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <button onClick={async (e) => { const btn = e.currentTarget; btn.textContent = "⏳ Sending..."; btn.disabled = true; try { const html = generateDoc(); const coverLetter = `Dear ${client.contact},\n\nPlease find attached your personalised Risk Management and Compliance Programme (RMCP) prepared by Big Bay Administrators (Pty) Ltd in accordance with the Financial Intelligence Centre Act 38 of 2001 (Section 43).\n\nYour RMCP is a legally required document for all property practitioners registered with the PPRA. It sets out your institution's obligations under FICA, including client due diligence, suspicious transaction reporting, record keeping, and staff training requirements.\n\nACTION REQUIRED:\n1. Review the document carefully with your compliance officer\n2. Sign the Approval & Signature Page (Appendix B)\n3. Retain this document for a minimum of 5 years\n4. Implement all controls described in the document\n\nIf you have any questions or require assistance closing the compliance gaps identified in Appendix A, please contact us at jerome@bigbayadmin.co.za.\n\nKind regards,\nJerome Adams\nBig Bay Administrators (Pty) Ltd\njerome@bigbayadmin.co.za`; const r = await fetch("https://rmcp-pro.vercel.app/api/send-rmcp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clientEmail: client.email, clientName: client.company, rmcpHtml: html, coverLetter }) }); const res = await r.json(); if (r.ok) { alert("✅ Email sent to " + client.email); } else { alert("❌ Email failed: " + (res.error || "Unknown error") + "\n\nMake sure SMTP_USER and SMTP_PASSWORD are set in Vercel → Settings → Environment Variables."); } } catch (err) { alert("❌ Error: " + err.message); } finally { btn.textContent = "📧 Email to Client"; btn.disabled = false; } }}
+                style={{ flex: 1, padding: "12px", borderRadius: "8px", border: "none", background: "#3b82f6", color: "#fff", fontWeight: 600, cursor: "pointer", fontSize: "14px" }}>📧 Email to Client</button>
+              <div title={smtpOk === true ? "Email configured ✓" : smtpOk === false ? "SMTP not configured — add SMTP_USER and SMTP_PASSWORD in Vercel" : "Checking email config..."}
+                style={{ width: 10, height: 10, borderRadius: "50%", background: smtpOk === true ? "#16a34a" : smtpOk === false ? "#dc2626" : "#94a3b8", flexShrink: 0, cursor: "help" }} />
+            </div>
           </div>
         </div>
       </div>
